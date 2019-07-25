@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ammar&#39;s Blog</title>
+  
+  <subtitle>凡是和预期不符，一定是方法论不对；立足于合理；永远想知道更多；信仰自由平等真诚与希望</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://lizhaoloveit.github.io/"/>
+  <updated>2019-07-25T15:30:39.485Z</updated>
+  <id>http://lizhaoloveit.github.io/</id>
+  
+  <author>
+    <name>Ammar</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>我是 title</title>
+    <link href="http://lizhaoloveit.github.io/2019/07/25/hello-world/"/>
+    <id>http://lizhaoloveit.github.io/2019/07/25/hello-world/</id>
+    <published>2019-07-24T16:00:00.000Z</published>
+    <updated>2019-07-25T15:30:39.485Z</updated>
+    
+    <summary type="html">
+    
+      我是 description
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+    
+  </entry>
+  
+</feed>

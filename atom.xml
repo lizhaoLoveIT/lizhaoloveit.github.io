@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lizhaoloveit.github.io/"/>
-  <updated>2019-07-25T15:30:39.485Z</updated>
+  <updated>2019-07-26T18:05:06.630Z</updated>
   <id>http://lizhaoloveit.github.io/</id>
   
   <author>
@@ -17,22 +17,86 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>我是 title</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/25/hello-world/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/25/hello-world/</id>
-    <published>2019-07-24T16:00:00.000Z</published>
-    <updated>2019-07-25T15:30:39.485Z</updated>
+    <title>UIImage</title>
+    <link href="http://lizhaoloveit.github.io/2014/04/03/UIImage/"/>
+    <id>http://lizhaoloveit.github.io/2014/04/03/UIImage/</id>
+    <published>2014-04-02T16:00:00.000Z</published>
+    <updated>2019-07-26T18:05:06.630Z</updated>
     
     <summary type="html">
     
-      我是 description
+      
+      
+        
+        
+          
+        
+      
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/categories/iOS/"/>
+    
+      <category term="UI" scheme="http://lizhaoloveit.github.io/categories/iOS/UI/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UITouch</title>
+    <link href="http://lizhaoloveit.github.io/2014/04/02/UITouch/"/>
+    <id>http://lizhaoloveit.github.io/2014/04/02/UITouch/</id>
+    <published>2014-04-01T16:00:00.000Z</published>
+    <updated>2019-07-26T18:03:55.396Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/categories/iOS/"/>
+    
+      <category term="UI" scheme="http://lizhaoloveit.github.io/categories/iOS/UI/"/>
+    
+    
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UIScrollView</title>
+    <link href="http://lizhaoloveit.github.io/2014/03/27/UIScrollView/"/>
+    <id>http://lizhaoloveit.github.io/2014/03/27/UIScrollView/</id>
+    <published>2014-03-26T16:00:00.000Z</published>
+    <updated>2019-07-26T18:03:49.535Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/categories/iOS/"/>
+    
+      <category term="UI" scheme="http://lizhaoloveit.github.io/categories/iOS/UI/"/>
+    
+    
+      <category term="iOS" scheme="http://lizhaoloveit.github.io/tags/iOS/"/>
     
   </entry>
   

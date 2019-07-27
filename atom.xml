@@ -129,11 +129,11 @@
   </entry>
   
   <entry>
-    <title>mybatis</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/06/mybatis/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/06/mybatis/</id>
+    <title>MyBatis</title>
+    <link href="http://lizhaoloveit.github.io/2019/07/06/MyBatis/"/>
+    <id>http://lizhaoloveit.github.io/2019/07/06/MyBatis/</id>
     <published>2019-07-05T16:00:00.000Z</published>
-    <updated>2019-07-27T08:33:58.075Z</updated>
+    <updated>2019-07-27T10:29:58.886Z</updated>
     
     <summary type="html">
     
@@ -147,12 +147,8 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/%E6%A1%86%E6%9E%B6/"/>
     
-      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%A1%86%E6%9E%B6/"/>
-    
-    
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
     
       <category term="MyBatis" scheme="http://lizhaoloveit.github.io/tags/MyBatis/"/>
     
@@ -221,7 +217,7 @@
     <link href="http://lizhaoloveit.github.io/2019/07/02/MySQL/"/>
     <id>http://lizhaoloveit.github.io/2019/07/02/MySQL/</id>
     <published>2019-07-01T16:00:00.000Z</published>
-    <updated>2019-07-27T08:41:21.156Z</updated>
+    <updated>2019-07-27T09:27:25.759Z</updated>
     
     <summary type="html">
     
@@ -237,7 +233,7 @@
     
       <category term="数据库" scheme="http://lizhaoloveit.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Java/"/>
+      <category term="MySQL" scheme="http://lizhaoloveit.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/"/>
     
     
       <category term="MySQL" scheme="http://lizhaoloveit.github.io/tags/MySQL/"/>

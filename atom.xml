@@ -45,11 +45,11 @@
   </entry>
   
   <entry>
-    <title>maven</title>
+    <title>Maven</title>
     <link href="http://lizhaoloveit.github.io/2019/07/20/Maven/"/>
     <id>http://lizhaoloveit.github.io/2019/07/20/Maven/</id>
     <published>2019-07-19T16:00:00.000Z</published>
-    <updated>2019-07-28T12:22:20.064Z</updated>
+    <updated>2019-07-28T16:11:48.354Z</updated>
     
     <summary type="html">
     
@@ -63,10 +63,12 @@
     
     </summary>
     
-      <category term="java框架" scheme="http://lizhaoloveit.github.io/categories/java%E6%A1%86%E6%9E%B6/"/>
+      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+    
+      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%A1%86%E6%9E%B6/"/>
     
     
-      <category term="java" scheme="http://lizhaoloveit.github.io/tags/java/"/>
+      <category term="Maven" scheme="http://lizhaoloveit.github.io/tags/Maven/"/>
     
   </entry>
   

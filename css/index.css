@@ -3156,7 +3156,7 @@ img:hover {
   top: 0;
   left: -300px;
   z-index: 10;
-  overflow-y: hidden;
+  overflow-y: auto;
   padding: 1rem 0 2rem 0.5rem;
   width: 300px;
   height: 100%;

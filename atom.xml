@@ -5,9 +5,9 @@
   <subtitle>凡是和预期不符，一定是方法论不对；立足于合理；永远想知道更多；信仰自由平等真诚与希望</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://lizhaoloveit.github.io/"/>
+  <link href="http://lizhaoloveit.cn/"/>
   <updated>2019-07-31T11:02:28.696Z</updated>
-  <id>http://lizhaoloveit.github.io/</id>
+  <id>http://lizhaoloveit.cn/</id>
   
   <author>
     <name>Ammar</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Spring入门IoC、DI</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/25/Spring%E5%85%A5%E9%97%A8IoC%E3%80%81DI/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/25/Spring入门IoC、DI/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/25/Spring%E5%85%A5%E9%97%A8IoC%E3%80%81DI/"/>
+    <id>http://lizhaoloveit.cn/2019/07/25/Spring入门IoC、DI/</id>
     <published>2019-07-24T16:00:00.000Z</published>
     <updated>2019-07-31T11:02:28.696Z</updated>
     
@@ -35,19 +35,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%A1%86%E6%9E%B6/"/>
+      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
     
     
-      <category term="Spring" scheme="http://lizhaoloveit.github.io/tags/Spring/"/>
+      <category term="Spring" scheme="http://lizhaoloveit.cn/tags/Spring/"/>
     
   </entry>
   
   <entry>
     <title>Maven</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/20/Maven/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/20/Maven/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/20/Maven/"/>
+    <id>http://lizhaoloveit.cn/2019/07/20/Maven/</id>
     <published>2019-07-19T16:00:00.000Z</published>
     <updated>2019-07-29T03:34:16.982Z</updated>
     
@@ -63,19 +63,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%A1%86%E6%9E%B6/"/>
+      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
     
     
-      <category term="Maven" scheme="http://lizhaoloveit.github.io/tags/Maven/"/>
+      <category term="Maven" scheme="http://lizhaoloveit.cn/tags/Maven/"/>
     
   </entry>
   
   <entry>
     <title>Listener</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/18/Listener/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/18/Listener/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/18/Listener/"/>
+    <id>http://lizhaoloveit.cn/2019/07/18/Listener/</id>
     <published>2019-07-17T16:00:00.000Z</published>
     <updated>2019-07-29T03:25:18.915Z</updated>
     
@@ -91,19 +91,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Listener" scheme="http://lizhaoloveit.github.io/tags/Listener/"/>
+      <category term="Listener" scheme="http://lizhaoloveit.cn/tags/Listener/"/>
     
   </entry>
   
   <entry>
     <title>文件上传下载</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/17/文件上传下载/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD/"/>
+    <id>http://lizhaoloveit.cn/2019/07/17/文件上传下载/</id>
     <published>2019-07-16T16:00:00.000Z</published>
     <updated>2019-07-29T03:53:16.892Z</updated>
     
@@ -119,19 +119,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>EL表达式</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/12/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/12/EL表达式/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/12/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
+    <id>http://lizhaoloveit.cn/2019/07/12/EL表达式/</id>
     <published>2019-07-11T16:00:00.000Z</published>
     <updated>2019-07-29T03:54:41.623Z</updated>
     
@@ -147,47 +147,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    
-    
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac安装Tomcat插件</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/09/Mac%E5%AE%89%E8%A3%85Tomcat%E6%8F%92%E4%BB%B6/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/09/Mac安装Tomcat插件/</id>
-    <published>2019-07-08T16:00:00.000Z</published>
-    <updated>2019-07-29T03:55:59.626Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
-    
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>Session与Cookie</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/09/Session%E4%B8%8ECookie/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/09/Session与Cookie/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/"/>
+    <id>http://lizhaoloveit.cn/2019/07/09/Session与Cookie/</id>
     <published>2019-07-08T16:00:00.000Z</published>
     <updated>2019-07-29T03:23:05.447Z</updated>
     
@@ -203,19 +175,47 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Cookie" scheme="http://lizhaoloveit.github.io/tags/Cookie/"/>
+      <category term="Cookie" scheme="http://lizhaoloveit.cn/tags/Cookie/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mac安装Tomcat插件</title>
+    <link href="http://lizhaoloveit.cn/2019/07/09/Mac%E5%AE%89%E8%A3%85Tomcat%E6%8F%92%E4%BB%B6/"/>
+    <id>http://lizhaoloveit.cn/2019/07/09/Mac安装Tomcat插件/</id>
+    <published>2019-07-08T16:00:00.000Z</published>
+    <updated>2019-07-29T03:55:59.626Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>UML 类图的6种连线示意</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/08/UML%E7%B1%BB%E5%9B%BE%E7%9A%846%E7%A7%8D%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/08/UML类图的6种连线示意/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/08/UML%E7%B1%BB%E5%9B%BE%E7%9A%846%E7%A7%8D%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F/"/>
+    <id>http://lizhaoloveit.cn/2019/07/08/UML类图的6种连线示意/</id>
     <published>2019-07-07T16:00:00.000Z</published>
     <updated>2019-07-29T03:47:38.659Z</updated>
     
@@ -231,19 +231,19 @@
     
     </summary>
     
-      <category term="Tools" scheme="http://lizhaoloveit.github.io/categories/Tools/"/>
+      <category term="Tools" scheme="http://lizhaoloveit.cn/categories/Tools/"/>
     
-      <category term="UML" scheme="http://lizhaoloveit.github.io/categories/Tools/UML/"/>
+      <category term="UML" scheme="http://lizhaoloveit.cn/categories/Tools/UML/"/>
     
     
-      <category term="Tools" scheme="http://lizhaoloveit.github.io/tags/Tools/"/>
+      <category term="Tools" scheme="http://lizhaoloveit.cn/tags/Tools/"/>
     
   </entry>
   
   <entry>
     <title>Servlet</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/07/Servlet/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/07/Servlet/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/07/Servlet/"/>
+    <id>http://lizhaoloveit.cn/2019/07/07/Servlet/</id>
     <published>2019-07-06T16:00:00.000Z</published>
     <updated>2019-07-29T03:22:30.071Z</updated>
     
@@ -259,19 +259,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Servlet" scheme="http://lizhaoloveit.github.io/tags/Servlet/"/>
+      <category term="Servlet" scheme="http://lizhaoloveit.cn/tags/Servlet/"/>
     
   </entry>
   
   <entry>
     <title>网络编程Socket</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/07/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BSocket/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/07/网络编程Socket/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/07/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BSocket/"/>
+    <id>http://lizhaoloveit.cn/2019/07/07/网络编程Socket/</id>
     <published>2019-07-06T16:00:00.000Z</published>
     <updated>2019-07-29T03:55:07.720Z</updated>
     
@@ -287,19 +287,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="服务器" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
     
-      <category term="Socket" scheme="http://lizhaoloveit.github.io/tags/Socket/"/>
+      <category term="Socket" scheme="http://lizhaoloveit.cn/tags/Socket/"/>
     
   </entry>
   
   <entry>
     <title>MyBatis</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/06/MyBatis/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/06/MyBatis/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/06/MyBatis/"/>
+    <id>http://lizhaoloveit.cn/2019/07/06/MyBatis/</id>
     <published>2019-07-05T16:00:00.000Z</published>
     <updated>2019-07-29T03:33:34.394Z</updated>
     
@@ -315,19 +315,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="框架" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%A1%86%E6%9E%B6/"/>
+      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
     
     
-      <category term="MyBatis" scheme="http://lizhaoloveit.github.io/tags/MyBatis/"/>
+      <category term="MyBatis" scheme="http://lizhaoloveit.cn/tags/MyBatis/"/>
     
   </entry>
   
   <entry>
     <title>JDBC</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/04/JDBC/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/04/JDBC/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/04/JDBC/"/>
+    <id>http://lizhaoloveit.cn/2019/07/04/JDBC/</id>
     <published>2019-07-03T16:00:00.000Z</published>
     <updated>2019-07-29T03:28:11.622Z</updated>
     
@@ -343,19 +343,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="数据库" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+      <category term="数据库" scheme="http://lizhaoloveit.cn/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
-      <category term="JDBC" scheme="http://lizhaoloveit.github.io/tags/JDBC/"/>
+      <category term="JDBC" scheme="http://lizhaoloveit.cn/tags/JDBC/"/>
     
   </entry>
   
   <entry>
     <title>XML解析</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/03/XML%E8%A7%A3%E6%9E%90/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/03/XML解析/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/03/XML%E8%A7%A3%E6%9E%90/"/>
+    <id>http://lizhaoloveit.cn/2019/07/03/XML解析/</id>
     <published>2019-07-02T16:00:00.000Z</published>
     <updated>2019-07-29T03:35:38.502Z</updated>
     
@@ -371,19 +371,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="配置文件" scheme="http://lizhaoloveit.github.io/categories/Java/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
+      <category term="配置文件" scheme="http://lizhaoloveit.cn/categories/Java/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>MySQL</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/02/MySQL/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/02/MySQL/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/02/MySQL/"/>
+    <id>http://lizhaoloveit.cn/2019/07/02/MySQL/</id>
     <published>2019-07-01T16:00:00.000Z</published>
     <updated>2019-07-29T03:40:54.229Z</updated>
     
@@ -399,19 +399,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="数据库" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+      <category term="数据库" scheme="http://lizhaoloveit.cn/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
-      <category term="MySQL" scheme="http://lizhaoloveit.github.io/tags/MySQL/"/>
+      <category term="MySQL" scheme="http://lizhaoloveit.cn/tags/MySQL/"/>
     
   </entry>
   
   <entry>
     <title>Java类加载机制</title>
-    <link href="http://lizhaoloveit.github.io/2019/07/01/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
-    <id>http://lizhaoloveit.github.io/2019/07/01/Java类加载机制/</id>
+    <link href="http://lizhaoloveit.cn/2019/07/01/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"/>
+    <id>http://lizhaoloveit.cn/2019/07/01/Java类加载机制/</id>
     <published>2019-06-30T16:00:00.000Z</published>
     <updated>2019-07-29T03:43:32.375Z</updated>
     
@@ -427,19 +427,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="源码分析" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+      <category term="源码分析" scheme="http://lizhaoloveit.cn/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
     
     
-      <category term="ClassLoader" scheme="http://lizhaoloveit.github.io/tags/ClassLoader/"/>
+      <category term="ClassLoader" scheme="http://lizhaoloveit.cn/tags/ClassLoader/"/>
     
   </entry>
   
   <entry>
     <title>junit、javabean和注解</title>
-    <link href="http://lizhaoloveit.github.io/2019/06/30/junit%E3%80%81javabean%E5%92%8C%E6%B3%A8%E8%A7%A3/"/>
-    <id>http://lizhaoloveit.github.io/2019/06/30/junit、javabean和注解/</id>
+    <link href="http://lizhaoloveit.cn/2019/06/30/junit%E3%80%81javabean%E5%92%8C%E6%B3%A8%E8%A7%A3/"/>
+    <id>http://lizhaoloveit.cn/2019/06/30/junit、javabean和注解/</id>
     <published>2019-06-29T16:00:00.000Z</published>
     <updated>2019-07-29T03:45:14.459Z</updated>
     
@@ -455,19 +455,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="JavaSE" scheme="http://lizhaoloveit.github.io/categories/Java/JavaSE/"/>
+      <category term="JavaSE" scheme="http://lizhaoloveit.cn/categories/Java/JavaSE/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>反射</title>
-    <link href="http://lizhaoloveit.github.io/2019/06/26/%E5%8F%8D%E5%B0%84/"/>
-    <id>http://lizhaoloveit.github.io/2019/06/26/反射/</id>
+    <link href="http://lizhaoloveit.cn/2019/06/26/%E5%8F%8D%E5%B0%84/"/>
+    <id>http://lizhaoloveit.cn/2019/06/26/反射/</id>
     <published>2019-06-25T16:00:00.000Z</published>
     <updated>2019-07-29T03:44:23.313Z</updated>
     
@@ -483,19 +483,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="JavaSE" scheme="http://lizhaoloveit.github.io/categories/Java/JavaSE/"/>
+      <category term="JavaSE" scheme="http://lizhaoloveit.cn/categories/Java/JavaSE/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>HashMap底层设计实现</title>
-    <link href="http://lizhaoloveit.github.io/2019/06/19/HashMap%E5%BA%95%E5%B1%82%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0/"/>
-    <id>http://lizhaoloveit.github.io/2019/06/19/HashMap底层设计实现/</id>
+    <link href="http://lizhaoloveit.cn/2019/06/19/HashMap%E5%BA%95%E5%B1%82%E8%AE%BE%E8%AE%A1%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://lizhaoloveit.cn/2019/06/19/HashMap底层设计实现/</id>
     <published>2019-06-18T16:00:00.000Z</published>
     <updated>2019-07-29T03:43:02.251Z</updated>
     
@@ -511,19 +511,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="源码分析" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+      <category term="源码分析" scheme="http://lizhaoloveit.cn/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
   <entry>
     <title>二十六种设计模式</title>
-    <link href="http://lizhaoloveit.github.io/2019/06/18/%E4%BA%8C%E5%8D%81%E5%85%AD%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    <id>http://lizhaoloveit.github.io/2019/06/18/二十六种设计模式/</id>
+    <link href="http://lizhaoloveit.cn/2019/06/18/%E4%BA%8C%E5%8D%81%E5%85%AD%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    <id>http://lizhaoloveit.cn/2019/06/18/二十六种设计模式/</id>
     <published>2019-06-17T16:00:00.000Z</published>
     <updated>2019-07-29T03:38:27.954Z</updated>
     
@@ -539,23 +539,23 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="源码分析" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+      <category term="源码分析" scheme="http://lizhaoloveit.cn/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
     
-      <category term="设计模式" scheme="http://lizhaoloveit.github.io/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+      <category term="设计模式" scheme="http://lizhaoloveit.cn/categories/Java/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
-      <category term="设计模式" scheme="http://lizhaoloveit.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+      <category term="设计模式" scheme="http://lizhaoloveit.cn/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>JavaSE</title>
-    <link href="http://lizhaoloveit.github.io/2019/05/15/JavaSE/"/>
-    <id>http://lizhaoloveit.github.io/2019/05/15/JavaSE/</id>
+    <link href="http://lizhaoloveit.cn/2019/05/15/JavaSE/"/>
+    <id>http://lizhaoloveit.cn/2019/05/15/JavaSE/</id>
     <published>2019-05-14T16:00:00.000Z</published>
     <updated>2019-07-29T03:46:16.769Z</updated>
     
@@ -571,12 +571,12 @@
     
     </summary>
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/categories/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
     
-      <category term="JavaSE" scheme="http://lizhaoloveit.github.io/categories/Java/JavaSE/"/>
+      <category term="JavaSE" scheme="http://lizhaoloveit.cn/categories/Java/JavaSE/"/>
     
     
-      <category term="Java" scheme="http://lizhaoloveit.github.io/tags/Java/"/>
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   

@@ -516,7 +516,7 @@ blockquote {
   margin: 0;
   padding: 0.1rem 0.8rem;
   border-left: 0.2rem solid #49b1f5;
-  color: #ffa8fc;
+  color: #6a737d;
   background-color: #e9f5fe;
 }
 .article-container pre,
@@ -525,7 +525,7 @@ blockquote {
 }
 .article-container code {
   padding: 0.1rem 0.2rem;
-  background: rgba(27,31,35,0.05);
+  background: rgba(27,31,35,0.09);
   color: #1f2d3d;
   word-wrap: break-word;
   font-size: 16px;

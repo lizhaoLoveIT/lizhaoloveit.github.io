@@ -101,6 +101,34 @@
   </entry>
   
   <entry>
+    <title>SpringAOP</title>
+    <link href="http://lizhaoloveit.cn/2019/07/31/SpringAOP/"/>
+    <id>http://lizhaoloveit.cn/2019/07/31/SpringAOP/</id>
+    <published>2019-07-30T16:00:00.000Z</published>
+    <updated>2019-08-02T15:35:37.158Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
+    
+    
+      <category term="Spring" scheme="http://lizhaoloveit.cn/tags/Spring/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Spring入门IoC、DI</title>
     <link href="http://lizhaoloveit.cn/2019/07/25/Spring%E5%85%A5%E9%97%A8IoC%E3%80%81DI/"/>
     <id>http://lizhaoloveit.cn/2019/07/25/Spring入门IoC、DI/</id>
@@ -526,34 +554,6 @@
     <id>http://lizhaoloveit.cn/2019/06/30/junit、javabean和注解/</id>
     <published>2019-06-29T16:00:00.000Z</published>
     <updated>2019-07-29T03:45:14.459Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
-    
-      <category term="JavaSE" scheme="http://lizhaoloveit.cn/categories/Java/JavaSE/"/>
-    
-    
-      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>反射</title>
-    <link href="http://lizhaoloveit.cn/2019/06/26/%E5%8F%8D%E5%B0%84/"/>
-    <id>http://lizhaoloveit.cn/2019/06/26/反射/</id>
-    <published>2019-06-25T16:00:00.000Z</published>
-    <updated>2019-07-29T03:44:23.313Z</updated>
     
     <summary type="html">
     

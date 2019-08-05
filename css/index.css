@@ -521,7 +521,7 @@ blockquote {
 }
 .article-container pre,
 .article-container code {
-  font-family: Menlo, Monaco, consolas, "PingFang SC", "Microsoft YaHei", monospace, Helvetica Neue For Number !important;
+  font-family: Monaco, consolas, Menlo, "PingFang SC", "Microsoft YaHei", monospace, Helvetica Neue For Number !important;
 }
 .article-container code {
   padding: 0.1rem 0.2rem;

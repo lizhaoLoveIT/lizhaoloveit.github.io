@@ -4296,3 +4296,8 @@ footer {
   font-family: Martel Sans;
   src: url("/fonts/MartelSans-Regular.ttf");
 }
+@font-face {
+  font-family: Martel Sans;
+  font-weight: bold;
+  src: url("/fonts/MartelSans-Bold.ttf");
+}

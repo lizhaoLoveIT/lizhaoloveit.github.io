@@ -673,10 +673,10 @@ blockquote {
   background: #dfd;
 }
 .article-container pre .meta {
-  color: #7c4dff;
+  color: #7b68ee;
 }
 .article-container pre .comment {
-  color: rgba(144,164,174,0.565);
+  color: #2e8b57;
 }
 .article-container pre .comment::selection {
   background: rgba(128,203,196,0.251);
@@ -712,7 +712,7 @@ blockquote {
   color: #90a4ae;
 }
 .article-container pre .tag {
-  color: #39adb5;
+  color: #ff4500;
 }
 .article-container pre .tag::selection {
   background: rgba(128,203,196,0.251);
@@ -724,7 +724,7 @@ blockquote {
 .article-container pre .params,
 .article-container pre .constant,
 .article-container pre .command {
-  color: #f76d47;
+  color: #ffa500;
 }
 .article-container pre .number::selection,
 .article-container pre .preprocessor::selection,
@@ -753,7 +753,7 @@ blockquote {
 .article-container pre .special,
 .article-container pre .number,
 .article-container pre .formula {
-  color: #91b859;
+  color: #1e90ff;
 }
 .article-container pre .ruby .class .title::selection,
 .article-container pre .css .rules .attribute::selection,
@@ -772,7 +772,7 @@ blockquote {
 .article-container pre .keyword,
 .article-container pre .title,
 .article-container pre .css .hexcolor {
-  color: #39adb5;
+  color: #ff4500;
 }
 .article-container pre .keyword::selection,
 .article-container pre .title::selection,
@@ -803,7 +803,7 @@ blockquote {
 }
 .article-container pre .tag .attr,
 .article-container pre .javascript .function {
-  color: #7c4dff;
+  color: #7b68ee;
 }
 .article-container pre .tag .attr::selection,
 .article-container pre .javascript .function::selection {
@@ -2732,7 +2732,7 @@ img:hover {
   top: 0.4rem;
   right: 10px;
   z-index: 1;
-  color: #39adb5;
+  color: #ff4500;
   cursor: pointer;
   -webkit-transition: color 0.2s;
   -moz-transition: color 0.2s;
@@ -2741,7 +2741,7 @@ img:hover {
   transition: color 0.2s;
 }
 .fa-clipboard:hover {
-  color: #2e8a91;
+  color: #cc3700;
 }
 .copy-notice {
   position: absolute;
@@ -2749,7 +2749,7 @@ img:hover {
   right: 0;
   z-index: 1;
   background: #e6ebf1;
-  color: #39adb5;
+  color: #ff4500;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);

@@ -24,6 +24,11 @@ body {
   font-family: Martel Sans, Spectral, Lato, Helvetica Neue For Number, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
   line-height: 2;
 }
+strong {
+  font-family: ShiZhuTi;
+  color: #ee30a7;
+  font-size: 24px;
+}
 *::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -4300,4 +4305,8 @@ footer {
   font-family: Martel Sans;
   font-weight: bold;
   src: url("/fonts/MartelSans-Bold.ttf");
+}
+@font-face {
+  font-family: ShiZhuTi;
+  src: url("/fonts/yangrendongshizhuti-Regular.ttf");
 }

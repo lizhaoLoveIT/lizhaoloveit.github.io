@@ -154,7 +154,6 @@ table {
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
-  table-layout: fixed;
 }
 table thead {
   background: rgba(153,169,191,0.1);

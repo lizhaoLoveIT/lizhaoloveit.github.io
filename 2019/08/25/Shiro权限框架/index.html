@@ -117,59 +117,48 @@
 <thead>
 <tr>
 <th>过滤器名称</th>
-<th>过滤器</th>
 <th>理解</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>anon</td>
 <td>AnonymousFilter</td>
-<td>匿名拦截器，即不需要登录即可访问；一般用于静态资源过滤；示例<code>/static/**=anon</code></td>
+<td>anon: 匿名拦截器，即不需要登录即可访问；一般用于静态资源过滤；示例<code>/static/**=anon</code></td>
 </tr>
 <tr>
-<td>authc</td>
 <td>FormAuthenticationFilter</td>
-<td>表示需要认证(登录)才能使用;示例<code>/**=authc</code> 主要属性下面有说明</td>
+<td>authc: 表示需要认证(登录)才能使用;示例<code>/**=authc</code> 主要属性下面有说明</td>
 </tr>
 <tr>
-<td>authcBasic</td>
 <td>BasicHttpAuthenticationFilter</td>
-<td>Basic HTTP身份验证拦截器，主要属性： applicationName：弹出登录框显示的信息(application)</td>
+<td>authcBasic: Basic HTTP身份验证拦截器，主要属性： applicationName：弹出登录框显示的信息(application)</td>
 </tr>
 <tr>
-<td>roles</td>
 <td>RolesAuthorizationFilter</td>
-<td>角色授权拦截器，验证用户是否拥有资源角色;示例<code>/admin/=roles[admin]</code></td>
+<td>roles: 角色授权拦截器，验证用户是否拥有资源角色;示例<code>/admin/=roles[admin]</code></td>
 </tr>
 <tr>
-<td>perms</td>
 <td>PermissionsAuthorizationFilter</td>
-<td>权限授权拦截器，验证用户是否拥有资源权限;示例<code>/employee/input=perms[&quot;user:update&quot;]</code></td>
+<td>perms: 权限授权拦截器，验证用户是否拥有资源权限;示例<code>/employee/input=perms[&quot;user:update&quot;]</code></td>
 </tr>
 <tr>
-<td>user</td>
 <td>UserFilter</td>
-<td>用户拦截器，用户已经身份验证/记住 我登录的都可;示例<code>/index=user</code></td>
+<td>user: 用户拦截器，用户已经身份验证/记住 我登录的都可;示例<code>/index=user</code></td>
 </tr>
 <tr>
-<td>logout</td>
 <td>LogoutFilter</td>
-<td>注销拦截器，主要属性：redirectUrl：退出成功后重定向的地址(/);示例<code>/logout=logout</code></td>
+<td>logout: 注销拦截器，主要属性：redirectUrl：退出成功后重定向的地址(/);示例<code>/logout=logout</code></td>
 </tr>
 <tr>
-<td>port</td>
 <td>PortFilter</td>
-<td>端口拦截器,主要属性 port(80),可以通过的端口;示例<code>/test= port[80]</code> 如果用户访问该页面是非80,将自动将请求端口改为80并重定向到该80端口,其他路径/参数等都一样</td>
+<td>port: 端口拦截器,主要属性 port(80),可以通过的端口;示例<code>/test= port[80]</code> 如果用户访问该页面是非80,将自动将请求端口改为80并重定向到该80端口,其他路径/参数等都一样</td>
 </tr>
 <tr>
-<td>rest</td>
 <td>HttpMethodPermissionFilter</td>
-<td>rest风格拦截器,自动根据请求方法构建权限字符串(GET=read,POST=create,PUT=update,DELETE=delete,HEAD=read,TRACE=read,OPTIONS=read, MKCOL=create)构建权限字符串,示例<code>/users=rest[user]</code>，会自动拼出<code>user:read,user:create,user:update,user:delete</code>权限字符串进行权限匹配(所有都得匹配isPermittedAll)</td>
+<td>rest: rest风格拦截器,自动根据请求方法构建权限字符串(GET=read,POST=create,PUT=update,DELETE=delete,HEAD=read,TRACE=read,OPTIONS=read, MKCOL=create)构建权限字符串,示例<code>/users=rest[user]</code>，会自动拼出<code>user:read,user:create,user:update,user:delete</code>权限字符串进行权限匹配(所有都得匹配isPermittedAll)</td>
 </tr>
 <tr>
-<td>ssl</td>
 <td>SslFilter</td>
-<td>ssl:SSL拦截器，只有请求协议是https才能通过;否则自动跳转会https端口(443)其他和port拦截器一样;</td>
+<td>ssl: ssl:SSL拦截器，只有请求协议是https才能通过;否则自动跳转会https端口(443)其他和port拦截器一样;</td>
 </tr>
 </tbody></table>
 <p>CRMRealm.java</p>

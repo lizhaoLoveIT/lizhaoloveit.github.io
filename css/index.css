@@ -162,6 +162,7 @@ table thead {
 table th,
 table td {
   word-wrap: break-word;
+  word-break: break-all;
   padding: 0.3rem 0.6rem;
   border: 1px solid #d6d6d6;
   vertical-align: top;

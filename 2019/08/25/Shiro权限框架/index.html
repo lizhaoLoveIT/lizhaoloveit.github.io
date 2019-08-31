@@ -304,7 +304,7 @@
 <h2 id="常用标签"><a href="#常用标签" class="headerlink" title="常用标签"></a>常用标签</h2><ol>
 <li>authenticated：已经认证通过的用户 <code>&lt;@shiro.authenticated&gt;&lt;/@shiro.authenticated&gt;</code></li>
 <li>notAuthenticated</li>
-<li>principal 输出当前用户信息，通常为登录账号信息 <code>&lt;@shiro.principal property=&quot;name&quot;/&gt;</code>，就是 Employee 对象，也就是我们在验证的时候传入的对象。相当于<code>((User)Subject.getPrincipals()).getUsername()</code></li>
+<li>principal 输出当前用户信息，通常为登录账号信息 <code>&lt;@shiro.principal property=&quot;name&quot;/&gt;</code>，就是 Employee 对象，也就是我们在验证的时候传入的对象。相当于<code>Employee principal = (Employee) SecurityUtils.getSubject().getPrincipal();</code></li>
 <li>hasRole 验证当前用户是否属于该角色 <code>&lt;@shiro.hasRole name=&quot;admin&quot;&gt;Hello admin!&lt;/@shiro.hasRole&gt;</code></li>
 <li>hasAnyRoles 验证当前用户是否属于这些角色中的任何一个，角色之间用逗号分隔 <code>&lt;@shiro.hasAnyRoles name=&quot;admin,user,operator&quot;&gt;Hello admin!&lt;/@shiro.hasAnyRoles&gt;</code></li>
 <li>hasPermission 验证当前用户是否拥有该权限 <code>&lt;@shiro.hasPermission name=&quot;/order:*&quot;&gt;订单&lt;/@shiro.hasPermission&gt;</code></li>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lizhaoloveit.cn/"/>
-  <updated>2019-10-11T08:06:17.216Z</updated>
+  <updated>2020-03-12T02:01:23.955Z</updated>
   <id>http://lizhaoloveit.cn/</id>
   
   <author>
@@ -15,6 +15,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>项目的安装和部署</title>
+    <link href="http://lizhaoloveit.cn/2020/03/10/%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%83%A8%E7%BD%B2/"/>
+    <id>http://lizhaoloveit.cn/2020/03/10/项目的安装和部署/</id>
+    <published>2020-03-09T16:00:00.000Z</published>
+    <updated>2020-03-12T02:01:23.955Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Nginx</title>
+    <link href="http://lizhaoloveit.cn/2020/03/05/Nginx/"/>
+    <id>http://lizhaoloveit.cn/2020/03/05/Nginx/</id>
+    <published>2020-03-04T16:00:00.000Z</published>
+    <updated>2020-03-12T02:00:36.026Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
+    
+  </entry>
   
   <entry>
     <title>Dubbo</title>
@@ -79,7 +135,7 @@
     <link href="http://lizhaoloveit.cn/2019/10/01/SpringBoot/"/>
     <id>http://lizhaoloveit.cn/2019/10/01/SpringBoot/</id>
     <published>2019-09-30T16:00:00.000Z</published>
-    <updated>2019-10-10T07:57:44.156Z</updated>
+    <updated>2020-03-12T01:51:31.252Z</updated>
     
     <summary type="html">
     
@@ -135,7 +191,7 @@
     <link href="http://lizhaoloveit.cn/2019/09/24/Redis/"/>
     <id>http://lizhaoloveit.cn/2019/09/24/Redis/</id>
     <published>2019-09-23T16:00:00.000Z</published>
-    <updated>2019-10-10T07:59:36.199Z</updated>
+    <updated>2019-10-11T13:25:16.377Z</updated>
     
     <summary type="html">
     
@@ -505,71 +561,11 @@
   </entry>
   
   <entry>
-    <title>SpringMVC</title>
-    <link href="http://lizhaoloveit.cn/2019/08/04/SpringMVC/"/>
-    <id>http://lizhaoloveit.cn/2019/08/04/SpringMVC/</id>
-    <published>2019-08-03T16:00:00.000Z</published>
-    <updated>2019-09-12T12:40:43.990Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
-    
-      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
-    
-      <category term="SpringMVC" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/SpringMVC/"/>
-    
-    
-      <category term="SpringMVC" scheme="http://lizhaoloveit.cn/tags/SpringMVC/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Spring注解开发</title>
     <link href="http://lizhaoloveit.cn/2019/08/04/Spring%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91/"/>
     <id>http://lizhaoloveit.cn/2019/08/04/Spring注解开发/</id>
     <published>2019-08-03T16:00:00.000Z</published>
     <updated>2019-08-09T03:42:06.987Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
-    
-      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
-    
-      <category term="Spring" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/Spring/"/>
-    
-    
-      <category term="Spring" scheme="http://lizhaoloveit.cn/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring事务管理</title>
-    <link href="http://lizhaoloveit.cn/2019/08/03/Spring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
-    <id>http://lizhaoloveit.cn/2019/08/03/Spring事务管理/</id>
-    <published>2019-08-02T16:00:00.000Z</published>
-    <updated>2019-08-09T03:41:28.993Z</updated>
     
     <summary type="html">
     

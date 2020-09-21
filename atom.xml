@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lizhaoloveit.cn/"/>
-  <updated>2020-07-31T03:22:33.567Z</updated>
+  <updated>2020-09-21T07:14:42.164Z</updated>
   <id>http://lizhaoloveit.cn/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Zookeeper</title>
+    <link href="http://lizhaoloveit.cn/2020/09/07/Zookeeper/"/>
+    <id>http://lizhaoloveit.cn/2020/09/07/Zookeeper/</id>
+    <published>2020-09-06T16:00:00.000Z</published>
+    <updated>2020-09-21T07:14:42.164Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="框架" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/"/>
+    
+      <category term="Zookeeper" scheme="http://lizhaoloveit.cn/categories/Java/%E6%A1%86%E6%9E%B6/Zookeeper/"/>
+    
+    
+      <category term="Zookeeper" scheme="http://lizhaoloveit.cn/tags/Zookeeper/"/>
+    
+  </entry>
   
   <entry>
     <title>MyBatis Generator</title>
@@ -553,34 +583,6 @@
     
     
       <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>IDEA安装JRebel插件实现热更新</title>
-    <link href="http://lizhaoloveit.cn/2019/08/23/IDEA%E5%AE%89%E8%A3%85JRebel%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0%E7%83%AD%E6%9B%B4%E6%96%B0/"/>
-    <id>http://lizhaoloveit.cn/2019/08/23/IDEA安装JRebel插件实现热更新/</id>
-    <published>2019-08-22T16:00:00.000Z</published>
-    <updated>2019-08-23T09:51:48.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="Tools" scheme="http://lizhaoloveit.cn/categories/Tools/"/>
-    
-      <category term="JRebel" scheme="http://lizhaoloveit.cn/categories/Tools/JRebel/"/>
-    
-    
-      <category term="Tools" scheme="http://lizhaoloveit.cn/tags/Tools/"/>
     
   </entry>
   

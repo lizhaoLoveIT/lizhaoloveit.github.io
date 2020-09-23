@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://lizhaoloveit.cn/"/>
-  <updated>2020-09-23T07:38:43.156Z</updated>
+  <updated>2020-09-21T07:14:42.164Z</updated>
   <id>http://lizhaoloveit.cn/</id>
   
   <author>
@@ -18,10 +18,10 @@
   
   <entry>
     <title>Zookeeper</title>
-    <link href="http://lizhaoloveit.cn/2020/09/07/Zookeeper%E7%9A%84%E5%BA%94%E7%94%A8/"/>
-    <id>http://lizhaoloveit.cn/2020/09/07/Zookeeper的应用/</id>
+    <link href="http://lizhaoloveit.cn/2020/09/07/Zookeeper/"/>
+    <id>http://lizhaoloveit.cn/2020/09/07/Zookeeper/</id>
     <published>2020-09-06T16:00:00.000Z</published>
-    <updated>2020-09-23T07:38:43.156Z</updated>
+    <updated>2020-09-21T07:14:42.164Z</updated>
     
     <summary type="html">
     
@@ -48,10 +48,10 @@
   
   <entry>
     <title>Zookeeper</title>
-    <link href="http://lizhaoloveit.cn/2020/09/07/Zookeeper/"/>
-    <id>http://lizhaoloveit.cn/2020/09/07/Zookeeper/</id>
+    <link href="http://lizhaoloveit.cn/2020/09/07/Zookeeper%E7%9A%84%E5%BA%94%E7%94%A8/"/>
+    <id>http://lizhaoloveit.cn/2020/09/07/Zookeeper的应用/</id>
     <published>2020-09-06T16:00:00.000Z</published>
-    <updated>2020-09-21T07:14:42.164Z</updated>
+    <updated>2020-09-23T07:38:43.156Z</updated>
     
     <summary type="html">
     
@@ -215,6 +215,34 @@
     
     
       <category term="Spring Security" scheme="http://lizhaoloveit.cn/tags/Spring-Security/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>服务器搭建和配置</title>
+    <link href="http://lizhaoloveit.cn/2020/05/10/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%92%8C%E9%85%8D%E7%BD%AE/"/>
+    <id>http://lizhaoloveit.cn/2020/05/10/服务器搭建和配置/</id>
+    <published>2020-05-09T16:00:00.000Z</published>
+    <updated>2020-09-23T21:09:16.520Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/categories/Java/"/>
+    
+      <category term="服务器" scheme="http://lizhaoloveit.cn/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="Java" scheme="http://lizhaoloveit.cn/tags/Java/"/>
     
   </entry>
   
@@ -555,34 +583,6 @@
     
     
       <category term="Restful" scheme="http://lizhaoloveit.cn/tags/Restful/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shiro权限框架</title>
-    <link href="http://lizhaoloveit.cn/2019/08/25/Shiro%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/"/>
-    <id>http://lizhaoloveit.cn/2019/08/25/Shiro权限框架/</id>
-    <published>2019-08-24T16:00:00.000Z</published>
-    <updated>2019-09-02T08:50:17.000Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          
-        
-      
-    
-    </summary>
-    
-      <category term="框架" scheme="http://lizhaoloveit.cn/categories/%E6%A1%86%E6%9E%B6/"/>
-    
-      <category term="Apache" scheme="http://lizhaoloveit.cn/categories/%E6%A1%86%E6%9E%B6/Apache/"/>
-    
-    
-      <category term="Shiro" scheme="http://lizhaoloveit.cn/tags/Shiro/"/>
     
   </entry>
   

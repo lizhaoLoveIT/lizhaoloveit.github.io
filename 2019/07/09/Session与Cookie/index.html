@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Session与Cookie | Ammar's Blog</title><meta name="description" content="Session与Cookie"><meta name="keywords" content="Cookie"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Session与Cookie"><meta name="twitter:description" content="Session与Cookie"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="Session与Cookie"><meta property="og:url" content="http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="Session与Cookie"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="Mac安装Tomcat插件" href="http://lizhaoloveit.cn/2019/07/09/Mac%E5%AE%89%E8%A3%85Tomcat%E6%8F%92%E4%BB%B6/"><link rel="next" title="UML 类图的6种连线示意" href="http://lizhaoloveit.cn/2019/07/08/UML%E7%B1%BB%E5%9B%BE%E7%9A%846%E7%A7%8D%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Http-无状态协议"><span class="toc-number">1.</span> <span class="toc-text">Http 无状态协议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cookie"><span class="toc-number">2.</span> <span class="toc-text">Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie-的使用"><span class="toc-number">2.1.</span> <span class="toc-text">Cookie 的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-EL-表达式获取-Cookie"><span class="toc-number">2.2.</span> <span class="toc-text">使用 EL 表达式获取 Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置路径和域"><span class="toc-number">2.3.</span> <span class="toc-text">设置路径和域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie-的限制"><span class="toc-number">2.4.</span> <span class="toc-text">cookie 的限制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Session"><span class="toc-number">3.</span> <span class="toc-text">Session</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#session-的获取"><span class="toc-number">3.1.</span> <span class="toc-text">session 的获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session对象的常用方法"><span class="toc-number">3.2.</span> <span class="toc-text">session对象的常用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-URL重写-解决禁cookie"><span class="toc-number">3.3.</span> <span class="toc-text">session URL重写(解决禁cookie)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-规范"><span class="toc-number">3.4.</span> <span class="toc-text">session 规范 </span></a></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">Session与Cookie</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-07-09<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-07-29</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">2.9k</span><span class="post-meta__separator">|</span><span>阅读时长: 10 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>Servlet 能够给我们提供两部分数据，一个是 Servlet 初始化时设置的 ServletConfig，这个类基本涵盖了 Servlet 本身 和 Servlet 运行的容器的基本信息，ServletConfig 的实际对象是 StandardWrapperFacade，看看接口就可以知道有哪些信息。</p>
+<p>还有一部分数据是 ServletRequest 类提供，实际对象是 RequestFacade，主要描述请求的 HTTP 协议信息，所以要掌握 Servlet 的工作方式，必须要清楚 HTTP 协议。关于这一块，还有 Session 与 Cookie。</p>
+<p>Session 与 Cookie 的作用都是为了保持访问用户与后端服务器的交互状态。Session 和 Cookie 的使用是矛盾的，例如，使用 Cookie 传递信息时，假如每个 Cookie 占200字节，如果有一天有几亿用户，需要多少带宽。所以大访问量时，希望用 Session，但是 Session 的弱点是不容易在多态服务器之间共享。</p>
+<p>不管 Session 和 Cookie 有什么不足，还是需要他们，Session 如何基于 Cookie 工作，三种方式能让 Session 正常工作：</p>
+<ol>
+<li>基于 URL Path Parameter，</li>
+<li>基于 Cookie，如果没有修改 Context 容器的 Cookies 标识，默认支持</li>
+<li>基于 SSL，默认不支持，只有 connector.getAttribute(“SSLEnabled”) 为 true 时才支持</li>
+</ol>
+<p>第一种情况下，当浏览器不支持 Cookie 功能时，浏览器会将用户的 SessionCookieName 重写到用户请求的 URL 参数中，它的传递格式如 /path/Servlet?name=value&amp;name2=value2&amp; Name3=value3，其中“Servlet；”后面的 K-V 对就是要传递的 Path Parameters，服务器会从这个 Path Parameters 中拿到用户配置的 SessionCookieName。关于这个 SessionCookieName，如果你在 web.xml 中配置 session-config 配置项的话，其 cookie-config 下的 name 属性就是这个 SessionCookieName 值，如果你没有配置 session-config 配置项，默认的 SessionCookieName 就是大家熟悉的“JSESSIONID”。接着 Request 根据这个 SessionCookieName 到 Parameters 拿到 Session ID 并设置到 request.setRequestedSessionId 中。</p>
+<p>请注意如果客户端也支持 Cookie 的话，Tomcat 仍然会解析 Cookie 中的 Session ID，并会覆盖 URL 中的 Session ID。</p>
+<p>如果是第三种情况的话将会根据 javax.servlet.request.ssl_session 属性值设置 Session ID。</p>
+<p>有了 Session ID 服务器就会根据它创建一个 HttpSession 对象了，第一次触发是通过 request.getSession() 方法，如果当前的 Session ID 还没有对应的 HttpSession 对象就创建一个新的，并将这个对象加到 org.apache.catalina.Manager 的 sessions 容器中保存，Manager 类将管理所有的 Session 生命周期，过期的 Session 将会被回收，断开与客户端的连接，Session 将被序列化到磁盘等。只要 HttpSession 对象存在，用户就可以根据 Session ID 来获取到这个对象。也就达到了状态的保持。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/server/sessioncookie/15626718370120-sessioncookie.jpg" alt=""></p>
+<p>HttpSession 对象实际上是 StandardSession 对象的门面对象，这与前面的 Request 和 Servlet 一样。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/server/sessioncookie/15626722555552-sessioncookie.jpg" alt=""></p>
+<p>与 Session 关联的 Cookie 与其他 Cookie 没有什么不同，这个属性的配置可以通过 web.xml 中的 session-config 配置来指定。</p>
+<h1 id="Http-无状态协议"><a href="#Http-无状态协议" class="headerlink" title="Http 无状态协议"></a>Http 无状态协议</h1><hr>
+<p>Http 无状态协议，也就是没有记忆力，服务器端不知道上一次是哪个客户端请求了自己</p>
+<p>问题：</p>
+<p>在一次会话中，多个请求之间无法共享数据，无法跟踪用户的会话信息</p>
+<h1 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h1><hr>
+<p>HTTP Cookie（也叫Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。Cookie 使基于无状态的 HTTP 协议记录稳定的状态信息成为了可能。</p>
+<p>用途：</p>
+<ol>
+<li>会话状态管理 (用户登录状态、购物车、游戏分数或其他需要记录的信息)</li>
+<li>个性化设置(用户自定义设置、主题等)</li>
+<li>浏览器行为跟踪(跟踪分析用户行为)</li>
+</ol>
+<p>Cookie曾一度用于客户端数据的存储，因当时并没有其它合适的存储办法而作为唯一的存储手段，但现在随着现代浏览器开始支持各种各样的存储方式，Cookie渐渐被淘汰。由于服务器指定Cookie后，浏览器的每次请求都会携带Cookie数据，会带来额外的性能开销（尤其是在移动环境下）。新的浏览器API已经允许开发者直接将数据存储到本地，如使用 </p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Storage_API" target="_blank" rel="noopener">Web storage API （本地存储和会话存储)</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API" target="_blank" rel="noopener">IndexedDB</a></p>
+<h2 id="Cookie-的使用"><a href="#Cookie-的使用" class="headerlink" title="Cookie 的使用"></a>Cookie 的使用</h2><hr>
+<ol>
+<li><p>创建：<code>Cookie cookie = new Cookie(String name, String value);</code> name 是唯一标识，value  是要存的数据</p>
+</li>
+<li><p>如何把 cookie 响应给服务器</p>
+<ul>
+<li>response对象.addCookie(cookie);</li>
+</ul>
+</li>
+<li><p>在服务端如何读取 Cookie 信息</p>
+<ul>
+<li>Cookie[] cookies = req对象.getCookie();</li>
+</ul>
+</li>
+<li><p>Cookie 中文问题</p>
+<ul>
+<li><img src="https://www.lizhaoloveit.cn/blogimages/java/server/sessioncookie/15630289724386-sessioncookie.jpg" alt=""></li>
+<li>解决：把中文转非中文，读取时再转成中文</li>
+<li>工具类：URLEncoder、URLDecoder</li>
+</ul>
+</li>
+<li><p>Cookie的分类</p>
+<ul>
+<li>直接创建一个同名的新 Cookie，注意：需要重新把 Cookie 响应给浏览器覆盖旧的 Cookie</li>
+<li>直接修改 Cookie 的值，需要重新把 Cookie 响应给浏览器去覆盖旧的 Cookie</li>
+</ul>
+</li>
+<li><p>Cookie 分类</p>
+<ul>
+<li>会话 Cookie (默认)，只能一个会话中有效果</li>
+<li>持久 Cookie，可以设置存活时间<ul>
+<li>setMaxAge(int expiry)，设置最大年龄</li>
+<li>expiry,负数:会话 Cookie;0:删除:删除 Cookie;正数:Cookie的有效时间(秒)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>删除 Cookie <code>setMaxAge(0)</code></p>
+</li>
+</ol>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/server/sessioncookie/15630296984388-sessioncookie.jpg" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">"user"</span>, <span class="string">"suntao"</span>);</span><br><span class="line">cookie.setMaxAge(<span class="number">7</span>*<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>);     <span class="comment">// 一星期有效</span></span><br><span class="line">response.addCookie(cookie);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为取得的是整个网页作用域的Cookie的值，所以得到的是个数组</span></span><br><span class="line">Cookie[] cookies = request.getCookies();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; cookies.length ; i++)&#123;</span><br><span class="line">    String name = cookies[i].getName() ;</span><br><span class="line">    String value = cookies[i].getValue() ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>cookie的存活期：默认为-1<br>会话Cookie：把Cookie保存到浏览器上，当存活期为负数<br>持久Cookie：把Cookie保存到文件中，当存活期为正数<br>设置存活期：c.setMaxAge();</p>
+</blockquote>
+<h2 id="使用-EL-表达式获取-Cookie"><a href="#使用-EL-表达式获取-Cookie" class="headerlink" title="使用 EL 表达式获取 Cookie"></a>使用 EL 表达式获取 Cookie</h2><hr>
+<ul>
+<li><p>使用 <code>${cookie.user}</code> 获取之前存入的cookie，</p>
+</li>
+<li><p><code>${cookie.user.name}</code> 获取 cookie 的名称 -&gt; user</p>
+</li>
+<li><p><code>${cookie.user.value}</code> 获取之前存入的 cookie 值。-&gt; suntao</p>
+</li>
+</ul>
+<h2 id="设置路径和域"><a href="#设置路径和域" class="headerlink" title="设置路径和域"></a>设置路径和域</h2><hr>
+<p>Cookie 的 domain 和 path</p>
+<ol>
+<li>domain 表示的是 cookie 所在的域，默认为请求地址，如 网址为 <a href="http://www.text.com/text/text.aspx，那么" target="_blank" rel="noopener">www.text.com/text/text.aspx，那么</a> domain  默认为 <a href="http://www.test.com。" target="_blank" rel="noopener">www.test.com。</a><ul>
+<li>跨域访问，如域A 为 t1.test.com，域B 为 t2.test.com，在域A 生产一个令 A 和 B 都能访问的 cookie 就要将该 cookie 的 domain 设置为 .test.com</li>
+<li>如果要在域A 生产一个令域A 不能访问而域B 可以访问的 cookie 就要将该 cookie 的 domain 设置为 t2.test.com</li>
+</ul>
+</li>
+<li>path 表示 cookie 所在的目录，asp.net 默认为/，就是根目录，在同一个服务器上有目录如下：<code>/test/</code>,<code>/test/cd/</code>,<code>/test/dd/</code>，现设一个 cookie1 的 path 为 <code>/test/</code>。 cookie2 的 path 为 <code>/test/cd/</code>，那么 test 下的所有页面都可以访问到 cookie1，而 <code>/test/</code> 和 <code>/test/dd</code> 下的子页面不能访问 cookie2，这是因为 cookie 能让其 path 路径下的页面访问<ul>
+<li>如果设置 cookie 的 path 为 <code>/</code>，<code>cookie.setPath(&quot;/&quot;)</code> 表示当前域下的任何请求连接都可以共享 cookie。</li>
+<li>默认创建 cookie 的Path是 cookie 的父级目录</li>
+</ul>
+</li>
+<li>浏览器会将 domain 和 path 都相同的 cookie 保存在一个文件里，cookie间用*隔开</li>
+<li>含键值对的 cookie: 如果 cookie 含多个键值对，cookie 的格式是 <code>name=key1=value1&amp;key2=value2...</code>，可以理解为单键值对的值保存一个自定义的多键值字符串。</li>
+</ol>
+<h2 id="cookie-的限制"><a href="#cookie-的限制" class="headerlink" title="cookie 的限制"></a>cookie 的限制</h2><hr>
+<ol>
+<li>不安全</li>
+<li>Cookie存储中文比较麻烦</li>
+<li>一个Cookie只能存储一个数据，而且是String</li>
+<li>一台服务器在一个客户端存储的 Cookie 大小和数量有限<ul>
+<li>Cookie大小在4kb之内</li>
+<li>一台服务器在一个客户端最多保存20个cookie</li>
+<li>一个浏览器最多可以保存300个cookie</li>
+</ul>
+</li>
+</ol>
+<h1 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h1><hr>
+<p>服务器端技术，运行时，可以为每一个用户的浏览器创建一个其独享的 session 对象。用户在访问服务器的 web 资源时，可以把各自的数据放在各自的 session 中。</p>
+<h2 id="session-的获取"><a href="#session-的获取" class="headerlink" title="session 的获取"></a>session 的获取</h2><hr>
+<ul>
+<li>request对象.getSession(true) <ul>
+<li>true 表示判断是否有 session 对象，如果有则返回，没有会创建一个新的 session 再返回</li>
+<li>如果是 false 如果有则返回，没有会返回 null</li>
+<li>getSession() 同 true</li>
+</ul>
+</li>
+</ul>
+<h2 id="session对象的常用方法"><a href="#session对象的常用方法" class="headerlink" title="session对象的常用方法"></a>session对象的常用方法</h2><hr>
+<ul>
+<li>session对象.setAttribute(String name, Object val); 设置</li>
+<li>session对象.getAttribute(String name); 获取数据</li>
+<li>session对象.removeAttribute(String name); 移除数据</li>
+<li>session对象.invalidate(); 销毁 session 对象</li>
+</ul>
+<p>默认: web.xml 中配置了 30 分钟有效期，<code>void setMaxInactiveInterval(int interval)</code> 设置失效时间(秒)</p>
+<h2 id="session-URL重写-解决禁cookie"><a href="#session-URL重写-解决禁cookie" class="headerlink" title="session URL重写(解决禁cookie)"></a>session URL重写(解决禁cookie)</h2><hr>
+<p>当程序需要为某个客户端的请求创建一个session时，服务器首先检查这个客户端的请求里是否已包含了一个session标识（称为session id），如果已包含则说明以前已经为此客户端创建过session，服务器就按照session id把这个session检索出来使用（检索不到，会新建一个），如果客户端请求不包含session id，则为此客户端创建一个session并且生成一个与此session相关联的session id，session id的值应该是一个既不会重复，又不容易被找到规律以仿造的字符串，这个session id将被在本次响应中返回给客户端保存。</p>
+<p>保存这个session id的方式可以采用cookie，这样在交互过程中浏览器可以自动的按照规则把这个标识发挥给服务器。一般这个cookie的名字都是类似于SEEESIONID。但cookie可以被人为的禁止，则必须有其他机制以便在cookie被禁止时仍然能够把session id传递回服务器。</p>
+<p>经常被使用的一种技术叫做URL重写，就是把session id直接附加在URL路径的后面。还有一种技术叫做表单隐藏字段。就是服务器会自动修改表单，添加一个隐藏字段，以便在表单提交时能够把session id传递回服务器。比如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=<span class="string">"testform"</span> action=<span class="string">"/xxx"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=<span class="string">"hidden"</span> name=<span class="string">"jsessionid"</span> value=<span class="string">"ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;input type=<span class="string">"text"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>服务器可以通过 url 重写的方式来传递 SessionID 的值，并不是完全依赖 Cookie，如果客户端 Cookie 禁用，服务器可以自动通过重写 URL 的方式来保存 Session 的值，并且这个过程对程序员透明。</p>
+<blockquote>
+<p><strong>即使不写 cookie，在使用 request.getCookie() 取出的 Cookie数组 的长度也是1，而这个Cookie的名字就是 <code>JSESSIONID</code>，还有一个很长的二进制字符串，是 SessionID 的值</strong></p>
+</blockquote>
+<p>如果有浏览器拒收cookie，则使用在url后面拼接 jsessionid 的方式将 sessionid 传递给服务器</p>
+<p>URL 重写 是通过向 URL 连接添加参数，把 session ID 作为只包含在链接中，为了使这生效，你需要为你的 servlet 响应部分的每个连接 添加 session ID</p>
+<p><code>http://www.test.com/test;jsessionid=ByOK3vjFD75aPnrF7C2HmdnV6QZcEbzWoWiBYEnLerjQ99zWpBng!-145788764</code></p>
+<p>response.encodeURL(url) 可以在 url 后面拼接 jsessionid属性。</p>
+<ol>
+<li><code>href=&#39;${pageContext.response.encodeURL(&quot;/session/list&quot;)}&#39;</code> 给 a 标签跳转时url附带 jsessionid 属性。<br>如果浏览器有接受 cookie，则不带 jsessionid</li>
+</ol>
+<h2 id="session-规范"><a href="#session-规范" class="headerlink" title="session 规范 "></a>session 规范 </h2><hr>
+<ol>
+<li>Session 中属性名(XX_IN_SESSION)</li>
+<li>存放多个属性可调用多次 setAttribute，一般把数据封装成对象存储 Session 中</li>
+<li>多服务器共享 Session，Session中的对象类型需要实现 java.io.Serializable 接口<ul>
+<li>序列化：把对象信息存储为二进制</li>
+<li>反序列化：把二进制信息回复称对象</li>
+</ul>
+</li>
+</ol>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/">http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Cookie/">Cookie    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/09/Mac%E5%AE%89%E8%A3%85Tomcat%E6%8F%92%E4%BB%B6/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Mac安装Tomcat插件</span></div></a></div><div class="next-post pull-right"><a href="/2019/07/08/UML%E7%B1%BB%E5%9B%BE%E7%9A%846%E7%A7%8D%E8%BF%9E%E7%BA%BF%E7%A4%BA%E6%84%8F/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>UML 类图的6种连线示意</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2019/07/09/Session%E4%B8%8ECookie/';
+  this.page.identifier = '2019/07/09/Session与Cookie/';
+  this.page.title = 'Session与Cookie';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

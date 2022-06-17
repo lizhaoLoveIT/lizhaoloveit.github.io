@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Restful架构 | Ammar's Blog</title><meta name="description" content="Restful架构"><meta name="keywords" content="Restful"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2019/09/03/Restful%E6%9E%B6%E6%9E%84/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Restful架构"><meta name="twitter:description" content="Restful架构"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="Restful架构"><meta property="og:url" content="http://lizhaoloveit.cn/2019/09/03/Restful%E6%9E%B6%E6%9E%84/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="Restful架构"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="Swagger2" href="http://lizhaoloveit.cn/2019/09/16/Swagger2/"><link rel="next" title="Shiro权限框架" href="http://lizhaoloveit.cn/2019/08/25/Shiro%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#REST-简介"><span class="toc-number">1.</span> <span class="toc-text">REST 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#资源"><span class="toc-number">1.1.</span> <span class="toc-text">资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表现层"><span class="toc-number">1.2.</span> <span class="toc-text">表现层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态转化-State-Transfer"><span class="toc-number">1.3.</span> <span class="toc-text">状态转化(State Transfer)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RESTful-设计"><span class="toc-number">2.</span> <span class="toc-text">RESTful 设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-动作设计"><span class="toc-number">2.1.</span> <span class="toc-text">HTTP 动作设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#返回结果类型"><span class="toc-number">2.2.</span> <span class="toc-text">返回结果类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设计误区"><span class="toc-number">2.3.</span> <span class="toc-text">设计误区</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#API-接口测试工具"><span class="toc-number">3.</span> <span class="toc-text">API 接口测试工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#根据需求设计接口"><span class="toc-number">4.</span> <span class="toc-text">根据需求设计接口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#最终版本"><span class="toc-number">4.1.</span> <span class="toc-text">最终版本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#状态码"><span class="toc-number">5.</span> <span class="toc-text">状态码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#405"><span class="toc-number">5.1.</span> <span class="toc-text">405</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#415"><span class="toc-number">5.2.</span> <span class="toc-text">415</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RequestMapping"><span class="toc-number">6.</span> <span class="toc-text">RequestMapping</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#params"><span class="toc-number">6.1.</span> <span class="toc-text">params</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#headers"><span class="toc-number">6.2.</span> <span class="toc-text">headers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#consumes-消费-、produces-生产"><span class="toc-number">6.3.</span> <span class="toc-text">consumes(消费)、produces(生产)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#不同数据类型请求参数的封装"><span class="toc-number">7.</span> <span class="toc-text">不同数据类型请求参数的封装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ajax-发送不同类型的请求"><span class="toc-number">8.</span> <span class="toc-text">Ajax 发送不同类型的请求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#form-表单提交-put-patch-delete-请求"><span class="toc-number">9.</span> <span class="toc-text">form 表单提交 put&#x2F;patch&#x2F;delete 请求</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">Restful架构</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-09-03<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-09-05</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E5%BA%94%E7%94%A8/">应用</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E5%BA%94%E7%94%A8/Restful/">Restful</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">4.2k</span><span class="post-meta__separator">|</span><span>阅读时长: 16 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="REST-简介"><a href="#REST-简介" class="headerlink" title="REST 简介"></a>REST 简介</h1><hr>
+<p>Roy Thomas Fielding 在 2000 年的博士论文中提出 Rest 架构。它是思考如何开发在互联网环境使用的软件的结果。Fielding 将他对互联网软件的架构原则，定名为 REST，即 Representational State Transfer。如果一个架构符合 REST 原则，那么就称为 RESTful 架构。</p>
+<p>RESTful 架构是目前最流行的一种互联网软件架构。REST 的名称，表现层状态转化，表现层指资源(Resources) 的表现层。</p>
+<h2 id="资源"><a href="#资源" class="headerlink" title="资源"></a>资源</h2><p>资源其实就是网络上的一个实体，你可以用一个 URI 指向它，每种资源对应一个特定的 URI。要获取这个资源，访问它的 URI 就可以，URI 称为每一个资源的地址或者独一无二的识别符。而上网也就是与互联网上一系列的资源互动。</p>
+<p>资源是一种信息实体，可以有多种表现形式，<strong>资源的具体呈现出来的形式，叫做它的表现层(Representation)</strong></p>
+<p>例如：文本可以用 txt 格式表现，也可以用 HTML 格式、XML 格式、JSON 格式表现，甚至二进制格式。图片可以用 JPG 格式表现，也可以用 PNG 格式表现。</p>
+<h2 id="表现层"><a href="#表现层" class="headerlink" title="表现层"></a>表现层</h2><p>URI 只代表资源的实体，不代表它的形式，严格说，一些网址最后的 html 后缀名不是必要的，因为这个后缀名属于表现层范涛，而 URI 应该只代表资源的位置。它的具体表现形式，应该在 HTTP 请求的头信息中用 Accept 和 Content-Type 字段指定的。这两个字段才是对表现层的描述。</p>
+<h2 id="状态转化-State-Transfer"><a href="#状态转化-State-Transfer" class="headerlink" title="状态转化(State Transfer)"></a>状态转化(State Transfer)</h2><p>浏览网站时，代表客户端和服务器互动，这个过程势必涉及数据和状态变化。HTTP 是无状态协议，这意味着，所有状态都保存在服务器端。<strong>如果客户端想要操作服务器，必须通过某种手段，让服务器端发生 状态转化 (State Transfer)。这种转化是建立在表现层上的。所以是表现层状态转化。</strong></p>
+<p>客户端只能通过 HTTP 协议的 GET、POST、PUT、DELETE 来和服务器交互。GET 获取资源，POST 新建资源(更新资源)，PUT 更新资源，DELETE 删除资源。</p>
+<p>RESTful 架构：</p>
+<ul>
+<li>每一个 URI 代表一种资源</li>
+<li>客户端和服务器之间，传递这种资源的某种表现层</li>
+<li>客户端通过 HTTP 对服务器端资源进行操作，实现 表现层状态转化。</li>
+</ul>
+<h1 id="RESTful-设计"><a href="#RESTful-设计" class="headerlink" title="RESTful 设计"></a>RESTful 设计</h1><hr>
+<p>以前我们在设计接口时：</p>
+<ul>
+<li>列表<ul>
+<li><code>/bbs_list.do?keyword=xx</code></li>
+</ul>
+</li>
+<li>查看一篇帖子<ul>
+<li><code>/bbs_view.do?id=xx</code></li>
+</ul>
+</li>
+<li>查看一篇帖子的所有回帖<ul>
+<li><code>/bbs_replay_list.do?id=xx</code></li>
+</ul>
+</li>
+<li>回帖<ul>
+<li><code>/bbs_replay.do?id=xx</code></li>
+</ul>
+</li>
+<li>删帖<ul>
+<li><code>/bbs_delete.do?id=xx</code></li>
+</ul>
+</li>
+</ul>
+<p>在加上很多人的习惯不同，命名会出现 delete、remove 等等近义词。代码就非常混乱。大量的接口方法，URL 地址设计复杂，需要在 URL 里面表示出资源及其操作。</p>
+<p>在 RESTful 架构中，每一个网址代表一种资源，网址中不能有动词，只能有名词。所用的名词往往与数据库的表名对应。一般的，数据库中的表都是一种记录的集合，所以 URI 中的名词应该也是复数。比如：</p>
+<ul>
+<li><code>https://api.example.com/v1/zoos</code> 动物园资源</li>
+<li><code>https://api.example.com/v1/animals</code> 动物资源</li>
+<li><code>https://api.example.com/v1/employees</code> 饲养员资源</li>
+</ul>
+<p>参考例子：<code>https://api.github.com</code>、<a href="https://docs.jiguang.cn/jmessage/server/rest_api_im/" target="_blank" rel="noopener">RESTful API 指南</a></p>
+<h2 id="HTTP-动作设计"><a href="#HTTP-动作设计" class="headerlink" title="HTTP 动作设计"></a>HTTP 动作设计</h2><table>
+<thead>
+<tr>
+<th>动作</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET (SELECT)</td>
+<td>从服务器取出资源(一项或多项)</td>
+</tr>
+<tr>
+<td>POST (CREATE)</td>
+<td>从服务器新建一个资源</td>
+</tr>
+<tr>
+<td>PUT (UPDATE)</td>
+<td>在服务器更新资源(客户端提供改变后的完整资源)，PUT 更新整个对象</td>
+</tr>
+<tr>
+<td>PATCH (UPDATE)</td>
+<td>在服务器更新资源(客户端提供改变的属性[补丁])，PATCH 更新个别属性</td>
+</tr>
+<tr>
+<td>DELETE (DELETE)</td>
+<td>从服务器删除资源</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>获得一个资源的元数据，比如一个资源的 hash 值或者最后修改日期</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>获得客户端针对一个资源能够实施的操作：(获取该资源的 api 能够对资源做什么操作的描述)</td>
+</tr>
+</tbody></table>
+<p>例子：</p>
+<table>
+<thead>
+<tr>
+<th>URI</th>
+<th>表示含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET /zoos</td>
+<td>列出所有动物园 (数组或者集合)</td>
+</tr>
+<tr>
+<td>POST /zoos</td>
+<td>新建一个动物园</td>
+</tr>
+<tr>
+<td>GET /zoos/ID</td>
+<td>获取某个指定动物园的信息，/zoos/1 地址栏传参</td>
+</tr>
+<tr>
+<td>PUT /zoos/ID</td>
+<td>更新某个指定动物园的信息(提供该动物园的全部信息)</td>
+</tr>
+<tr>
+<td>PATCH /zoos/ID</td>
+<td>更新某个指定动物园的信息(提供该动物园的部分信息)</td>
+</tr>
+<tr>
+<td>DELETE /zoos/ID</td>
+<td>删除某个动物园</td>
+</tr>
+<tr>
+<td>GET /zoos/ID/animals</td>
+<td>列出某个指定动物园的所有动物</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>获取某个部门的员工</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;depts&#x2F;ID&#x2F;employees 标准</span><br><span class="line">&#x2F;employees?deptId&#x3D;1     也可以用</span><br></pre></td></tr></table></figure>
+
+<h2 id="返回结果类型"><a href="#返回结果类型" class="headerlink" title="返回结果类型"></a>返回结果类型</h2><table>
+<thead>
+<tr>
+<th>URI</th>
+<th>返回结果类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET /zoos</td>
+<td>返回资源对象的列表(数组/集合)</td>
+</tr>
+<tr>
+<td>POST /zoos</td>
+<td>返回新生成的资源对象</td>
+</tr>
+<tr>
+<td>PUT /zoos/ID</td>
+<td>返回完整的资源对象</td>
+</tr>
+<tr>
+<td>PATCH /zoos/ID</td>
+<td>返回完整的资源对象</td>
+</tr>
+<tr>
+<td>DELETE /zoos/ID</td>
+<td>返回一个空文档</td>
+</tr>
+</tbody></table>
+<p>可以通过 URL 规定获取格式类型，但是建议使用 Accept 这个请求头:<br>Accept 表示客户端希望接受的数据类型，比如 Accept: application/json; 代表客户端希望接受的数据类型是 json 类型，后台返回 json 数据。<br>Content-Type 表示发送端(客户端|服务器) 发送的实体数据的数据类型，比如 ContextType: application/json; 表示发送端发送的数据格式是 json，后台就是要以这种格式来接受前端发送来的数据。<br>二者结合就是 及代表希望接受的数据类型是 json 格式，本次请求发送的数据的数据格式也是 json 格式。</p>
+<p>Http 报头分为 通用包头、请求报头、响应报头和实体报头。请求方的 http 报头结构：通用报头|请求报头|实体报头。请求方的 http 报头结构：通用报头|请求报头|实体报头；响应方的 http 报头结构：通用报头|响应报头|实体报头</p>
+<blockquote>
+<p>Accept 属于请求头，Content-Type 属于实体头。</p>
+</blockquote>
+<h2 id="设计误区"><a href="#设计误区" class="headerlink" title="设计误区"></a>设计误区</h2><hr>
+<p>RESTful 架构最经典的设计误区，就是 URI 中包含动词。资源时一种实体，所以应该是名词。URI 中不应该有动词，动词应该放在 HTTP 协议中。</p>
+<p>举例：某个 URI 是 <code>/posts/show/1</code> 其中 show 是动词，URI 就设计错了。正确的写法是 <code>/posts/1</code>，然后用 GET 方法表示 show。如果有些动作是 HTTP 动词表示不了的，比如网上汇款，从账户1向账户2汇款500元，错误的 URI 是 <code>POST /accouts/1/transfer/500/to/2</code> 正确的写法是把 transfer 改成名词 transaction，应该把动作做成一种资源，也可以是一种服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;transaction HTTP&#x2F;1.1</span><br><span class="line">Host: 127.0.0.1</span><br><span class="line"></span><br><span class="line">from&#x3D;1&amp;to&#x3D;2&amp;amount&#x3D;500.00</span><br></pre></td></tr></table></figure>
+
+<p>另一种设计误区是在 URI 中加入版本号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;www.example.com&#x2F;app&#x2F;1.0&#x2F;foo</span><br><span class="line">http:&#x2F;&#x2F;www.example.com&#x2F;app&#x2F;1.1&#x2F;foo</span><br><span class="line">http:&#x2F;&#x2F;www.example.com&#x2F;app&#x2F;2.0&#x2F;foo</span><br></pre></td></tr></table></figure>
+<p>由于版本不同，可以理解为同一种资源的不同表现形式，应该采用同一个 URI，版本号应当在 HTTP 请求头信息的 Accept 字段中区分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Accept: vnd.example-com.foo+json; version&#x3D;1.0</span><br><span class="line">Accept: vnd.example-com.foo+json; version&#x3D;1.1</span><br><span class="line">Accept: vnd.example-com.foo+json; version&#x3D;2.0</span><br></pre></td></tr></table></figure>
+
+<h1 id="API-接口测试工具"><a href="#API-接口测试工具" class="headerlink" title="API 接口测试工具"></a>API 接口测试工具</h1><hr>
+<p>Postman、Insomnia。</p>
+<h1 id="根据需求设计接口"><a href="#根据需求设计接口" class="headerlink" title="根据需求设计接口"></a>根据需求设计接口</h1><hr>
+<ul>
+<li>获取所有员工(集合)<ul>
+<li>资源设计：/employees</li>
+<li>动作设计：get</li>
+<li>请求参数设计：无</li>
+<li>返回结构设计：集合，状态码 200</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"employees"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Employee&gt; <span class="title">list</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;Employee&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    Employee e1 = <span class="keyword">new</span> Employee(<span class="number">1l</span>, <span class="string">"李朝1"</span>, <span class="number">20</span>);</span><br><span class="line">    Employee e2 = <span class="keyword">new</span> Employee(<span class="number">2l</span>, <span class="string">"李朝2"</span>, <span class="number">21</span>);</span><br><span class="line">    list.add(e1);</span><br><span class="line">    list.add(e2);</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15666341017082-restful.png" alt=""></p>
+<ul>
+<li>获取某个员工的信息<ul>
+<li>资源设计：/employees/{id} —-&gt; 路径占位符</li>
+<li>动作设计：get</li>
+<li>请求参数设计：无</li>
+<li>返回结构设计：员工对象，状态码 200</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"employees/&#123;id&#125;"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Employee <span class="title">list</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Long id) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Employee(<span class="number">1l</span>, <span class="string">"李朝1"</span>, <span class="number">20</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15666341017083-restful.png" alt=""></p>
+<blockquote>
+<p>由于以后会遇到很多花括号，比如 “employees/{id}/{name}…” 所以必须明确参数是哪个，因此需要 @PathVariable 注解来注入值，可以使用 @PathVariable(“id”) 指定参数是 URI 路径上的哪个参数，如果不指定，则会用参数名去路径上匹配。</p>
+</blockquote>
+<p>但其实这样写比较麻烦，由于将来开发的时候，前后端分离，所以基本只会写接口。因此每个方法上都要写 @ResponseBody，这个时候可以把 @ResponseBody 贴到类上，而且在 Spring4.0 之后，除了一个新的注解 @RestController，将 @ResponseBody 和 @Controller 合并。因此之后只要是只设计接口的 Controller 直接使用 @RestController 即可。</p>
+<p>而 @GetMapping 实际上又是 Method=RequestMethod.GET 的 RequestMapping，下面是 GETMapping 的声明。+</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> GetMapping &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Alias for &#123;<span class="doctag">@link</span> RequestMapping#name&#125;.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@AliasFor</span>(annotation = RequestMapping.class)</span><br><span class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Alias for &#123;<span class="doctag">@link</span> RequestMapping#value&#125;.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="meta">@AliasFor</span>(annotation = RequestMapping.class)</span><br><span class="line">	String[] value() <span class="keyword">default</span> &#123;&#125;;</span><br><span class="line">	...</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除一个员工<ul>
+<li>资源设计：/employees/{id} —-&gt; 路径占位符</li>
+<li>动作设计：delete</li>
+<li>请求参数设计：无</li>
+<li>返回结构设计：空文档，状态码 204(需要手动设置，一般公司不会去主动设置，除非是大众公用的接口，才会规范)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DeleteMapping</span>(<span class="string">"&#123;id&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delete</span><span class="params">(@PathVariable Long id, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    response.setStatus(<span class="number">204</span>);</span><br><span class="line">    System.out.println(<span class="string">"删除id="</span>+ id + <span class="string">"的员工"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15666341017084-restful.png" alt=""></p>
+<ul>
+<li>获取某个员工某个月的薪资记录<ul>
+<li>资源设计：/employees/{id}/salaries/{month}</li>
+<li>动作设计：get</li>
+<li>请求参数：员工id，月份</li>
+<li>返回结果：薪资对象，200</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DeleteMapping</span>(<span class="string">"&#123;id&#125;/salaries/&#123;month&#125;"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Salary <span class="title">get</span><span class="params">(@PathVariable Long id, @PathVariable Date month)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Salary(<span class="number">1l</span>, <span class="keyword">new</span> BigDecimal(<span class="number">1000</span>), <span class="number">1l</span>, <span class="keyword">new</span> Date());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15666341017085-restful.png" alt=""></p>
+<p>前台传入时间格式，需要解析，一般有两种方式，一个是贴注解 @DateTimeFormat、或者写一个 ControllerAdvice<br>返回格式需要使用 @JsonFormat 注解在 domain 中去规定。</p>
+<ul>
+<li>给某个员工增加一条薪资记录<ul>
+<li>资源设计：/employees/{empId}/salaries</li>
+<li>动作设计：post</li>
+<li>请求参数：员工id，salary对象</li>
+<li>返回结果：新生成薪资对象，201</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(<span class="string">"&#123;employeeId&#125;/salaries"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Salary <span class="title">post</span><span class="params">(Salary salary)</span> </span>&#123;</span><br><span class="line">    salary.setId(<span class="number">5l</span>);</span><br><span class="line">    System.out.println(<span class="string">"在 emp_sal 表中新增一条数据"</span>);</span><br><span class="line">    <span class="keyword">return</span> salary;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15666341017086-restful.png" alt="2019-09-04 at 2.54 P"></p>
+<h2 id="最终版本"><a href="#最终版本" class="headerlink" title="最终版本"></a>最终版本</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"employees"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EmployeeController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Employee&gt; <span class="title">list</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;Employee&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Employee e1 = <span class="keyword">new</span> Employee(<span class="number">1l</span>, <span class="string">"李朝1"</span>, <span class="number">20</span>);</span><br><span class="line">        Employee e2 = <span class="keyword">new</span> Employee(<span class="number">2l</span>, <span class="string">"李朝2"</span>, <span class="number">21</span>);</span><br><span class="line">        list.add(e1);</span><br><span class="line">        list.add(e2);</span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Employee <span class="title">list</span><span class="params">(@PathVariable Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Employee(<span class="number">1l</span>, <span class="string">"李朝1"</span>, <span class="number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h1><hr>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200 OK - [GET]</td>
+<td>服务器成功返回用户请求的数据</td>
+</tr>
+<tr>
+<td>201 CREATED - [POST/PUT/PATCH]</td>
+<td>用户新建或修改数据成功</td>
+</tr>
+<tr>
+<td>202 Accepted - [*]</td>
+<td>表示一个请求已经进入后台排队（异步任务）</td>
+</tr>
+<tr>
+<td>204 NO CONTENT - [DELETE]</td>
+<td>用户删除数据成功</td>
+</tr>
+<tr>
+<td>400 INVALID REQUEST - [POST/PUT/PATCH]</td>
+<td>用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的</td>
+</tr>
+<tr>
+<td>401 Unauthorized - [*]</td>
+<td>表示用户没有权限(令牌、用户名、密码错误)</td>
+</tr>
+<tr>
+<td>403 Forbidden - [*]</td>
+<td>表示用户得到授权(与401错误相对)，但是访问是被禁止的</td>
+</tr>
+<tr>
+<td>404 NOT FOUND - [*]</td>
+<td>用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的</td>
+</tr>
+<tr>
+<td>406 Not Acceptable - [GET]</td>
+<td>用户请求的格式不可得(比如用户请求JSON格式，但是只有XML格式)</td>
+</tr>
+<tr>
+<td>410 Gone -[GET]</td>
+<td>用户请求的资源被永久删除，且不会再得到的</td>
+</tr>
+<tr>
+<td>422 Unprocesable entity - [POST/PUT/PATCH]</td>
+<td>当创建一个对象时，发生一个验证错误</td>
+</tr>
+<tr>
+<td>500 INTERNAL SERVER ERROR - [*]</td>
+<td>服务器发生错误，用户将无法判断发出的请求是否成功</td>
+</tr>
+</tbody></table>
+<p><strong>状态码错误演示</strong></p>
+<h2 id="405"><a href="#405" class="headerlink" title="405"></a>405</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"employees"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Employee&gt; <span class="title">list</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    List&lt;Employee&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    Employee e1 = <span class="keyword">new</span> Employee(<span class="number">1l</span>, <span class="string">"李朝1"</span>, <span class="number">20</span>);</span><br><span class="line">    Employee e2 = <span class="keyword">new</span> Employee(<span class="number">2l</span>, <span class="string">"李朝2"</span>, <span class="number">21</span>);</span><br><span class="line">    list.add(e1);</span><br><span class="line">    list.add(e2);</span><br><span class="line">    <span class="keyword">return</span> list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15642867477296-restful.png" alt=""></p>
+<p>后台限制了请求使用的 HTTPMethod，前台请求时使用的 Method 不匹配</p>
+<p><strong>RequestMapping 配置的路径的时候，是有数组特性的，可以配置多个路径以及多个请求方法</strong></p>
+<h2 id="415"><a href="#415" class="headerlink" title="415"></a>415</h2><p><img src="https://www.lizhaoloveit.cn/blogimages/java/application/restful/15675978011524-restful.jpg" alt=""></p>
+<p>后台限制了接受的参数类型，前台传入参数类型不匹配。</p>
+<h1 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h1><hr>
+<h2 id="params"><a href="#params" class="headerlink" title="params"></a>params</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"list"</span>, params = <span class="string">"name=admin"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>params 参数表示，请求时，必须带上指定参数名与参数值，否则报 400 错误。name=admin 或者 name!=admin</p>
+<h2 id="headers"><a href="#headers" class="headerlink" title="headers"></a>headers</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"list"</span>, headers = <span class="string">"content-type=application/json"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>headers 参数表示，要求请求时必须带有规定的头信息。</p>
+<h2 id="consumes-消费-、produces-生产"><a href="#consumes-消费-、produces-生产" class="headerlink" title="consumes(消费)、produces(生产)"></a>consumes(消费)、produces(生产)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 表示后台方法专门消费某种格式的数据  输入格式定死，可以有多个资源，不同的输入格式。</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"list"</span>, consumes = <span class="string">"application/json"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示后台方法专门生产某种格式的数据  输出格式定死，可以给出多个资源的不同的输出格式</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"list"</span>, produces = <span class="string">"application/json"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的含义与 headers 一样，因为服务器要消费客户端传过来的数据，因此指定传入的数据类型。consumes 是 headers 规定 ContentType 的简写，而且 consumes 只跟 ContentType 有关系。相当设置了 headers=”ContentType=application/json”</p>
+<p>produces 规定的是 accept 接受的数据类型，前台希望接收什么格式，就生产什么格式。相当于配置了 headers = “Accept=application/json”</p>
+<h1 id="不同数据类型请求参数的封装"><a href="#不同数据类型请求参数的封装" class="headerlink" title="不同数据类型请求参数的封装"></a>不同数据类型请求参数的封装</h1><hr>
+<ul>
+<li>form-data 表单提交，其实是将表单数据序列化编程，URI?xx=xx&amp;xx=xx 的形式。<ul>
+<li>SpringMVC 默认的封装格式，无需任何注解可以直接将 form-data 转化为 javaBean</li>
+</ul>
+</li>
+<li>JSON(application/json) 传输为 json 数据</li>
+</ul>
+<p>格式为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"id"</span> : <span class="number">1</span>,</span><br><span class="line">	<span class="attr">"name"</span> : <span class="string">"李朝"</span>,</span><br><span class="line">	<span class="attr">"age"</span>: <span class="number">21</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span>(value = <span class="string">"consumes"</span>, consumes = <span class="string">"application/json"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Employee <span class="title">consumes</span><span class="params">(@RequestBody Employee e)</span> </span>&#123;</span><br><span class="line">    System.out.println(e);</span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要参数前贴 @RequestBody 注解，解析 Json 数据为 javaBean 对象。@RequestBody 注解默认是解析 json 数据。但如果请求数据为 xml 数据。</p>
+<ul>
+<li>xml </li>
+</ul>
+<p>如果请求数据为 xml，在 @RequestBody 注解解析数据时，要告诉解析方式，需要在 domain 的 javabean 类中告诉 xml 跟元素，和匹配属性还是字段 <code>XmlAccessType.PROPERTY</code>或者<code>@XmlAccessorType(XmlAccessType.FIELD)</code>, @RequestBody 不可少</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Employee</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">id</span>&gt;</span>1<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>李朝<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">age</span>&gt;</span>21<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Employee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>需要在 domain 中贴注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@XmlRootElement</span>(name = <span class="string">"Employee"</span>) <span class="comment">// 根元素的名称</span></span><br><span class="line"><span class="meta">@XmlAccessorType</span>(XmlAccessType.PROPERTY) <span class="comment">// 匹配属性</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果 xml 中名字不同</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Employee</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">id</span>&gt;</span>1<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">nameaa</span>&gt;</span>李朝<span class="tag">&lt;/<span class="name">nameaa</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">age</span>&gt;</span>21<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Employee</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@XmlRootElement</span>(name = <span class="string">"Employee"</span>) <span class="comment">// 根元素的名称</span></span><br><span class="line"><span class="meta">@XmlAccessorType</span>(XmlAccessType.PROPERTY) <span class="comment">// 匹配字段</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="meta">@XmlElement</span>(name = <span class="string">"nameaa"</span>)</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Ajax-发送不同类型的请求"><a href="#Ajax-发送不同类型的请求" class="headerlink" title="Ajax 发送不同类型的请求"></a>Ajax 发送不同类型的请求</h1><hr>
+<p>jquery 默认封装的 发送请求只有 get post，其他请求方式没有封装，需要使用 ajax 原生的发送请求方法</p>
+<p>ajax 发送 DELETE 请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#deleteBtn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">	$.ajax(&#123;</span><br><span class="line">		url: <span class="string">'/employees/1'</span></span><br><span class="line">		method: <span class="string">'delete'</span></span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>ajax 发送 PUT 请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">"#deleteBtn"</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">	$.ajax(&#123;</span><br><span class="line">		url: <span class="string">'/employees/1'</span></span><br><span class="line">		method: <span class="string">'put'</span></span><br><span class="line">		data:&#123;</span><br><span class="line">			name: <span class="string">"xxx"</span>,</span><br><span class="line">			age : <span class="number">21</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>PUT 请求 springMVC 不会帮我们将 data 参数封装到 后台的 javabean 中，只有 id = 1 封装到 Employee 了， name 和 age 都消失了，需要配置一个 springmvc 的 filter 才可以</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 处理 put 或者 patch 请求方式的过滤器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>httpPutFormContentFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.HttpPutFormContentFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>httpPutFormContentFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springDispatcherServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>拦截到请求时，先执行 httpPutFormContentFilter，然后再执行 springDispatcherServlet。</p>
+<h1 id="form-表单提交-put-patch-delete-请求"><a href="#form-表单提交-put-patch-delete-请求" class="headerlink" title="form 表单提交 put/patch/delete 请求"></a>form 表单提交 put/patch/delete 请求</h1><hr>
+<p>解决问题：</p>
+<blockquote>
+<p>因为表单无法提交 put/delete/patch 请求，所以后台 @PUTMapping 资源无法被表单提交访问。</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"/employees/1"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"_method"</span> <span class="attr">value</span>=<span class="string">"put/delete/patch"</span>/&gt;</span></span><br><span class="line">	...</span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 专门处理 form 表单不能提交 put, delete, patch 请求的过滤器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>springDispatcherServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此时配置了 web.xml 后就可以用表单提交 put/delete/patch 等请求了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">	HttpServletRequest requestToUse = request;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="string">"POST"</span>.equals(request.getMethod()) &amp;&amp; request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == <span class="keyword">null</span>) &#123;</span><br><span class="line">		String paramValue = request.getParameter(<span class="keyword">this</span>.methodParam);</span><br><span class="line">		<span class="keyword">if</span> (StringUtils.hasLength(paramValue)) &#123;</span><br><span class="line">			String method = paramValue.toUpperCase(Locale.ENGLISH);</span><br><span class="line">			<span class="keyword">if</span> (ALLOWED_METHODS.contains(method)) &#123;</span><br><span class="line">				requestToUse = <span class="keyword">new</span> HttpMethodRequestWrapper(request, method);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	filterChain.doFilter(requestToUse, response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>原理，将请求重新包装成新的请求再放行。</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2019/09/03/Restful%E6%9E%B6%E6%9E%84/">http://lizhaoloveit.cn/2019/09/03/Restful%E6%9E%B6%E6%9E%84/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Restful/">Restful    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/09/16/Swagger2/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Swagger2</span></div></a></div><div class="next-post pull-right"><a href="/2019/08/25/Shiro%E6%9D%83%E9%99%90%E6%A1%86%E6%9E%B6/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Shiro权限框架</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2019/09/03/Restful%E6%9E%B6%E6%9E%84/';
+  this.page.identifier = '2019/09/03/Restful架构/';
+  this.page.title = 'Restful架构';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

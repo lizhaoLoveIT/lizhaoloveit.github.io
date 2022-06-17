@@ -1,0 +1,687 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>MySQL | Ammar's Blog</title><meta name="description" content="MySQL"><meta name="keywords" content="数据库"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2019/07/02/MySQL/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="MySQL"><meta name="twitter:description" content="MySQL"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="MySQL"><meta property="og:url" content="http://lizhaoloveit.cn/2019/07/02/MySQL/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="MySQL"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="XML解析" href="http://lizhaoloveit.cn/2019/07/03/XML%E8%A7%A3%E6%9E%90/"><link rel="next" title="Java类加载机制" href="http://lizhaoloveit.cn/2019/07/01/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装-mysql"><span class="toc-number">2.</span> <span class="toc-text">安装 mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#连接数据库"><span class="toc-number">2.1.</span> <span class="toc-text">连接数据库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql-数据库"><span class="toc-number">3.</span> <span class="toc-text">mysql 数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-安装文件夹结构"><span class="toc-number">3.1.</span> <span class="toc-text">MySQL 安装文件夹结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#my-ini"><span class="toc-number">3.1.1.</span> <span class="toc-text">my.ini</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库常见操作"><span class="toc-number">3.2.</span> <span class="toc-text">数据库常见操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySql-列的常见类型"><span class="toc-number">3.3.</span> <span class="toc-text">MySql 列的常见类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#整数类型"><span class="toc-number">3.4.</span> <span class="toc-text">整数类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#小数类型"><span class="toc-number">3.5.</span> <span class="toc-text">小数类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符类型"><span class="toc-number">3.6.</span> <span class="toc-text">字符类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日期类型"><span class="toc-number">3.7.</span> <span class="toc-text">日期类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二进制类型"><span class="toc-number">3.8.</span> <span class="toc-text">二进制类型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三范式的约束"><span class="toc-number">4.</span> <span class="toc-text">三范式的约束</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作表"><span class="toc-number">5.</span> <span class="toc-text">操作表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#建表"><span class="toc-number">5.1.</span> <span class="toc-text">建表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看表信息"><span class="toc-number">5.2.</span> <span class="toc-text">查看表信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#表的约束"><span class="toc-number">5.3.</span> <span class="toc-text">表的约束</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DML"><span class="toc-number">6.</span> <span class="toc-text">DML</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#INSERT"><span class="toc-number">6.1.</span> <span class="toc-text">INSERT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UPDATE"><span class="toc-number">6.2.</span> <span class="toc-text">UPDATE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DELETE"><span class="toc-number">6.3.</span> <span class="toc-text">DELETE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#截断表"><span class="toc-number">6.3.1.</span> <span class="toc-text">截断表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DQL"><span class="toc-number">7.</span> <span class="toc-text">DQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#日期查询"><span class="toc-number">7.1.</span> <span class="toc-text">日期查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#日期转换字符串"><span class="toc-number">7.1.1.</span> <span class="toc-text">日期转换字符串</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#过滤查询"><span class="toc-number">7.2.</span> <span class="toc-text">过滤查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#范围查询"><span class="toc-number">7.3.</span> <span class="toc-text">范围查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集合查询"><span class="toc-number">7.4.</span> <span class="toc-text">集合查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空值查询"><span class="toc-number">7.5.</span> <span class="toc-text">空值查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模糊查询"><span class="toc-number">7.6.</span> <span class="toc-text">模糊查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#结果集排序"><span class="toc-number">7.7.</span> <span class="toc-text">结果集排序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分页查询"><span class="toc-number">7.8.</span> <span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#聚合函数"><span class="toc-number">7.9.</span> <span class="toc-text">聚合函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#避免重复数据-DISTINCT"><span class="toc-number">7.10.</span> <span class="toc-text">避免重复数据-DISTINCT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多表联查-隐式连接"><span class="toc-number">7.11.</span> <span class="toc-text">多表联查(隐式连接)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多表联查-显示连接"><span class="toc-number">7.12.</span> <span class="toc-text">多表联查(显示连接)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#union-union-all"><span class="toc-number">7.13.</span> <span class="toc-text">union&#x2F; union all</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自连接"><span class="toc-number">7.14.</span> <span class="toc-text">自连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单行函数"><span class="toc-number">7.15.</span> <span class="toc-text">单行函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分组查询"><span class="toc-number">7.16.</span> <span class="toc-text">分组查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#外键约束"><span class="toc-number">7.17.</span> <span class="toc-text">外键约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#子查询"><span class="toc-number">7.18.</span> <span class="toc-text">子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#案例：查询每个部门编号、名称、部门人数，平均工资"><span class="toc-number">7.18.1.</span> <span class="toc-text">案例：查询每个部门编号、名称、部门人数，平均工资</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例：查询员工信息与部门名称"><span class="toc-number">7.18.2.</span> <span class="toc-text">案例：查询员工信息与部门名称</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-执行顺序"><span class="toc-number">8.</span> <span class="toc-text">SQL 执行顺序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#规范约定"><span class="toc-number">9.</span> <span class="toc-text">规范约定</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#数据备份和恢复"><span class="toc-number">10.</span> <span class="toc-text">数据备份和恢复</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#事务并发"><span class="toc-number">11.</span> <span class="toc-text">事务并发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#隔离级别"><span class="toc-number">11.1.</span> <span class="toc-text">隔离级别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#悲观锁和乐观锁"><span class="toc-number">11.2.</span> <span class="toc-text">悲观锁和乐观锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#悲观锁"><span class="toc-number">11.2.1.</span> <span class="toc-text">悲观锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#乐观锁"><span class="toc-number">11.2.2.</span> <span class="toc-text">乐观锁</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MySQL-数据库中的权限"><span class="toc-number">12.</span> <span class="toc-text">MySQL 数据库中的权限</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#删除用户"><span class="toc-number">12.1.</span> <span class="toc-text">删除用户</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意点"><span class="toc-number">13.</span> <span class="toc-text">注意点</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">MySQL</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-07-02<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-09-18</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">6.7k</span><span class="post-meta__separator">|</span><span>阅读时长: 25 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><hr>
+<p>关系数据库：使用表将数据组织起来，代表：Oracle、DB2、MySQL、SQL Server</p>
+<p>关系型数据库缺点：数据模型、性能、拓展伸缩性的缺点。</p>
+<p>热门领域：非关系型数据库</p>
+<p>出色的 NoSQL 数据库：</p>
+<ul>
+<li>键值存储数据库：Oracle BDB，Redis，BeansDB</li>
+<li>列式储数数据库：HBase，Cassandra，Riak</li>
+<li>文档型数据库：MongoDB，CouchDB</li>
+<li>图形数据库：Neo4J，InfoGrid，Infinite Graph</li>
+</ul>
+<p>MySQL：开源，体积小，速度快，适用于中小型企业领域</p>
+<p>SQL：Structured Query Language。</p>
+<p>SQL 包含6个部分：</p>
+<ol>
+<li>数据查询语言DQL select, where, order by, having, </li>
+<li>数据操作语言DML insert update delete</li>
+<li>事务处理语言TCL 确保DML语句能及时更新，Begin transaction  commit  rollback</li>
+<li>数据控制语言DCL</li>
+<li>数据定义语言DDL create drop</li>
+<li>指针控制语言CCL</li>
+</ol>
+<p><strong>为了提高可读性，一般关键字大写，其他小写。</strong></p>
+<h1 id="安装-mysql"><a href="#安装-mysql" class="headerlink" title="安装 mysql"></a>安装 mysql</h1><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15622071370450-mysql.jpg" alt=""></p>
+<p>MySQL的默认端口是:3306</p>
+<p>数据库默认字符集就是utf8</p>
+<p>安装完 mysql 要配置环境</p>
+<p>设置初始密码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> <span class="keyword">user</span>() <span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">"123456"</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>/usr/local/mysql/lib</code> 将 mysql 环境变量 添加到 <code>.bash_profile</code> 中以保证全局可用</p>
+<h2 id="连接数据库"><a href="#连接数据库" class="headerlink" title="连接数据库"></a>连接数据库</h2><hr>
+<p>安装 navicat</p>
+<p>方式2：在命令行中：找到安装目录下的bin录制中有个mysql的命令</p>
+<p>格式:mysql -u账户 -p密码 -h数据库服务器安装的主机 -P数据库端口</p>
+<p><code>mysql -uroot -padmin -hlocalhost -P 3306</code></p>
+<p>若连接的数据库服务器在本机上，并且端口是3306。</p>
+<p>则可以简写： mysql -u root -p admin</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620611358194-mysql.jpg" alt=""></p>
+<blockquote>
+<p>操作数据库流程：<br>启动服务器 — 客户端身份验证 — 选择数据库 — 选择表 — 操作表</p>
+</blockquote>
+<h1 id="mysql-数据库"><a href="#mysql-数据库" class="headerlink" title="mysql 数据库"></a>mysql 数据库</h1><hr>
+<p>系统数据库(系统自带的数据库)：不能修改</p>
+<p>infomation_schema 存储数据库对象信息，如：用户表信息，列信息，权限，字符，分区等信息。</p>
+<p>performance_schema 存储数据库服务器性能参数信息</p>
+<p>mysql 存储用户权限信息</p>
+<p>test 测试数据库</p>
+<h2 id="MySQL-安装文件夹结构"><a href="#MySQL-安装文件夹结构" class="headerlink" title="MySQL 安装文件夹结构"></a>MySQL 安装文件夹结构</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635237869555-mysql.jpg" alt=""></p>
+<ul>
+<li>bin MySQL 相关二进制文件存储目录，存放 MySQL 提供的系统工具：mysql;mysqld;mysqldump;</li>
+<li>data: 默认的数据存放目录</li>
+<li>include: 包含一些头文件，提供其他程序连接 mysql 的 API 接口</li>
+<li>lib: MySQL 依赖的库</li>
+<li>share: 存放几个初始表文件和每种语言的 errmsg.sys 错误日志</li>
+<li>sql-bench: 对数据库进行压力测试工具</li>
+<li>my.ini: MySQL 的基础配置文件，</li>
+</ul>
+<h3 id="my-ini"><a href="#my-ini" class="headerlink" title="my.ini"></a>my.ini</h3><hr>
+<p>MySQL 服务的属性</p>
+<ol>
+<li>port 启动端口</li>
+<li>basedir MySQL的主目录</li>
+<li>datadir MySQL数据文件存放的位置，默认是在MySQL主目录的data文件夹下</li>
+<li>character-set-server 默认的字符编码</li>
+<li>default-storage-engine 默认的存储引擎</li>
+<li>max_connections 最大允许连接数</li>
+</ol>
+<p><strong>MySQL数据文件简介(存储数据的文件):</strong></p>
+<ol>
+<li>数据文件存放格式，注意MyISAM和InnoDB的文件不同格式；</li>
+<li>常见的文件类型：<ul>
+<li>.frm：与表相关的元数据（meta）信息，比如表结构定义；所有表都需要这个文件；</li>
+<li>.MYD(MyISAM Data)：MyISAM 存储引擎专用，存放MyISAM 表的数据；</li>
+<li>.MYI(MyISAM Index)：MyISAM 存储引擎专用，主要存放MyISAM 表的索引相关信息；</li>
+<li>.ibd和ibdata： 存放InnoDB数据；</li>
+<li>ibdata1：共享存储空间，相当于所有InnoDB的数据都存放在公共的这个ibdata1文件中；</li>
+<li>.ibd：独享存储空间，相当于每一个表的数据还是保存在自己独立的文件中，可以通过innodb_file_per_table=1参数来设置，但是独立表空间和共享表空间不能同时存在；</li>
+<li>db.opt：该数据库的默认配置；</li>
+</ul>
+</li>
+</ol>
+<h2 id="数据库常见操作"><a href="#数据库常见操作" class="headerlink" title="数据库常见操作"></a>数据库常见操作</h2><hr>
+<ul>
+<li>show databases;</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">--------------------+</span></span><br><span class="line">| Database           |</span><br><span class="line">+<span class="comment">--------------------+</span></span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">+<span class="comment">--------------------+</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>use mysql;</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Database changed</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>show tables;</li>
+<li>create database 数据库名称;</li>
+<li>drop database 数据库名称;</li>
+</ul>
+<p>MySQL 中的数据用各种不同的技术存储在文件或者内存中，每种技术都使用了不同的<strong>存储机制、索引技巧、锁定水平且最终提供不同的功能和能力</strong></p>
+<p>技术表如下：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620653461693-mysql.jpg" alt=""></p>
+<blockquote>
+<p>MyISAM 和 InnoDB 各自的优缺点<br>MyISAM 有较高的插入，查询速度，但是不支持事务，不支持外键<br>InnoDB 支持事务和外键，支持行级锁定，性能较低。</p>
+</blockquote>
+<p>InnoDB 存储引擎提供了具有提交、回滚和炳奎恢复能力和事务安全，但对比 MyISAM 来说处理效率差，会占用更多的磁盘空间保留数据和索引。</p>
+<p><strong>不能没有事务，一般选择 InnDB</strong></p>
+<h2 id="MySql-列的常见类型"><a href="#MySql-列的常见类型" class="headerlink" title="MySql 列的常见类型"></a>MySql 列的常见类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620657236765-mysql.jpg" alt=""></p>
+<h2 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620661971311-mysql.jpg" alt=""></p>
+<p>一般就是 INT</p>
+<h2 id="小数类型"><a href="#小数类型" class="headerlink" title="小数类型"></a>小数类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620662434127-mysql.jpg" alt=""></p>
+<p>Decimal，高精度类型，金额货币有限选择。</p>
+<h2 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620664497950-mysql.jpg" alt=""></p>
+<p>字符型一定要指定位宽；varchar(20)</p>
+<p>比较 char(5) 和 varchar(5) 的区别</p>
+<h2 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620665193884-mysql.jpg" alt=""></p>
+<h2 id="二进制类型"><a href="#二进制类型" class="headerlink" title="二进制类型"></a>二进制类型</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620665434034-mysql.jpg" alt=""></p>
+<p>存放图形、声音和影响，二进制对象，0-4GB</p>
+<p>BIT 我们一般存储0或1，其他的大二进制类型，开发中一般不用</p>
+<h1 id="三范式的约束"><a href="#三范式的约束" class="headerlink" title="三范式的约束"></a>三范式的约束</h1><hr>
+<ol>
+<li>第一范式：关系模式的基本要求，不满足第一范式就不是关系数据库，数据表的每一列都是不可分割的基本数据项，同一列中不能有多个值</li>
+<li>第二范式：要求数据库表中的每个实例或行必须可以被唯一的区分，有主键</li>
+<li>第三范式：要求数据库表中不包含其它表中的非主键信息(设计表的时候，为了性能，有时会打破第三范式)</li>
+</ol>
+<h1 id="操作表"><a href="#操作表" class="headerlink" title="操作表"></a>操作表</h1><hr>
+<h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620680148484-mysql.jpg" alt=""></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="string">`student`</span>(</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>) <span class="keyword">engine</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">charset</span>=utf8;</span><br></pre></td></tr></table></figure>
+
+<p>方式二：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> student(</span><br><span class="line"><span class="keyword">id</span> <span class="built_in">bigint</span>,</span><br><span class="line"><span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>),</span><br><span class="line">age <span class="built_in">int</span>);</span><br><span class="line">Query OK, 0 rows affected</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>表名的问题：使用标识符时不要用 SQL 的关键字，如果一定要用，<br>使用反引号(<code>)把自定义的标识符引起来:</code>table`<br>或者使用表名作为前缀，t_table</p>
+</blockquote>
+<h2 id="查看表信息"><a href="#查看表信息" class="headerlink" title="查看表信息"></a>查看表信息</h2><hr>
+<p><strong>desc student</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">| Field | Type        | Null | Key | Default | Extra |</span><br><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">| id    | bigint(20)  | YES  |     | NULL    |       |</span><br><span class="line">| name  | varchar(20) | YES  |     | NULL    |       |</span><br><span class="line">| age   | int(11)     | YES  |     | NULL    |       |</span><br><span class="line">+<span class="comment">-------+-------------+------+-----+---------+-------+</span></span><br><span class="line">3 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p><strong>show create table 表名</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show create table student;</span><br><span class="line">+<span class="comment">---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| Table   | <span class="keyword">Create</span> <span class="keyword">Table</span>                                                                                                                                                  |</span><br><span class="line">+<span class="comment">---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line">| student | <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`student`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 |</span><br><span class="line">+<span class="comment">---------+---------------------------------------------------------------------------------------------------------------------------------------------------------------+</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="表的约束"><a href="#表的约束" class="headerlink" title="表的约束"></a>表的约束</h2><hr>
+<ol>
+<li>非空约束： not null (NK)</li>
+<li>设置默认值：default</li>
+<li>唯一：unique(uk)</li>
+<li>主键：primary key(pk)，非空且唯一，auto_increment，从1开始步长为1，自增长</li>
+<li>外键约束：foreign key(fk), A表中的外键列的值必须参照B表中国的某一列</li>
+</ol>
+<p>主键设计：单列主键，且不参与业务。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_student(<span class="keyword">id</span> <span class="built_in">bigint</span> PRIMARY <span class="keyword">KEY</span> AUTO_INCREMENT, <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">20</span>), age <span class="built_in">int</span> <span class="keyword">DEFAULT</span> <span class="number">18</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h1><hr>
+<h2 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`t_student`</span> (<span class="string">`id`</span>, <span class="string">`name`</span>, <span class="string">`age`</span>) <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'zhangsan'</span>, <span class="string">'10'</span>);</span><br></pre></td></tr></table></figure>
+<p>一一对应。时间和字符串一定要用 单引号。</p>
+<p>可以一次插入多组数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`t_student`</span> (<span class="keyword">id</span>, <span class="keyword">name</span>, age) <span class="keyword">VALUES</span>(<span class="number">1</span>, <span class="string">'zhangsan'</span>, <span class="number">10</span>), (<span class="number">1</span>, <span class="string">'zhangsan'</span>, <span class="number">10</span>), (<span class="number">1</span>, <span class="string">'zhangsan'</span>, <span class="number">10</span>)...;</span><br></pre></td></tr></table></figure>
+
+<p>增加数据，指数级</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">user</span>(<span class="keyword">name</span>) (<span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">FROM</span> <span class="keyword">user</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="string">`t_student`</span> <span class="keyword">SET</span> <span class="string">`name`</span>=<span class="string">`123`</span>, <span class="string">`age`</span>=<span class="string">`20`</span> <span class="keyword">WHERE</span> (<span class="string">`id`</span>=<span class="string">`5`</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果没有 WHERE  全表都会被改。</p>
+<h2 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> <span class="string">`t_student`</span> <span class="keyword">WHERE</span> (<span class="string">`id`</span>=<span class="string">`3`</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果没有 WHERE 全表被删</p>
+<p>案例：删除 产品表中’有线鼠标’的数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> product <span class="keyword">WHERE</span> dir_id = (<span class="keyword">SELECT</span> <span class="keyword">id</span> <span class="keyword">FROM</span> productdir <span class="keyword">WHERE</span> dirName = <span class="string">'有线鼠标'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>drop 删除整张表</p>
+<h3 id="截断表"><a href="#截断表" class="headerlink" title="截断表"></a>截断表</h3><p><code>truncate table users;</code></p>
+<p>截断表后，truncate 之后，如果有自动主键的话，会恢复成1，所有数据清空，但是字段和表结构都还在。</p>
+<h1 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h1><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> &#123;*, <span class="keyword">column</span>[<span class="keyword">alias</span>],...&#125; <span class="keyword">FROM</span> table_name [WHERE...];</span><br></pre></td></tr></table></figure>
+
+<p>查询语句中可运算，DATE 型数据可以使用操作符创建表达式(+ -)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT id,productName,(salePrice * cutoff) FROM t_product; </span><br><span class="line">+<span class="comment">----+-----------------------+----------------------+</span></span><br><span class="line">| id | productName           | (salePrice * cutoff) |</span><br><span class="line">+<span class="comment">----+-----------------------+----------------------+</span></span><br><span class="line">|  1 | 罗技M90             |                45.00 |</span><br><span class="line">|  2 | 罗技M100            |                44.10 |</span><br><span class="line">|  3 | 罗技M115            |                59.40 |</span><br><span class="line">|  4 | 罗技M125            |                72.00 |</span><br><span class="line">|  5 | 罗技木星轨迹球 |                64.00 |</span><br><span class="line">|  6 | 罗技火星轨迹球 |               303.63 |</span><br><span class="line">+<span class="comment">----+-----------------------+----------------------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">id</span>,productName,(salePrice * cutoff) <span class="keyword">AS</span> tradePrice <span class="keyword">FROM</span> t_product; </span><br><span class="line">+<span class="comment">----+-----------------------+------------+</span></span><br><span class="line">| id | productName           | tradePrice |</span><br><span class="line">+<span class="comment">----+-----------------------+------------+</span></span><br><span class="line">|  1 | 罗技M90             |      45.00 |</span><br><span class="line">|  2 | 罗技M100            |      44.10 |</span><br><span class="line">|  3 | 罗技M115            |      59.40 |</span><br><span class="line">|  4 | 罗技M125            |      72.00 |</span><br><span class="line">|  5 | 罗技木星轨迹球 |      64.00 |</span><br><span class="line">|  6 | 罗技火星轨迹球 |     303.63 |</span><br><span class="line">+<span class="comment">----+-----------------------+------------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>AS(AS可以省略)</li>
+</ul>
+<ol>
+<li>改变表名</li>
+<li>表示计算结果的含义</li>
+<li>作为列的别名</li>
+</ol>
+<ul>
+<li>concat</li>
+</ul>
+<p>把多个值以字符串拼接的形式拼在一起，可以使用函数 concat(…)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT CONCAT(productName,'的售价是',salePrice) poster FROM t_product;</span><br><span class="line">+<span class="comment">--------------------------------------+</span></span><br><span class="line">| poster                               |</span><br><span class="line">+<span class="comment">--------------------------------------+</span></span><br><span class="line">| 罗技M90的售价是90              |</span><br><span class="line">| 罗技M100的售价是49             |</span><br><span class="line">| 罗技M115的售价是99             |</span><br><span class="line">| 罗技M125的售价是80             |</span><br><span class="line">| 罗技木星轨迹球的售价是80  |</span><br><span class="line">| 罗技火星轨迹球的售价是349 |</span><br><span class="line">+<span class="comment">--------------------------------------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期查询"><a href="#日期查询" class="headerlink" title="日期查询"></a>日期查询</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询只查年份</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> <span class="keyword">YEAR</span>(HIREDATE) = <span class="string">'1981'</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="日期转换字符串"><a href="#日期转换字符串" class="headerlink" title="日期转换字符串"></a>日期转换字符串</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">NOW</span>() <span class="keyword">FROM</span> DUAL</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当前系统时间 NOW()，DUAL 是一个虚表，没有列。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DAY(date)</td>
+<td>获取日期中的天数 范围 1-31</td>
+</tr>
+<tr>
+<td>HOUR(time)</td>
+<td>返回 time 对应的小时数</td>
+</tr>
+<tr>
+<td>MINUTE(time)</td>
+<td>返回 time 对应的分钟</td>
+</tr>
+<tr>
+<td>YEAR(date)</td>
+<td>返回日期的月份</td>
+</tr>
+<tr>
+<td>LAST_DAY(date)</td>
+<td>获取日期的月份最后一天对应的值</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>日期格式字符串</th>
+<th>format对应的格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%Y</td>
+<td>年份，类似yyyy，4位数</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>月份，数字形式(00…12)</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>该月日期，数字形式(00…31)</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>小时(00…23)</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>分钟，数字形式(00…59)</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>秒(00…59)</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DATE_FORMAT</span>(<span class="keyword">NOW</span>(), <span class="string">'%Y年%m月%d日'</span>) <span class="keyword">FROM</span> dual</span><br></pre></td></tr></table></figure>
+
+<h2 id="过滤查询"><a href="#过滤查询" class="headerlink" title="过滤查询"></a>过滤查询</h2><hr>
+<p><strong>比较运算符</strong></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15621227518825-mysql.jpg" alt=""></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t_product <span class="keyword">WHERE</span> productName = <span class="string">'罗技M90'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要区分大小写，语法如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># BINARY 表示要区分大小写</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> t_product <span class="keyword">WHERE</span> <span class="built_in">BINARY</span> productName = <span class="string">'罗技M90'</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>有别名时，过滤语句不能使用前面的别名，sql 代码运行顺序如下：</p>
+</blockquote>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15620779638825-mysql.jpg" alt=""></p>
+<p><strong>逻辑运算符</strong></p>
+<p>AND(&amp;&amp;) </p>
+<p>OR(||)</p>
+<p>NOT(!)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求，选择id，货物名称，零售价在 300-400</span></span><br><span class="line">mysql&gt; SELECT id, productName FROM t_product WHERE salePrice &gt; 300 &amp;&amp; salePrice &lt; 400;</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">| id | productName           |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">|  6 | 罗技火星轨迹球 |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>优先级：比较运算符 &gt; NOT &gt; AND &gt; OR</p>
+<p>括号跨越所有优先级</p>
+<h2 id="范围查询"><a href="#范围查询" class="headerlink" title="范围查询"></a>范围查询</h2><hr>
+<p>BETWEEN 运算符显示某一值域范围的记录，最常见的使用在<strong>数字类型数据的范围上</strong>，对于字符类型数据和日期类型数去一样可以用。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> &lt;columnList&gt; <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> 列名 <span class="keyword">BETWEEN</span> <span class="keyword">minValue</span> <span class="keyword">AND</span> maxValue</span><br></pre></td></tr></table></figure>
+
+<p>BETWEEN 左右两边均为 <strong>闭区间</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求：选择id，货品名称，零售价在300-400之间的货品</span></span><br><span class="line">mysql&gt; SELECT id, productName FROM t_product WHERE salePrice BETWEEN 300 AND 400;</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">| id | productName           |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">|  6 | 罗技火星轨迹球 |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="集合查询"><a href="#集合查询" class="headerlink" title="集合查询"></a>集合查询</h2><hr>
+<p>使用 IN 运算符，判断列的值是否在指定集合中</p>
+<p>WHERE 列名 IN (值1，值2…);</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求：选择id，货物名称，分类编号2或4的所有货品</span></span><br><span class="line">mysql&gt; SELECT id, productName, dir_id FROM t_product WHERE dir_id IN (2, 4);</span><br><span class="line">+<span class="comment">----+-------------+--------+</span></span><br><span class="line">| id | productName | dir_id |</span><br><span class="line">+<span class="comment">----+-------------+--------+</span></span><br><span class="line">|  2 | 罗技M100  |      2 |</span><br><span class="line">|  4 | 罗技M125  |      4 |</span><br><span class="line">+<span class="comment">----+-------------+--------+</span></span><br><span class="line">2 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="空值查询"><a href="#空值查询" class="headerlink" title="空值查询"></a>空值查询</h2><hr>
+<blockquote>
+<p>所有带有空值的任何算术表达式，结果都为空</p>
+</blockquote>
+<p>IS NULL：判断列的值是否为空，空值是指没有值的列</p>
+<p>WHERE 列名 IS NULL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT id, productName FROM t_product WHERE supplier is NOT NULL;</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">| id | productName           |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">|  1 | 罗技M90             |</span><br><span class="line">|  2 | 罗技M100            |</span><br><span class="line">|  3 | 罗技M115            |</span><br><span class="line">|  4 | 罗技M125            |</span><br><span class="line">|  5 | 罗技木星轨迹球 |</span><br><span class="line">+<span class="comment">----+-----------------------+</span></span><br><span class="line">5 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>IFNULL(arg0, arg1) 如果arg0 不为空，则是arg0，如果 arg0为空就是arg1</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> e.ename, (sal + <span class="keyword">IFNULL</span>(comm, <span class="number">0</span>)) * <span class="number">12</span> yearSalary <span class="keyword">FROM</span> emp e  </span><br><span class="line"></span><br><span class="line">ename	yearSalary</span><br><span class="line">SMITH	<span class="number">9600.00</span></span><br><span class="line">ALLEN	<span class="number">22800.00</span></span><br><span class="line">WARD	<span class="number">21000.00</span></span><br><span class="line">JONES	<span class="number">35700.00</span></span><br><span class="line">MARTIN	<span class="number">31800.00</span></span><br><span class="line">BLAKE	<span class="number">34200.00</span></span><br><span class="line">CLARK	<span class="number">29400.00</span></span><br><span class="line">SCOTT	<span class="number">36000.00</span></span><br><span class="line">KING	<span class="number">60000.00</span></span><br><span class="line">TURNER	<span class="number">18000.00</span></span><br><span class="line">ADAMS	<span class="number">13200.00</span></span><br><span class="line">JAMES	<span class="number">11400.00</span></span><br><span class="line">FORD	<span class="number">36000.00</span></span><br><span class="line">MILLER	<span class="number">15600.00</span></span><br></pre></td></tr></table></figure>
+<p>空值不等于0，或空格，也不表示空字符串。</p>
+<p>!= == 用于字符串</p>
+<p>空值判断用 is not null 或者 ifnull(arg0, arg1)</p>
+<h2 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h2><hr>
+<p>使用 LIKE 运算符执行通配查询，查询条件可以包含字符或数字：</p>
+<ul>
+<li>% 通配符：可以表示任意个数的任意字符。</li>
+<li>_ 通配符：可以表示任意一个字符</li>
+</ul>
+<p>通配符：用来匹配部分值的特殊字符。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求：查询货物名称带有'M'的所有信息</span></span><br><span class="line">mysql&gt; SELECT id, productName FROM t_product WHERE productName LIKE '%M%';</span><br><span class="line">+<span class="comment">----+------------+</span></span><br><span class="line">| id | p          |</span><br><span class="line">+<span class="comment">----+------------+</span></span><br><span class="line">|  1 | 罗技M90  |</span><br><span class="line">|  2 | 罗技M100 |</span><br><span class="line">|  3 | 罗技M115 |</span><br><span class="line">|  4 | 罗技M125 |</span><br><span class="line">+<span class="comment">----+------------+</span></span><br><span class="line">4 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：查询匹配货物名称'罗技M9??'的所有信息</span></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">id</span>, productName <span class="keyword">FROM</span> t_product <span class="keyword">WHERE</span> productName <span class="keyword">LIKE</span> <span class="string">'罗技M__'</span>;</span><br><span class="line">+<span class="comment">----+-------------+</span></span><br><span class="line">| id | productName |</span><br><span class="line">+<span class="comment">----+-------------+</span></span><br><span class="line">|  1 | 罗技M90   |</span><br><span class="line">+<span class="comment">----+-------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h2 id="结果集排序"><a href="#结果集排序" class="headerlink" title="结果集排序"></a>结果集排序</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15621257992230-mysql.jpg" alt=""></p>
+<p>使用 ORDER BY 将记录排序(先有结果，再排序)</p>
+<p>ASC：升序，缺省。  DESC：降序</p>
+<p>ORDER BY 子句 出现在 SELECT 语句的最后</p>
+<p>格式：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> &lt;selecteList&gt; <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> 条件 <span class="keyword">ORDER</span> <span class="keyword">BY</span> 列名<span class="number">1</span>[<span class="keyword">ASC</span>/<span class="keyword">DESC</span>], 列名<span class="number">2</span>[<span class="keyword">ASC</span>/<span class="keyword">DESC</span>]...;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：选择id, 货品名称，分类编号，零售价，先按分类编号排序，编号相同再按零售价排序：</span></span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT id, productName, dir_id, salePrice FROM t_product ORDER BY dir_id DESC;</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">| id | productName           | dir_id | salePrice |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">|  4 | 罗技M125            |      4 |        80 |</span><br><span class="line">|  1 | 罗技M90             |      3 |        90 |</span><br><span class="line">|  3 | 罗技M115            |      3 |        99 |</span><br><span class="line">|  5 | 罗技木星轨迹球 |      3 |        80 |</span><br><span class="line">|  6 | 罗技火星轨迹球 |      3 |       349 |</span><br><span class="line">|  2 | 罗技M100            |      2 |        49 |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"> </span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">id</span>, productName, dir_id, salePrice <span class="keyword">FROM</span> t_product <span class="keyword">ORDER</span> <span class="keyword">BY</span> dir_id <span class="keyword">DESC</span>, salePrice <span class="keyword">ASC</span>;</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">| id | productName           | dir_id | salePrice |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">|  4 | 罗技M125            |      4 |        80 |</span><br><span class="line">|  5 | 罗技木星轨迹球 |      3 |        80 |</span><br><span class="line">|  1 | 罗技M90             |      3 |        90 |</span><br><span class="line">|  3 | 罗技M115            |      3 |        99 |</span><br><span class="line">|  6 | 罗技火星轨迹球 |      3 |       349 |</span><br><span class="line">|  2 | 罗技M100            |      2 |        49 |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>SELECT 语句执行顺序：</p>
+<p>先执行 FROM -&gt; 接着执行 WHERE -&gt; 再执行 SELECT -&gt;  最后执行 ORDER BY</p>
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> product <span class="keyword">LIMIT</span> <span class="number">0</span>, <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>语法 LIMIT?, ?<br>参数一：起始索引，从0开始<br>参数二：每次获取多少条数据</p>
+</blockquote>
+<p><strong>想要分页，需要知道两个条件：当前也 currentPage，每一页多少条数据 pageSize</strong></p>
+<p>起始数据 = (currentPage - 1) * pageSize;</p>
+<p><strong>select * from table_name limit(currentPage - 1) * pageSize, pageSize</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求：每页显示6条记录，查询第三页</span></span><br><span class="line">mysql&gt; SELECT * FROM t_product LIMIT 12, 6;</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+----------+--------+-----------+</span></span><br><span class="line">| id | productName           | dir_id | salePrice | supplier | cutoff | costPrice |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+----------+--------+-----------+</span></span><br><span class="line">| 13 | 罗技M90             |      3 |        90 | 罗技   |   0.50 | 35.00     |</span><br><span class="line">| 14 | 罗技M100            |      2 |        49 | 罗技   |   0.90 | 33.00     |</span><br><span class="line">| 15 | 罗技M115            |      3 |        99 | 罗技   |   0.60 | 38.00     |</span><br><span class="line">| 16 | 罗技M125            |      4 |        80 | 罗技   |   0.90 | 39.00     |</span><br><span class="line">| 17 | 罗技木星轨迹球 |      3 |        80 | 罗技   |   0.80 | 80.00     |</span><br><span class="line">| 18 | 罗技火星轨迹球 |      3 |       349 |          |   0.87 | 290.00    |</span><br><span class="line">+<span class="comment">----+-----------------------+--------+-----------+----------+--------+-----------+</span></span><br><span class="line">6 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>工作中一般不用 limit，性能本不好，且是 mysql 特有的。</p>
+</blockquote>
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><hr>
+<p>COUNT：统计结果记录数(COUNT(*))<br>MAX：统计计算最大值<br>MIN：统计最小值<br>SUM：统计计算求和<br>AVG：统计计算平均值</p>
+<p>语法格式：组函数名(列名)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 需求：查询所有商品的平均零售价</span></span><br><span class="line">mysql&gt; SELECT AVG(salePrice) FROM t_product;</span><br><span class="line">+<span class="comment">----------------+</span></span><br><span class="line">| AVG(salePrice) |</span><br><span class="line">+<span class="comment">----------------+</span></span><br><span class="line">| 124.5000       |</span><br><span class="line">+<span class="comment">----------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：查询所有商品总记录数</span></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">FROM</span> t_product;</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">| COUNT(*) |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">|       36 |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 需求：查询分类为2的商品总数</span></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*) <span class="keyword">FROM</span> t_product <span class="keyword">WHERE</span> dir_id = <span class="number">2</span>;</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">| COUNT(*) |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">|        6 |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="避免重复数据-DISTINCT"><a href="#避免重复数据-DISTINCT" class="headerlink" title="避免重复数据-DISTINCT"></a>避免重复数据-DISTINCT</h2><blockquote>
+<p>查询数据库中的字段的值又多少不同的值</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT distinct dir_id FROM t_product;</span><br><span class="line">+<span class="comment">--------+</span></span><br><span class="line">| dir_id |</span><br><span class="line">+<span class="comment">--------+</span></span><br><span class="line">|      3 |</span><br><span class="line">|      2 |</span><br><span class="line">|      4 |</span><br><span class="line">+<span class="comment">--------+</span></span><br><span class="line">3 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(<span class="keyword">DISTINCT</span> dir_id) <span class="keyword">FROM</span> t_product;</span><br><span class="line">+<span class="comment">------------------------+</span></span><br><span class="line">| COUNT(distinct dir_id) |</span><br><span class="line">+<span class="comment">------------------------+</span></span><br><span class="line">|                      3 |</span><br><span class="line">+<span class="comment">------------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<p>DISTINCT 表示不同的，独特的，有区别的</p>
+<h2 id="多表联查-隐式连接"><a href="#多表联查-隐式连接" class="headerlink" title="多表联查(隐式连接)"></a>多表联查(隐式连接)</h2><hr>
+<p>多表查询：多表联合 然后查询数据</p>
+<p>最简单的格式：SELECT <selectList> FROM 表A, 表B,…</p>
+<blockquote>
+<p>没有连接条件的表返回结果为笛卡尔积：<br>集合 A={a,b}，B={1,2,3} 如果按简单查询表的话，他们的笛卡尔积为{a(1),a(2),a(3),b(1),b(2),b(3)}<br>实际开发要避免<br>解决方案：在WHERE中加入有效的连接条件-&gt;等值连接</p>
+</blockquote>
+<p>需求：查询所有货物的名称，零售价，货物分类名称</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> productName, salePrice, directorName <span class="keyword">FROM</span> t_product p, t_director d <span class="keyword">WHERE</span> p.dir_id = d.dir_id;</span><br><span class="line"></span><br><span class="line">+<span class="comment">-----------------------+-----------+--------------+</span></span><br><span class="line">| productName           | salePrice | directorName |</span><br><span class="line">+<span class="comment">-----------------------+-----------+--------------+</span></span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M100            |        49 | 航空母舰 |</span><br><span class="line">| 罗技M90             |        90 | 银河战舰 |</span><br><span class="line">| 罗技M115            |        99 | 银河战舰 |</span><br><span class="line">+<span class="comment">-----------------------+-----------+--------------+</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>连接 n 个表 至少需要 n-1 个连接条件。</li>
+<li>要给表取别名，要区分开表中的列名相同的列</li>
+<li>表取了别名后就不能使用真名。</li>
+</ol>
+<h2 id="多表联查-显示连接"><a href="#多表联查-显示连接" class="headerlink" title="多表联查(显示连接)"></a>多表联查(显示连接)</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635237869557-mysql.png" alt=""></p>
+<h2 id="union-union-all"><a href="#union-union-all" class="headerlink" title="union/ union all"></a>union/ union all</h2><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select ename, deptno a from emp where job='salesman' or job='analyst' union all select ename, deptno from emp where job='analyst';</span><br><span class="line">+<span class="comment">--------+----+</span></span><br><span class="line">| ename  | a  |</span><br><span class="line">+<span class="comment">--------+----+</span></span><br><span class="line">| ALLEN  | 30 |</span><br><span class="line">| WARD   | 30 |</span><br><span class="line">| MARTIN | 30 |</span><br><span class="line">| SCOTT  | 20 |</span><br><span class="line">| TURNER | 30 |</span><br><span class="line">| FORD   | 20 |</span><br><span class="line">| SCOTT  | 20 |</span><br><span class="line">| FORD   | 20 |</span><br><span class="line">+<span class="comment">--------+----+</span></span><br><span class="line">8 rows in <span class="keyword">set</span> (<span class="number">0.01</span> sec)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意事项</p>
+<ol>
+<li>UNION 内部的 select 语句必须拥有相同的列</li>
+<li>列也必须拥有兼容的数据类型</li>
+<li>每条 select 语句中的列的顺序必须相同</li>
+<li>UNION 结果集中的列名总是等于 UNION 中第一个 select 语句中的列名</li>
+<li>UNION 操作符选取不重复值，若允许重复的值使用 UNION ALL</li>
+</ol>
+</blockquote>
+<h2 id="自连接"><a href="#自连接" class="headerlink" title="自连接"></a>自连接</h2><hr>
+<ul>
+<li>自连接查询,将一张表看成是两张表使用别名区分.</li>
+</ul>
+<p>需求:查询员工名称和其对应经理的名称<br>查询员工和其经理，如果没有经理显示总经理</p>
+<p>课堂练习:自连接查询productdir这张表, 查询出所有子目录,对应的父目录名称</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894719878-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986552-mysql.jpg" alt=""></p>
+<h2 id="单行函数"><a href="#单行函数" class="headerlink" title="单行函数"></a>单行函数</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986553-mysql.png" alt=""></p>
+<h2 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h2><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986554-mysql.png" alt=""></p>
+<p>分组函数单独使用：将整个表分成一组，<code>select count(empno) from emp;</code></p>
+<p>案例：</p>
+<ul>
+<li>按照职位分组，求出每个职位的最高和最低工资</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> job, <span class="keyword">max</span>(sal), <span class="keyword">min</span>(sal) <span class="keyword">FROM</span> emp <span class="keyword">GROUP</span> <span class="keyword">BY</span> job;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询平均工资高于2000的部门和其平均工资</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> deptnp, <span class="keyword">avg</span>(sal) <span class="keyword">FROM</span> emp <span class="keyword">GROUP</span> <span class="keyword">BY</span> deptno <span class="keyword">HAVING</span> <span class="keyword">avg</span>(sal) &gt; <span class="number">2000</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询各个管理人员运功的平均工资，其中平均工资不能低于1300，不计算老板</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> mgr, <span class="keyword">avg</span>(sal) aa <span class="keyword">from</span> emp <span class="keyword">WHERE</span> mgr <span class="keyword">IS</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> mgr <span class="keyword">HAVING</span> aa &gt;= <span class="number">1300</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询至少有一个员工的所有部门编号、名称，并统计出这些部门的平均工资</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> d.deptno, d.dname, <span class="keyword">count</span>(e.empno) aa, <span class="keyword">avg</span>(sal) <span class="keyword">FROM</span> dept d <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> emp e </span><br><span class="line"><span class="keyword">ON</span> d.deptno=e.deptno <span class="keyword">GROUP</span> <span class="keyword">BY</span> d.deptno, d.dname;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="外键约束"><a href="#外键约束" class="headerlink" title="外键约束"></a>外键约束</h2><hr>
+<p>外键约束：A表 依赖 B表， 则 A表 的字段添加外键关联 B表</p>
+<p>外键列允许为空</p>
+<p>注意：MySQL 中， InnoDB 支持事务和外键 ALTER TABLE 表明 ENGINE=’InnoDB’</p>
+<p>主表和从表：主表可以单独存在， 从表依赖主表。</p>
+<blockquote>
+<p>删除表时，先删除从表，再删除主表。</p>
+</blockquote>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15621553213211-mysql.jpg" alt=""></p>
+<blockquote>
+<p>格式：alter table 从表 add constraint 外键 forrign key(从表外键字段) references 主表(主表字段)</p>
+</blockquote>
+<blockquote>
+<p>开发中为了提高性能，往往不要外键约束。需要我们使用 java 代码去主动维护外键的概念。</p>
+</blockquote>
+<h2 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h2><hr>
+<blockquote>
+<p>查询大于公司平均工资的员工名：</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ename,sal <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> sal &gt; (<span class="keyword">SELECT</span> <span class="keyword">AVG</span>(SAL) <span class="keyword">FROM</span> emp)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>查询工资大于 martin 的人的信息</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> sal &gt; (<span class="keyword">SELECT</span> SAL <span class="keyword">FROM</span> emp <span class="keyword">WHERE</span> ENAME=<span class="string">'martin'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635089670685-mysql.jpg" alt=""></p>
+<ol>
+<li>单行单列子查询可以看做一个值</li>
+<li>多行单列，可以看做一个集合<ul>
+<li>IN 与集合内任意值相等即可</li>
+<li>ANY 与子查询返回的任意一个值比较<ul>
+<li>= ANY 此时与 IN 相同</li>
+<li><code>&gt;</code> ANY 表示大于集合中的最小值</li>
+<li><code>&lt;</code> ANY 小于集合中最大值</li>
+</ul>
+</li>
+<li>ALL 与子查询返回的每一个值比较<ul>
+<li><code>&gt;</code> ALL 大于集合中的最大值</li>
+<li><code>&lt;</code> ALL 小于集合中的最小值 </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>多列子查询，临时表</li>
+</ol>
+<p>案例：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986555-mysql.png" alt=""></p>
+<h3 id="案例：查询每个部门编号、名称、部门人数，平均工资"><a href="#案例：查询每个部门编号、名称、部门人数，平均工资" class="headerlink" title="案例：查询每个部门编号、名称、部门人数，平均工资"></a>案例：查询每个部门编号、名称、部门人数，平均工资</h3><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> d.DEPTNO, d.DNAME, <span class="keyword">IFNULL</span>(a.count,<span class="number">0</span>), a.avg <span class="keyword">FROM</span> dept d <span class="keyword">LEFT</span> <span class="keyword">JOIN</span> </span><br><span class="line">(<span class="keyword">SELECT</span> DEPTNO, <span class="keyword">AVG</span>(sal) <span class="keyword">avg</span>, <span class="keyword">COUNT</span>(EMPNO) <span class="keyword">count</span> <span class="keyword">FROM</span> emp <span class="keyword">GROUP</span> <span class="keyword">BY</span> DEPTNO) a </span><br><span class="line"><span class="keyword">on</span> d.DEPTNO = a.DEPTNO</span><br></pre></td></tr></table></figure>
+
+<p>先查询 emp 表中的 平均工资、人数、部门编号，并且按 deptNo 分组，</p>
+<p>然后将 dept 表和 上面查出的表 通过字段 deptNo 结合</p>
+<h3 id="案例：查询员工信息与部门名称"><a href="#案例：查询员工信息与部门名称" class="headerlink" title="案例：查询员工信息与部门名称"></a>案例：查询员工信息与部门名称</h3><hr>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> e.ename, (<span class="keyword">SELECT</span> DNAME <span class="keyword">FROM</span> dept <span class="keyword">where</span> deptno = e.deptno) dname, deptno <span class="keyword">from</span> emp e;</span><br></pre></td></tr></table></figure>
+<p>每查一条 emp 表数据， 就会执行以下 () 中的子查询查到部门名称。</p>
+<h1 id="SQL-执行顺序"><a href="#SQL-执行顺序" class="headerlink" title="SQL 执行顺序"></a>SQL 执行顺序</h1><hr>
+<p>select - from - where - group by - having - order by - limit ?,?</p>
+<p>-&gt;  from – where –group by – having – select – order by – limit ?,?</p>
+<h1 id="规范约定"><a href="#规范约定" class="headerlink" title="规范约定"></a>规范约定</h1><hr>
+<ol>
+<li>表名，t_表名</li>
+<li>主键：id</li>
+<li>外键：A表依赖B表，则使用B表的表名(缩写)_主键名：t_director -&gt; dir_id</li>
+</ol>
+<h1 id="数据备份和恢复"><a href="#数据备份和恢复" class="headerlink" title="数据备份和恢复"></a>数据备份和恢复</h1><hr>
+<p>修改之前，需要先做数据备份</p>
+<p>MySQL 自身数据库维护：默认禁用。需要修改my.ini 配置后重启服务器，注释掉 [client]no-beep</p>
+<blockquote>
+<p>导出<br>通过命令行，mysqldump -u账户 -p 数据库名称 &gt; 脚本文件地址<br>nysqldump -u root -p admin test&gt;f:/test_bak.sql</p>
+</blockquote>
+<blockquote>
+<p>导入<br>mysql -u 账户 -p 数据库名称&lt;脚本文件存储地址<br>mysql -u root -padmin test&lt;f:/test_bak.sql</p>
+</blockquote>
+<p>navicat 工具的导入和导出</p>
+<blockquote>
+<p>ORM(Object Relational Mapping)</p>
+</blockquote>
+<p>ORM思想：为了解决面向对象与关系数据库存在的互不匹配的现象的技术。ORM是通过使用描述对象和数据库之间映射的元数据，将java程序中的对象自动持久化到关系数据库中。</p>
+<h1 id="事务并发"><a href="#事务并发" class="headerlink" title="事务并发"></a>事务并发</h1><hr>
+<p>多个事务并发去访问/修改同一个资源</p>
+<p>事务并发可能会导致的问题：</p>
+<ol>
+<li>第一类 丢失更新<ul>
+<li><strong>撤销</strong>一个事务时，把其他事务已提交的更新数据<strong>回滚</strong>了。<br><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635195492994-mysql.jpg" alt=""></li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><p>第二类 丢失更新</p>
+<ul>
+<li><strong>提交</strong>一个事务时，把其他事务已提交的更新的数据<strong>覆盖</strong>了<br><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635195812500-mysql.jpg" alt=""></li>
+</ul>
+</li>
+<li><p>脏读：一个事务读到另一个事务未提交的更新数据。<br> <img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635196462783-mysql.jpg" alt=""></p>
+</li>
+<li><p>幻读：一个事务执行两次查询，但第二次查询比第一次查询多处了一些数据行<br> <img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635196180678-mysql.jpg" alt=""></p>
+</li>
+<li><p>不可重复读：一个事务两次读同一行数据，得到的数据不一样<br> <img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635197259936-mysql.jpg" alt=""></p>
+</li>
+</ol>
+<h2 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h2><hr>
+<ol>
+<li><strong>第一级别：Read Uncommitted(读取未提交内容)</strong><ol>
+<li>所有事务都可以看到其他未提交事务的执行结果</li>
+<li>本隔离级别很少用于实际应用，因为它的性能也不好</li>
+<li>该级别引发的问题：脏读，读取到了未提交的数据</li>
+</ol>
+</li>
+<li><strong>第二级别：Read Committed(读取提交内容)</strong><ol>
+<li>这是大多数数据库系统的默认隔离级别(不是MySQL默认的)</li>
+<li>一个事务只能看见自己已经提交事务所做的改变</li>
+<li>这种隔离出现的问题是：不可重复读，不可重复读意味着我们在同一个事务中执行完全相同的 select 语句时可能看到不一样的结果</li>
+<li>导致这种情况的原因可能有：<ul>
+<li>有一个较差的事务有新的 commit，导致了数据的改变</li>
+<li>一个数据库被多个实例操作，同一事务的其他实例在该实例处理期间可能会有新的 commit</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>第三级别：Repeatable Read(可重读)</strong><ol>
+<li>这个是MySQL的默认事务隔离级别</li>
+<li>它确保同一事务的多个实例在并发读取数据时，会看到同样的数据行</li>
+<li>此级别可能出现的问题—幻读，当用户读取某一范围的数据行时，另一个事务又在该范围内插入了新行，当用户再读取该范围的数据行时，会发现有新的行</li>
+<li>InnoDB和Falcon存储引擎通过多版本并发控制(MBCC, Multiversion Concurrency Control)机制解决了该问题</li>
+</ol>
+</li>
+<li><strong>第四级别：Serializable(可串行化)</strong><ol>
+<li>这是最高的隔离级别</li>
+<li>它通过强制事务排序，使之不可能互相冲突，从而解决幻读问题，它是在每个读的数据行上加上共享锁。</li>
+<li>这个级别，可能导致大量的超时现象和锁竞争。</li>
+</ol>
+</li>
+</ol>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635206395510-mysql.jpg" alt=""></p>
+<p>查看是否隔离级别 <code>SELECT @@tx_isolation;</code> MySQL默认是可重复读</p>
+<h2 id="悲观锁和乐观锁"><a href="#悲观锁和乐观锁" class="headerlink" title="悲观锁和乐观锁"></a>悲观锁和乐观锁</h2><hr>
+<h3 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h3><hr>
+<ul>
+<li>写锁</li>
+</ul>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986556-mysql.png" alt=""></p>
+<p>两个事务开启，当其中一个更新某一行数据后，另一个再要访问同一行数据，会阻塞。当访问的那个事务提交后，另一个事务才会正常运转</p>
+<ul>
+<li>排他锁</li>
+</ul>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635206395511-mysql.png" alt=""></p>
+<h3 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h3><hr>
+<p>在表中额外增加一个列，用来表示修改的版本(int)，修改一次就把版本加1</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986557-mysql.png" alt=""></p>
+<p>Mybatis 会通过返回结果的受影响行数进行判断 操作是否成功。 </p>
+<blockquote>
+<p>操作步骤：</p>
+</blockquote>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635894986558-mysql.png" alt=""></p>
+<ol>
+<li>在表中新增一列，用来表示修改的版本号，类型使用整数类型，初始值为0</li>
+<li>在修改数据前，先发送 SELECT 语句查询当前被修改数据的信息</li>
+<li>发送 update 语句更新数据，版本号修改递增1/判断条件中的版本号必须是刚刚查询出来的版本号<ul>
+<li><code>UPDATE person set name=&#39;java&#39;, version=version + 1 where id=10 and version= 刚刚查询出的版本号</code> </li>
+</ul>
+</li>
+<li>判断 update 语句执行后的受影响行数 rows， 若 rows&gt;0 则提交事务，否则回滚事务。</li>
+</ol>
+<blockquote>
+<p>意识：如果需要处理乐观锁，应该写好 DAO 之后，立马编写 service 的 update 方法。</p>
+</blockquote>
+<h1 id="MySQL-数据库中的权限"><a href="#MySQL-数据库中的权限" class="headerlink" title="MySQL 数据库中的权限"></a>MySQL 数据库中的权限</h1><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15635206395512-mysql.png" alt=""></p>
+<p>权限相关命令： GRANT</p>
+<p>完整语法： <code>GRANT 权限(columns) ON 数据库对象 TO 用户 IDENTIFIED BY &quot;密码&quot; WITH GRANT OPTION</code></p>
+<p>三种具体语法：</p>
+<ol>
+<li><p>给一个存在用户赋予权限</p>
+<ul>
+<li><p><code>GRANT 权限(columns) ON 数据库对象 TO 用户</code></p>
+</li>
+<li><p>赋予 will 账户:SELECT和INSERT权限</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">select</span>, <span class="keyword">insert</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> will@localhost;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>.左边的*是数据库，.右边是数据表  *.*表示全局权限</code></p>
+</li>
+</ul>
+</li>
+<li><p>创建用户，设置密码，赋予权限</p>
+<ul>
+<li><code>GRANT 权限(columns) ON 数据库对象 TO 用户 IDENTIFIED BY &quot;密码&quot;</code></li>
+<li>创建lucy用户：</li>
+<li><code>GRANT ALL ON *.* TO lucy@localhost IDENTIFIED BY &#39;1234&#39;</code></li>
+</ul>
+</li>
+<li><p>创建用户，设置密码，赋予权限，并且该用户可以继续授权给其他用户：</p>
+<ul>
+<li><code>GRANT 权限(columns) ON 数据库对象 TO 用户 IDENTIFIED BY &#39;密码&#39; WITH GRANT OPTION</code></li>
+<li><code>GRANT ALL privileges on *.* TO will@&#39;localhost&#39; IDENTIFIED BY &#39;1234&#39; WITH GRANT OPTION;</code></li>
+<li>创建一个超级管理员，用户名为 will，密码为1234，只能在 localhost 登录，可以给别人授权。</li>
+</ul>
+</li>
+</ol>
+<p>其中</p>
+<ul>
+<li>ALL PRIVILEGES 代表所有权限</li>
+<li><code>*.*：所有数据库对象。普通格式为 db.table，比如test.*</code></li>
+<li>will@’localhost’ : will用户，只能在本机访问。<ul>
+<li>用户账户包括 user@host</li>
+<li>host 为<ul>
+<li><code>%从任意网址访问</code></li>
+<li><code>10.250.7.%</code> 只能从指定网段访问</li>
+<li><code>192.168.1.2</code>只能从某个 IP 访问</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>WITH GRANT OPTION 是否允许用户继续授权(注意，这个用户能够授权只能是该用户的权限子集)</li>
+<li>注意，授权操作之后，使用 flush privileges 命令刷新权限。</li>
+</ul>
+<h2 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h2><hr>
+<p>DROP USER 用户名称， user必须包括 user@host，如：<code>DROP USER will@&#39;%&#39;</code>;<br>查看当前用户的权限：<code>show grants</code> ，<code>show grants for root@localhost</code> 查看特定用户权限</p>
+<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><hr>
+<p>一种 sql 写法，</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;resultMap id="BaseResultMap" type="cn.wolfcode.crm.domain.CustomerTraceHistory"&gt;</span><br><span class="line">	&lt;association property="customer" javaType="Customer" columnPrefix="c_"&gt;</span><br><span class="line">		&lt;id column="id" property="id"/&gt;</span><br><span class="line">		&lt;result column="name" property="name"/&gt;</span><br><span class="line">	&lt;/association&gt;</span><br><span class="line">&lt;/resultMap&gt;</span><br><span class="line"></span><br><span class="line">&lt;select id="queryForList" resultMap="BaseResultMap"&gt;</span><br><span class="line">	<span class="keyword">SELECT</span></span><br><span class="line">		his.id</span><br><span class="line">		his.trace_time</span><br><span class="line">		...</span><br><span class="line">		c.id c_id</span><br><span class="line">		c.name c_name</span><br><span class="line">		type.id type_id</span><br><span class="line">		type.name type_name</span><br><span class="line">		<span class="keyword">FROM</span> customertracehistory his</span><br><span class="line">		<span class="keyword">LEFT</span> <span class="keyword">JOIN</span> customer c <span class="keyword">ON</span> c.id = his.customer_id</span><br><span class="line">		...</span><br><span class="line">&lt;/<span class="keyword">select</span>&gt;</span><br></pre></td></tr></table></figure>
+
+
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2019/07/02/MySQL/">http://lizhaoloveit.cn/2019/07/02/MySQL/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/03/XML%E8%A7%A3%E6%9E%90/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>XML解析</span></div></a></div><div class="next-post pull-right"><a href="/2019/07/01/Java%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Java类加载机制</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2019/07/02/MySQL/';
+  this.page.identifier = '2019/07/02/MySQL/';
+  this.page.title = 'MySQL';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

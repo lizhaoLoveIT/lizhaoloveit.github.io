@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Maven | Ammar's Blog</title><meta name="description" content="Maven"><meta name="keywords" content="Maven"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2019/07/20/Maven/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Maven"><meta name="twitter:description" content="Maven"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="Maven"><meta property="og:url" content="http://lizhaoloveit.cn/2019/07/20/Maven/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="Maven"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="Spring入门IoC、DI" href="http://lizhaoloveit.cn/2019/07/25/Spring%E5%85%A5%E9%97%A8IoC%E3%80%81DI/"><link rel="next" title="Listener" href="http://lizhaoloveit.cn/2019/07/18/Listener/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一个-marven-程序"><span class="toc-number">1.</span> <span class="toc-text">第一个 marven 程序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#通过-maven-命令生成-maven-项目骨架"><span class="toc-number">1.1.</span> <span class="toc-text">通过 maven 命令生成 maven 项目骨架</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Maven-安装-jar-包"><span class="toc-number">2.</span> <span class="toc-text">Maven 安装 jar 包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#eclipse-关联-Maven"><span class="toc-number">3.</span> <span class="toc-text">eclipse 关联 Maven</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#构建-web-项目"><span class="toc-number">4.</span> <span class="toc-text">构建 web 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装-tomcat7-插件，"><span class="toc-number">4.1.</span> <span class="toc-text">安装 tomcat7 插件，</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pom-war-jar"><span class="toc-number">5.</span> <span class="toc-text">pom-war-jar</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pom-工程"><span class="toc-number">5.1.</span> <span class="toc-text">pom 工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#war-工程"><span class="toc-number">5.2.</span> <span class="toc-text">war 工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#jar-工程"><span class="toc-number">5.3.</span> <span class="toc-text">jar 工程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#坐标和依赖"><span class="toc-number">6.</span> <span class="toc-text">坐标和依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#坐标"><span class="toc-number">6.1.</span> <span class="toc-text">坐标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Maven-管理依赖"><span class="toc-number">6.2.</span> <span class="toc-text">Maven 管理依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#依赖范围-scope"><span class="toc-number">6.3.</span> <span class="toc-text">依赖范围 scope</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#scope-的依赖传递："><span class="toc-number">6.3.1.</span> <span class="toc-text">scope 的依赖传递：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#optional"><span class="toc-number">6.3.2.</span> <span class="toc-text">optional</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exclusion-排除"><span class="toc-number">6.3.3.</span> <span class="toc-text">exclusion 排除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最佳实践"><span class="toc-number">6.4.</span> <span class="toc-text">最佳实践</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Maven-生命周期"><span class="toc-number">7.</span> <span class="toc-text">Maven 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#三套互相独立的生命周期"><span class="toc-number">7.1.</span> <span class="toc-text">三套互相独立的生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#clean"><span class="toc-number">7.1.1.</span> <span class="toc-text">clean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#default-生命周期"><span class="toc-number">7.1.2.</span> <span class="toc-text">default 生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#site-生命周期"><span class="toc-number">7.1.3.</span> <span class="toc-text">site 生命周期</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#搭建-maven-私服"><span class="toc-number">8.</span> <span class="toc-text">搭建 maven 私服</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">Maven</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-07-20<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-03-12</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E6%A1%86%E6%9E%B6/">框架</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E6%A1%86%E6%9E%B6/Maven/">Maven</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">4.9k</span><span class="post-meta__separator">|</span><span>阅读时长: 19 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>类似 iOS 的 cocoaPod，是一个跨平台的项目管理工具，作用域 Java平台项目，使用命令行完成重复，繁琐的构建。从中央仓库帮我们下载并管理项目依赖的 jar 包，自动管理这些 jar 包依赖的其他 jar 包。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283520-maven.png" alt=""></p>
+<p>boot 中放着 maven 的类加载器</p>
+<p>conf 中</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283521-maven.png" alt=""></p>
+<p>setting.xml 配置 全局的文件</p>
+<p>额外的配置：Maven 在构建大型业务项目的时候，十分耗内存，可以为 Maven 的运行配置 JVM 内存：设置 Maven_OPTS 环境变量(中间是空格)：-Xms128m Xmx512m</p>
+<h1 id="第一个-marven-程序"><a href="#第一个-marven-程序" class="headerlink" title="第一个 marven 程序"></a>第一个 marven 程序</h1><hr>
+<ol>
+<li>Maven 规定了一套默认的项目格式：</li>
+</ol>
+<ul>
+<li><code>src/main/java</code> – 存放项目的 .java 文件</li>
+<li><code>src/main/resources</code> – 存放项目资源文件，如 spring、structs2 配置文件，db.properties</li>
+<li><code>src/main/webapp</code> – 存放 jsp，css，image 等文件</li>
+<li><code>src/test/java</code> – 存放所有测试 .java 文件，如 JUnit 测试类</li>
+<li><code>src/test/resources</code> – 测试资源文件(如果不写，默认和 src/main/resources 一样)</li>
+<li><strong><code>pom.xml</code> – 主要要写的 maven 配置文件</strong></li>
+<li><code>target</code> – 项目由 maven 自动输出位置</li>
+</ul>
+<ol start="2">
+<li>按照下面的目录结构创建一个目录结构</li>
+</ol>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283522-maven.png" alt=""></p>
+<hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283523-maven.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>project</td>
+<td>工程的根标签</td>
+</tr>
+<tr>
+<td>modelVersion</td>
+<td>模型版本需要设置为 4.0</td>
+</tr>
+<tr>
+<td>groupId</td>
+<td>工程组的唯一标识，在组织或者项目中是唯一的，例如一个银行组织 com.companyname.project-group 拥有所有和银行相关的项目</td>
+</tr>
+<tr>
+<td>artifactId</td>
+<td>工程的标识，通常是工程的名称，groupId和artifactId 一起定义了 artifact 在仓库中的位置</td>
+</tr>
+<tr>
+<td>version</td>
+<td>工程的版本号，在 artifact 仓库中，用来区分不同的版本  com.company.bank:consumer-banking:1.0 com.company.bank:consumer-banking:1.1</td>
+</tr>
+</tbody></table>
+<p>切换到项目根目录下(在可以看到pom.xml的文件夹下)，分别执行下列命令并观察：</p>
+<ol>
+<li>执行 mvn compile 命令<ul>
+<li>编译源代码 </li>
+</ul>
+</li>
+<li>行mvn clean命令<ul>
+<li>清除产生的项目</li>
+</ul>
+</li>
+<li>执行mvn compile命令</li>
+<li>执行mvn test命令<ul>
+<li>运行测试</li>
+</ul>
+</li>
+<li>执行mvn package命令<ul>
+<li>打包</li>
+</ul>
+</li>
+<li>执行mvn site命令<ul>
+<li>产生 site</li>
+</ul>
+</li>
+<li>执行mvn install命令<ul>
+<li>在本地 Repository 中安装 jar</li>
+<li>目录：<code>/Users/Ammar/.m2</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="通过-maven-命令生成-maven-项目骨架"><a href="#通过-maven-命令生成-maven-项目骨架" class="headerlink" title="通过 maven 命令生成 maven 项目骨架"></a>通过 maven 命令生成 maven 项目骨架</h2><hr>
+<p>执行命令：<code>mvn archetype:generate</code></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283524-maven.png" alt=""></p>
+<p>可以看到有很多的archetype，每个前面有一个序号，输入序号（或者直接回车，选的就是quick-start）：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283525-maven.png" alt=""></p>
+<ul>
+<li>groupId:<code>cn.lizhaoloveit.maven</code></li>
+<li>artifactId:<code>HelloMaven</code></li>
+<li>Define value for property ‘version’ 1.0-SNAPSHOT : <code>1.0</code></li>
+<li>package:<code>/n</code></li>
+</ul>
+<p>自动创建所有目录</p>
+<blockquote>
+<p>mvn archetype:create -DgroupId=[your group id] -DartifactId=[your archetype id] -DarchetypeArtifactId=maven-archetype-webapp</p>
+</blockquote>
+<p>如果mvn archetype:generate列出内容过多，或者下载过慢，运行：</p>
+<blockquote>
+<p>mvn archetype:generate -DarchetypeCatalog=internal</p>
+</blockquote>
+<p>只列出系统内部有的archetype；</p>
+<h1 id="Maven-安装-jar-包"><a href="#Maven-安装-jar-包" class="headerlink" title="Maven 安装 jar 包"></a>Maven 安装 jar 包</h1><hr>
+<p><code>mvn install:install-file -Dfile=jar包的位置 -DgroupId=上面的groupId -DartifactId=上面的artifactId -Dversion=上面的version -Dpackaging=jar</code></p>
+<h1 id="eclipse-关联-Maven"><a href="#eclipse-关联-Maven" class="headerlink" title="eclipse 关联 Maven"></a>eclipse 关联 Maven</h1><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283526-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283527-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283528-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283529-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283530-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283531-maven.png" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283532-maven.png" alt="2019-07-20 at 7.10 P"></p>
+<h1 id="构建-web-项目"><a href="#构建-web-项目" class="headerlink" title="构建 web 项目"></a>构建 web 项目</h1><hr>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283533-maven.png" alt="2019-07-20 at 9.56 P"></p>
+<p><code>web.xml is missing and &lt;failOnMissingWebXml&gt; is set to 
+ true</code></p>
+<p>报错，缺少 web.xml，在 src/main/webapp/ 下创建 WEB-INFO 文件夹和 web.xml 文件。</p>
+<p>导入需要依赖的 jar</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>cn.lizhaoloveit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-webapp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>marven_web<span class="tag">&lt;/<span class="name">name</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">  			<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  			<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  			<span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  			<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  				<span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></span><br><span class="line">  				<span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></span><br><span class="line">  				<span class="tag">&lt;<span class="name">encoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">encoding</span>&gt;</span></span><br><span class="line">  			<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">  		<span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">  </span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-tomcat7-插件，"><a href="#安装-tomcat7-插件，" class="headerlink" title="安装 tomcat7 插件，"></a>安装 tomcat7 插件，</h2><hr>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">port</span>&gt;</span>80<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">path</span>&gt;</span>/<span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">uriEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">uriEncoding</span>&gt;</span><span class="comment">&lt;!-- 针对GET 的乱码处理 --&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h1 id="pom-war-jar"><a href="#pom-war-jar" class="headerlink" title="pom-war-jar"></a>pom-war-jar</h1><hr>
+<p>pom 工程：用在父级工程或聚合工程中，用来做 jar 包的版本控制</p>
+<p>war 工程：将会打包成 war，发布在服务器上的工程，如网站或服务</p>
+<p>jar 工程：将会打包成 jar，用作 jar 包使用</p>
+<p>jdk9 后还可以打包 jmod(Java 模块化)，厉害的是这个通过 jlink命令，可以直接将jmode打包为对应环境的可执行程序，告别了让用户安装 jdk 的步骤，现在也有对应的 maven 插件了</p>
+<p>以淘淘商城为例：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15624282283534-maven.jpg" alt=""></p>
+<h2 id="pom-工程"><a href="#pom-工程" class="headerlink" title="pom 工程"></a>pom 工程</h2><hr>
+<ol>
+<li>taotao-parent : <ul>
+<li>是整个项目的父工程，它是一个 pom 工程，用来做整个项目的版本控制，也就是项目中所有要使用到的 jar 包的版本都集中由父工程管理。这样你在写其他工程 pom 文件中 maven 依赖时就不需要写版本号了，当然所有的项目都要先继承它才行</li>
+</ul>
+</li>
+<li>taotao-manager<ul>
+<li>创建 taotao-manager 用来做聚合工程，它也是一个 pom 工程，创建四个 model 分别是 taotao-manager-pojo, taotao-manager-dao, taotao-manager-service, taotao-manager-web，同时会自动生成 4 个独立的 maven 工程。聚合工程知识用来帮助其他模块构建的工具，本身并没有实质的内容，具体每个工程代码的编写还是在生成的工程中去写。</li>
+<li>使用聚合工程 taotao-manager 的意义就是：原本这些模块也是一个个独立的工程，现在将它们聚合到 taotao-manager 中，这样我们构建项目的时候就只要构建 taotao-manager一个就行了，我们只要使用 maven 构建这个聚合工程 taotao-manager 就行了不用去操心模块的构建，比如 install 时，只要 install taotao-manager 就行。总之就是简化操作，正常的编码工作还是在对应的 taotao-manager-pojo, taotao-manager-dao, taotao-manager-service,taotao-manager-web 工程中进行的。</li>
+</ul>
+</li>
+</ol>
+<h2 id="war-工程"><a href="#war-工程" class="headerlink" title="war 工程"></a>war 工程</h2><hr>
+<p>taotao-rest, taotao-portal 这些</p>
+<p>这些功臣个都是要部署在服务器上的，所以要打包成 war 形式，这些工程有的是用户通过浏览器直接访问，有的是通过发布服务被别的工程调用。</p>
+<h2 id="jar-工程"><a href="#jar-工程" class="headerlink" title="jar 工程"></a>jar 工程</h2><hr>
+<p>taotao-common</p>
+<p>这个就是打包成 jar 的工程，它就是存放一些其他工程都会使用的类，工具类。我们可以在其他工程的 pom 文件中去引用它，和引用别的 jar 包没什么区别</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">depandency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.taotao<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>taotao-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="坐标和依赖"><a href="#坐标和依赖" class="headerlink" title="坐标和依赖"></a>坐标和依赖</h1><hr>
+<h2 id="坐标"><a href="#坐标" class="headerlink" title="坐标"></a>坐标</h2><hr>
+<p>Maven 中坐标就是用来规范 maven 唯一标示一个构建的方法</p>
+<ol>
+<li>groupId：项目名称</li>
+<li>artifactId:项目中的 项目/模块名称</li>
+<li>version:项目版本</li>
+<li>packing:打包的方式，比如 jar、war、pom 等(项目名-版本号.打包方式)</li>
+<li>classifier:附属构件，比如source，javadoc等，一般不会直接定义 classifier(分类器，分级器)，附加构件不是直接定义的，是插件帮助构件的。</li>
+</ol>
+<h2 id="Maven-管理依赖"><a href="#Maven-管理依赖" class="headerlink" title="Maven 管理依赖"></a>Maven 管理依赖</h2><hr>
+<ul>
+<li>如何引入 jar 包</li>
+</ul>
+<p>在代码开发时，如果需要使用第三方 jar 包提供的类库，那么需要在 pom.xml 加入该 jar 包依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- https://mvnrepository.com/artifact/org.apache.hadoop/zookeeper --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依赖传递</li>
+</ul>
+<p>pom.xml 引入 zookeeper jar 包依赖，当 Maven 解析该依赖时，需要引入的 jar 包不仅仅只有 zookeeper，还会有 zookeeper 内部依赖的 jar 包，还会有 zookeeper 内部依赖的 jar 包依赖的 jar 包…，依赖关系不断传递，直至没有依赖。</p>
+<ul>
+<li>包冲突的产生</li>
+</ul>
+<p>假设 A-&gt;B-&gt;C-&gt;D1, E-&gt;F-&gt;D2。D1, D2 分别为 D 的不同版本。如果 pom.xml 文件中引入了 A 和 E 后，按照 Maven 依赖传递原则，工程内需要引入的实际 jar 包，A,B,C,D1和E,F,D2，D1和D2产生包冲突</p>
+<ul>
+<li>解决包冲突</li>
+</ul>
+<p>Maven 解析 pom.xml 文件时，同一个 jar 包只会保留一个，这样会避免引入两个 jar 包导致的工程运行不稳定性。</p>
+<ol>
+<li>最短路径优先<ul>
+<li>Maven 面对 D1 和 D2 时，会默认选择最短路径的那个 jar 包，即D2，E-&gt;F-&gt;D2比 A-&gt;B-&gt;C-&gt;D1 路径短1.</li>
+</ul>
+</li>
+<li>最先声明优先<ul>
+<li>如果路径一样，A-&gt;B-&gt;C1, E-&gt;F-&gt;C2 那么久选择最先声明</li>
+</ul>
+</li>
+</ol>
+<p>移除依赖，如果不想通过 A-&gt;B-&gt;C-&gt;D1 引入 D1 的话，那么再声明引入 A 的时候，将 D1 排除。</p>
+<p>将 zookeeper 的 jline 依赖排除</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hadoop<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>jline<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jline<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>检测包冲突工具</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mvn dependency:help</span><br><span class="line">mvn dependency:analyze</span><br><span class="line">mvn dependency:tree</span><br><span class="line">mvn dependency:tree -Dverbose</span><br></pre></td></tr></table></figure>
+
+<p>依赖管理解决问题：</p>
+<p>当同一个工程内有多个模块时，并且要求多个模块使用某个 jar 包的相同版本，为了方便统一版本号，升级版本号，需要提取出一个父亲模块来管理子模块共同依赖的 jar 包版本。</p>
+<p>有两个模块 projectA, projectB，它们依赖分别如下所示：</p>
+<p>projectA:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-a<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>excluded-artifact<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">type</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>project B</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">type</span>&gt;</span>war<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">type</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>projectA 和 projectB 共同依赖了 group-a/artifact-b/1.0，提取公共依赖，生成 parent，parent 依赖如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">type</span>&gt;</span>bar<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>则 projectA 和 projectB 均不需要指定 group-a/artifact-b 的 version 信息，未来升级 version 信息时，只需要在 parent 内部指定。</p>
+<p>project A</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-a<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>excluded-artifact<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>projectB</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-c<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">type</span>&gt;</span>war<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>group-a<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>artifact-b<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="依赖范围-scope"><a href="#依赖范围-scope" class="headerlink" title="依赖范围 scope"></a>依赖范围 scope</h2><hr>
+<p>scope 的 分类</p>
+<ul>
+<li><p>compile</p>
+<ul>
+<li><strong>默认就是 compile，compile意味着被依赖的项目需要参与当前项目的编译，后续的测试，运行周期也参与其中，是一个比较强的依赖，打包的时候通常需要包含进去。</strong></li>
+</ul>
+</li>
+<li><p>test</p>
+<ul>
+<li>依赖项目仅仅参与测试相关的工作，包括测试代码的编译，执行，比如典型的如 junit。</li>
+</ul>
+</li>
+<li><p>runtime</p>
+<ul>
+<li>runtime 表示被依赖项目无需参与项目的编译，不过后期测试和运行周期需要参与，与 compile 相比，跳过编译而已，正在终端项目(非开源，企业内部系统)中，和 comiple 区别不大，比较常见的对应的 API jar 是 comiple 的，具体是先是 runtime 的，oracle jdbc 驱动jar 就是个很好的例子，一般 scope 为 runtime ，runtime 依赖通常和 optional 搭配使用，optional 为 true，可以用 A 实现，也可以用 B 实现。</li>
+</ul>
+</li>
+<li><p>provided</p>
+<ul>
+<li>意味着打包的时候可以不用包进去，别的设施会提供，该依赖可以参与编译，测试，运行等周期，相当于 compile，但是在打包阶段做了 exclude 的动作。</li>
+</ul>
+</li>
+<li><p>system</p>
+<ul>
+<li>被依赖的项目不会从 maven 仓库抓，而是从本地文件系统拿，一定需要配合<strong>systemPath属性使用</strong>，与 provided相同。</li>
+</ul>
+</li>
+</ul>
+<h3 id="scope-的依赖传递："><a href="#scope-的依赖传递：" class="headerlink" title="scope 的依赖传递："></a>scope 的依赖传递：</h3><hr>
+<p>A-&gt;B-&gt;C 当前项目为 A， A依赖于B，B依赖于C，知道B在A项目中的 scope，那么 当 C 是test或者provided时，A 不依赖 C，否则 A依赖C，C的scope继承于B的scope(对于A来说)</p>
+<h3 id="optional"><a href="#optional" class="headerlink" title="optional"></a>optional</h3><hr>
+<p>依赖的可选：可选项目不会被传递；</p>
+<p>如果A项目依赖B项目；B项目依赖C或者D（比如一个基础项目，兼容了MYSQL或者ORACLE，那么他可能依赖mysql-connector或者classes12.jar）</p>
+<p>但是在A项目运行的时候，只需要C或者D其中一个就可以了。那么对于B项目来说，C和D项目就可以设置optional为true；在A项目中单独设置C或者D的依赖；</p>
+<p>举例:</p>
+<p>比如 mybatis 和 log4j 或dbcp</p>
+<h3 id="exclusion-排除"><a href="#exclusion-排除" class="headerlink" title="exclusion 排除"></a>exclusion 排除</h3><hr>
+<p>移除依赖，如果不想通过 A-&gt;B-&gt;C-&gt;D1 引入 D1 的话，那么再声明引入 A 的时候，将 D1 排除。解决依赖冲突问题</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><hr>
+<ol>
+<li>项目中源代码使用的 jar 包一定在 pom.xml 中显示引用</li>
+<li>经常 check  一下包冲突，检查是否需要处理</li>
+<li>当使用多个模块时， parent 一定要使用包管理模块来规范 jar 包版本，而不是包依赖模块直接引入依赖。</li>
+</ol>
+<h1 id="Maven-生命周期"><a href="#Maven-生命周期" class="headerlink" title="Maven 生命周期"></a>Maven 生命周期</h1><hr>
+<p>在Maven出现之前，项目构建的生命周期就已经存在，软件开发人员每天都在对项目进行清理、编译、测试及部署。虽然大家都在不停地做构建工作，但公司和公司间、项目和项目间，往往使用不同的方式做类似的工作。有的项目以手工的方式在执行编译测试，有的项目写了自动化脚本执行编译测试。可以想象的是，虽然各种手工方式十分类似，但不可能完全一样；同样地，对于自动化脚本，大家也是各写各的，能满足自身需求即可，换个项目就需要重头再来。</p>
+<p><strong>Maven的生命周期就是为了对所有的构建过程进行抽象和统一。</strong></p>
+<p>Maven 从大量项目和构建工具中学习和反思，总结了一套完善、易扩展的生命周期，这个生命周期包含了项目的清理、初始化、编译、测试、打包、集成测试、验证、部署和站点生成等几乎所有构建步骤。几乎所有的项目的构建，都能映射到这样一个生命周期上。</p>
+<p>Maven 的生命周期是抽象的，意味着生命周期本身不做任何实际的工作，Maven 的设计中，实际的任务，都交由插件来完成。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/frames/maven/15637019018472-maven.jpg" alt=""></p>
+<p>每个构建步骤，都可以绑定一个或者多个插件行为，Maven 为大多数构建步骤编写并绑定了默认插件，编译是由 maven-compiler-plugin 完成的，测试是由 maven-surefire-plugin 完成的，当用户有特殊需要的时候，也可以配置插件定制构建行为，甚至自己编写插件。</p>
+<h2 id="三套互相独立的生命周期"><a href="#三套互相独立的生命周期" class="headerlink" title="三套互相独立的生命周期"></a>三套互相独立的生命周期</h2><hr>
+<p>clean、default、site。</p>
+<ul>
+<li>clean 生命周期的目的是清理项目，</li>
+<li>default 生命周期的目的是构建项目，</li>
+<li>site 生命周期的目的是建立项目站点。</li>
+</ul>
+<h3 id="clean"><a href="#clean" class="headerlink" title="clean"></a>clean</h3><p>目的是清理项目，包含3个阶段：</p>
+<ul>
+<li>pre-clean 执行一些清理前需要完成的工作</li>
+<li>clean 清理上一次构建生成的文件</li>
+<li>post-clean 执行一些清理后需要完成的工作</li>
+</ul>
+<h3 id="default-生命周期"><a href="#default-生命周期" class="headerlink" title="default 生命周期"></a>default 生命周期</h3><p>default 生命周期定义了 <strong>真正构建时所需要执行的所有步骤</strong>，阶段如下：</p>
+<ol>
+<li>validate</li>
+<li>initialize</li>
+<li>generate-sources</li>
+<li>process-sources 处理项目主资源文件，一般来说，是对<code>src/main/resources</code>目录的内容进行变量替换等工作后，复制到项目输出的主 <code>classpath</code> 目录中</li>
+<li>generate-resources</li>
+<li>process-resources</li>
+<li>compile 编译项目的源码，编译 <code>src/mian/java</code> 目录下的 java 文件至项目输出的主 <code>classpath</code> 目录中</li>
+<li>process-classes</li>
+<li>generate-test-sources</li>
+<li>process-test-sources 处理项目测试资源文件，一般来说，是对 <code>src/test/resources</code> 目录的内容进行变量替换等工作，复制到项目输出的测试 <code>classpath</code> 目录中</li>
+<li>generate-test-resources</li>
+<li>process-test-resources</li>
+<li>test-compile 编译项目的测试代码，一般来说，是编译<code>src/test/java</code> 目录下的 Java文件至项目输出的测试 <code>classpath</code>目录中</li>
+<li>process-test-classes</li>
+<li>test 使用单元测试框架运行测试，测试代码不会被打包或者部署</li>
+<li>prepare-package</li>
+<li>package 接收编译好的代码，打包成可发布的格式，如jar</li>
+<li>pre-integration-test</li>
+<li>integration-test</li>
+<li>post-integration-test</li>
+<li>verify</li>
+<li>install 将包安装到 Maven 本地仓库，供本地其他 Maven 项目使用</li>
+<li>deploy 最终将包复制到远程仓库。</li>
+</ol>
+<h3 id="site-生命周期"><a href="#site-生命周期" class="headerlink" title="site 生命周期"></a>site 生命周期</h3><p>目的是建立和发布项目站点，Maven能够基于 pom 所包含的信息，自动生成一个站点，方便团队交流和发布项目信息。生命周期如下：</p>
+<ol>
+<li>pre-site 执行一些在生成项目站点之前需要完成的工作</li>
+<li>site 生成项目站点文档</li>
+<li>post-site 执行一些生成项目站点之后需要完成的工作</li>
+<li>site-deploy 将生成的项目站点发布到服务器上</li>
+</ol>
+<blockquote>
+<p>package 和 install 的区别</p>
+</blockquote>
+<ul>
+<li><p><code>mvn clean package</code>依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)等７个阶段。</p>
+</li>
+<li><p><code>mvn clean install</code>依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)、install等8个阶段。</p>
+</li>
+<li><p><code>mvn clean deploy</code>依次执行了clean、resources、compile、testResources、testCompile、test、jar(打包)、install、deploy等９个阶段。</p>
+</li>
+<li><p>package命令完成了项目编译、单元测试、打包功能，但没有把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库</p>
+</li>
+<li><p>install命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库，但没有布署到远程maven私服仓库</p>
+</li>
+<li><p>deploy命令完成了项目编译、单元测试、打包功能，同时把打好的可执行jar包（war包或其它形式的包）布署到本地maven仓库和远程maven私服仓库</p>
+</li>
+</ul>
+<h1 id="搭建-maven-私服"><a href="#搭建-maven-私服" class="headerlink" title="搭建 maven 私服"></a>搭建 maven 私服</h1><hr>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2019/07/20/Maven/">http://lizhaoloveit.cn/2019/07/20/Maven/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Maven/">Maven    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/25/Spring%E5%85%A5%E9%97%A8IoC%E3%80%81DI/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Spring入门IoC、DI</span></div></a></div><div class="next-post pull-right"><a href="/2019/07/18/Listener/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Listener</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2019/07/20/Maven/';
+  this.page.identifier = '2019/07/20/Maven/';
+  this.page.title = 'Maven';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

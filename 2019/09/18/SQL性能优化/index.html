@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>SQL性能优化 | Ammar's Blog</title><meta name="description" content="SQL性能优化"><meta name="keywords" content="数据库"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2019/09/18/SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="SQL性能优化"><meta name="twitter:description" content="SQL性能优化"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="SQL性能优化"><meta property="og:url" content="http://lizhaoloveit.cn/2019/09/18/SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="SQL性能优化"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="Redis" href="http://lizhaoloveit.cn/2019/09/24/Redis/"><link rel="next" title="Swagger2" href="http://lizhaoloveit.cn/2019/09/16/Swagger2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-优化理论"><span class="toc-number">1.</span> <span class="toc-text">SQL 优化理论</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-的执行顺序"><span class="toc-number">2.</span> <span class="toc-text">SQL 的执行顺序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#B-树的概念"><span class="toc-number">3.</span> <span class="toc-text">B 树的概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#B-树的插入"><span class="toc-number">3.1.</span> <span class="toc-text">B 树的插入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-树的删除操作"><span class="toc-number">3.2.</span> <span class="toc-text">B 树的删除操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#B-树"><span class="toc-number">4.</span> <span class="toc-text">B + 树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#插入操作"><span class="toc-number">4.1.</span> <span class="toc-text">插入操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除操作"><span class="toc-number">4.2.</span> <span class="toc-text">删除操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#索引"><span class="toc-number">5.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#InnoDB-的索引实现"><span class="toc-number">5.1.</span> <span class="toc-text">InnoDB 的索引实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#执行计划"><span class="toc-number">6.</span> <span class="toc-text">执行计划</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#explain-各列含义"><span class="toc-number">6.1.</span> <span class="toc-text">explain 各列含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#select-type"><span class="toc-number">6.1.1.</span> <span class="toc-text">select_type</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#id-值大的先执行。值一样从上往下执行。"><span class="toc-number">6.1.2.</span> <span class="toc-text">id 值大的先执行。值一样从上往下执行。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type-这列最重要"><span class="toc-number">6.1.3.</span> <span class="toc-text">type 这列最重要</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SQL-优化实现"><span class="toc-number">7.</span> <span class="toc-text">SQL 优化实现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#join原则"><span class="toc-number">7.1.</span> <span class="toc-text">join原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">7.2.</span> <span class="toc-text">需求</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#避免索引失效"><span class="toc-number">8.</span> <span class="toc-text">避免索引失效</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#不合理的需求"><span class="toc-number">9.</span> <span class="toc-text">不合理的需求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#主从同步"><span class="toc-number">10.</span> <span class="toc-text">主从同步</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#应用场景"><span class="toc-number">10.1.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原理"><span class="toc-number">10.2.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#log-dum-thread"><span class="toc-number">10.2.1.</span> <span class="toc-text">log dum thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-O-thread"><span class="toc-number">10.2.2.</span> <span class="toc-text">I&#x2F;O thread</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SQL-thread"><span class="toc-number">10.2.3.</span> <span class="toc-text">SQL thread</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL-主从复制模式"><span class="toc-number">10.3.</span> <span class="toc-text">MySQL 主从复制模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#异步模式"><span class="toc-number">10.3.1.</span> <span class="toc-text">异步模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#半同步模式"><span class="toc-number">10.3.2.</span> <span class="toc-text">半同步模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全同步模式"><span class="toc-number">10.3.3.</span> <span class="toc-text">全同步模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现"><span class="toc-number">10.4.</span> <span class="toc-text">实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#读写分离"><span class="toc-number">11.</span> <span class="toc-text">读写分离</span></a></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">SQL性能优化</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-09-18<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-10-10</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/">Java</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/Java/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">5.1k</span><span class="post-meta__separator">|</span><span>阅读时长: 16 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h1 id="SQL-优化理论"><a href="#SQL-优化理论" class="headerlink" title="SQL 优化理论"></a>SQL 优化理论</h1><hr>
+<p>后台程序员在写代码的时候，能做的只有对写 SQL 尽可能的做出优化，执行效率变高，有效的使用索引，重点放在写 SQL 上。</p>
+<ol>
+<li>查询性能低</li>
+<li>执行时间过长</li>
+<li>等待时间过长(多线程)</li>
+<li>SQL 写的太差(多表查询)</li>
+<li>索引失效</li>
+<li>服务器参数(缓存、线程数)设置不合理</li>
+<li>项目需求不合理等等</li>
+</ol>
+<p>三高：高性能、高并发、高可用</p>
+<p>MySQL 在收到客户端传入的 SQL 语句后，并不能马上对该 SQL 进行执行，需要经过一系列复杂的流程，最终转变成二进制的机器码，才能被执行，我们需要执行的 SQL 进行优化，就需要先了解一个 SQL 语句的执行有哪些主要环节，以查询的 SQL 举例：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688109932767-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688112131990-mysql.jpg" alt=""></p>
+<p>虽然有查询缓存，但是查询缓存的效率比较低。大部分情况下，必须走到后面的步骤。</p>
+<p>当通过第一个解析树的时候，占位符是不会被解析出来的，如果没有占位符，则完全匹配 SQL，就会执行检查权限然后需操作。如果包含占位符，还会进行后续步骤，把 SQL 交给预处理器。</p>
+<p>预处理后，还会经过一个优化的解析树解析成优化后的 SQL 包括占位符预处理语句等等。查询优化器会对新解析树的 SQL 语句再进行调整，比如<code>多表查询时 left join，一般是将表数据少的表在左边 left join 数据多的表，但是如果我们写 SQL 时，没有这样做，查询优化器也会帮我们进行优化。</code>  查询优化器会对 SQL 进行按性能高的规则的调整。</p>
+<p>写 SQL 不要依赖查询优化器，要养成写规范的性能高的 SQL 的习惯。经过查询优化器优化后，MySQL 认为已经是最优方案了，所以生成一个查询执行计划，然后交给查询执行引擎执行。</p>
+<p>执行引擎是一个接口，如果内部选择哪个存储引擎，就会调用哪个引擎的查询方法查询。常见的有 MyiSAM，InnerDB等等。存储的数据最终都在硬盘上的文件中。</p>
+<h1 id="SQL-的执行顺序"><a href="#SQL-的执行顺序" class="headerlink" title="SQL 的执行顺序"></a>SQL 的执行顺序</h1><hr>
+<p>写 SQL 的顺序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span></span><br><span class="line">    &lt; select_list &gt;</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    &lt; left_table &gt; &lt; join_type &gt;</span><br><span class="line"><span class="keyword">JOIN</span> &lt; right_table &gt; <span class="keyword">ON</span> &lt; join_condition &gt;</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">    &lt; where_condition &gt;</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br><span class="line">    &lt; group_by_list &gt;</span><br><span class="line"><span class="keyword">HAVING</span></span><br><span class="line">    &lt; having_condition &gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    &lt; order_by_condition &gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt; limit_number &gt;</span><br></pre></td></tr></table></figure>
+
+<p>执行顺序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM &lt;left_table&gt;</span><br><span class="line">ON &lt;join_condition&gt;</span><br><span class="line">&lt;join_type&gt; JOIN &lt;right_table&gt;</span><br><span class="line">WHERE &lt;where_condition&gt;</span><br><span class="line">GROUP BY &lt;group_by_list&gt;</span><br><span class="line">HAVING &lt;having_condition&gt;</span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line"><span class="keyword">DISTINCT</span> &lt;select_list&gt;</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> &lt;order_by_condition&gt;</span><br><span class="line"><span class="keyword">LIMIT</span> &lt;limit_number&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="B-树的概念"><a href="#B-树的概念" class="headerlink" title="B 树的概念"></a>B 树的概念</h1><hr>
+<ul>
+<li>每个结点最多有 m-1 个元素(可以存有的键值对)</li>
+<li>根节点最少可以只有1个元素</li>
+<li>非根节点至少有 m/2 个元素</li>
+<li>每个结点中的关键字都按照从小到大顺序排列，每个关键字的左子树中的所有关键字都小于它，而右子树的所有关键字都大于它</li>
+<li>所有叶子节点都位于同一层，根节点到每个叶子节点的长度都相同</li>
+<li>每个结点都存有索引和数据。</li>
+</ul>
+<p>根节点的关键字数量范围：<code>1 &lt;= k &lt;= m-1</code>，非根节点的关键字数量范围 <code>m/2 &lt;= k &lt;= m-1</code></p>
+<p>m表示阶数，表示一个结点最多有多少个孩子节点，比如一个5阶的 B 树，根节点数量范围 <code>1 &lt;= k &lt;= 4</code></p>
+<h2 id="B-树的插入"><a href="#B-树的插入" class="headerlink" title="B 树的插入"></a>B 树的插入</h2><p>插入规则，判断当前节点 key 的个数是否小于等于 m-1，如果满足，直接插入，如果不满足，将节点中间的 key 这个节点分为左右两部分，中间的节点放到父节点中。</p>
+<p>例子：5阶b树，节点最多4个key，</p>
+<ul>
+<li>插入 18,70,50,40</li>
+</ul>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688623927317-mysql.jpg" alt=""></p>
+<ul>
+<li>插入22</li>
+</ul>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688624515771-mysql.jpg" alt=""></p>
+<p>此时，发现节点的关键字已经大于4了，所以需要进行分裂，分裂的规则在上面已经讲了，分裂后，如下图</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688625365069-mysql.jpg" alt=""></p>
+<ul>
+<li>接着插入23,24,39，都比40小，因此放入左子树</li>
+</ul>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688625884547-mysql.jpg" alt=""></p>
+<p>分裂得到下面的平衡</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688737626015-mysql.jpg" alt=""></p>
+<h2 id="B-树的删除操作"><a href="#B-树的删除操作" class="headerlink" title="B 树的删除操作"></a>B 树的删除操作</h2><p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688747066230-mysql.jpg" alt=""></p>
+<p>删除15，这种情况是删除叶子节点的元素，删除之后，节点数还是大于等于 m / 2，这种情况，直接删除即可，</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688748305874-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688748748971-mysql.jpg" alt=""></p>
+<p>接着删除22，此时，22是非叶子节点，对于非叶子节点的删除，需要用后继 元素 覆盖要删除的元素，然后在后继元素所在的子叶中删除后继元素，比如 要删除22，需要用 24 覆盖 22，然后再子叶中删除24。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688771693417-mysql.jpg" alt=""></p>
+<p>此时发现26所在的节点只有一个元素，小于 (m/2) 个，这个节点不符合要求，这个时候的规则是：如果要删除叶子节点，删除后元素个数少于(m/2)，并且它的兄弟节点的元素大于(m/2)个，则先将兄弟节点的元素移到父节点，然后将父节点中最大的元素移到子节点：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688776869854-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688969248200-mysql.jpg" alt=""></p>
+<p>此时树达到稳定状态，如果再删除28，删除的是叶子节点，且删除后，不平衡，所以需要向兄弟节点借元素，但是兄弟节点也只有2个，无法借，这种情况，先将父节点元素移动到该节点，然后将当前节点和兄弟节点中的元素合并，形成新的节点</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689472530787-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689492056163-mysql.jpg" alt=""></p>
+<h1 id="B-树"><a href="#B-树" class="headerlink" title="B + 树"></a>B + 树</h1><hr>
+<p>B + 树与 B树非常相似，相同点：</p>
+<ul>
+<li>根节点至少有一个元素</li>
+<li>非根节点元素个数范围：m/2 &lt;= k &lt;= m-1</li>
+</ul>
+<p>不同点</p>
+<ul>
+<li>B+ 树有两种类型的节点，内部节点(也称索引节点)和叶子节点，内部节点就是非叶子节点，内部节点不存储数据，只存索引，数据都存储在叶子节点</li>
+<li>内部节点中的元素都按照从小到大顺序排列，对于内部节点中的元素，左树中所有的元素都小于它，右树中的元素都大于等于它。</li>
+<li>每个叶子节点都存有相邻叶子节点的指针，叶子节点本身根据关键字的大小自小而大顺序链接</li>
+<li>父节点存储右子树第一个元素的索引</li>
+</ul>
+<h2 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h2><p>插入 5, 10, 15, 20</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689500889890-mysql.jpg" alt=""></p>
+<p>插入25，此时元素数量大于4个，开始分裂</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689501931281-mysql.jpg" alt=""></p>
+<p>接着插入 26, 30，继续分裂</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689502300955-mysql.jpg" alt=""></p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689502584411-mysql.jpg" alt=""></p>
+<h2 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h2><p>因为叶子节点有指针存在，向兄弟节点借元素时，不需要通过父节点，可以直接通过兄弟节点移动即可，然后更新父节点的索引，如果兄弟节点没有多余的元素，就和兄弟节点合并并且删除父节点中的索引。</p>
+<p>初始状态</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689508000396-mysql.jpg" alt=""></p>
+<p>删除10，此时兄弟节点大于2个，就向兄弟节点借一个元素，并且修改父节点中的索引</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689508726554-mysql.jpg" alt=""></p>
+<p>再删除5，合并兄弟节点，并且删除父节点中的索引</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689509324176-mysql.jpg" alt=""></p>
+<p>但是父节点并不是根节点，必须满足大于2个元素的要求，因此，跟兄弟节点合并，</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689510352834-mysql.jpg" alt=""></p>
+<p>B+ 树，单一节点存储的元素更多，查询的 IO 次数更少，适合作为数据库 SQL 的底层数据结构。</p>
+<p>所有的查询都要找到叶子节点，查询性能稳定，所有的叶子节点形成了一个有序链表，便于查找。</p>
+<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><hr>
+<p><strong>SQL 优化重中之重是优化索引</strong><br>索引是一种帮助数据库获得高效查询效率的数据库对象，该数据库对象使用了特殊的数据结构，以 B 树和 Hash 树最为常见，MySQL 中索引默认使用的是 B 树。</p>
+<p>索引好比字典的目录，在查询某个字的时候，先从目录中查找，看我们需要找的字在字典中具体的页数是多少，然后直接翻到对应的页码。</p>
+<p>如果没有索引，会一行一行查询，直到符合条件就从磁盘中读取，执行多次IO操作。如果有索引，比如普通树。建立索引:</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15688579902857-mysql.jpg" alt=""></p>
+<p>在对比第一个值之后，就只会查左边或者右边的树了。瞬间将 IO 次数大幅度降低。</p>
+<p>如果对 age 列建立B树(一般指B+树)索引，遵循树数据结构的特点，对比当前节点，小的在左，大的在右。在B树数据结构中，数据全部存放在叶子节点上，无论查找什么数据只跟树的层数有关，一个3层结构的 B+Tree 能容纳上百万的数据，在上百万的数据中查询数据只需要找3次，效率极高。</p>
+<h2 id="InnoDB-的索引实现"><a href="#InnoDB-的索引实现" class="headerlink" title="InnoDB 的索引实现"></a>InnoDB 的索引实现</h2><p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689511943725-mysql.jpg" alt=""></p>
+<h1 id="执行计划"><a href="#执行计划" class="headerlink" title="执行计划"></a>执行计划</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">user</span></span><br><span class="line"></span><br><span class="line">+<span class="comment">----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line">| <span class="keyword">id</span> | select_type | <span class="keyword">table</span> | <span class="keyword">partitions</span> | <span class="keyword">type</span> | possible_keys | <span class="keyword">key</span>  | key_len | <span class="keyword">ref</span>  | <span class="keyword">rows</span> | filtered | Extra |</span><br><span class="line">+<span class="comment">----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line">|  <span class="number">1</span> | SIMPLE      | <span class="keyword">user</span>  | <span class="literal">NULL</span>       | <span class="keyword">ALL</span>  | <span class="literal">NULL</span>          | <span class="literal">NULL</span> | <span class="literal">NULL</span>    | <span class="literal">NULL</span> |    <span class="number">8</span> |   <span class="number">100.00</span> | <span class="literal">NULL</span>  |</span><br><span class="line">+<span class="comment">----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+</span></span><br><span class="line"><span class="number">1</span> <span class="keyword">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="explain-各列含义"><a href="#explain-各列含义" class="headerlink" title="explain 各列含义"></a>explain 各列含义</h2><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>SELECT 查询的标识符. 每个 SELECT 都会自动分配一个唯一的标识符.</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>SELECT 查询的类型.</td>
+</tr>
+<tr>
+<td>table</td>
+<td>查询的是哪个表</td>
+</tr>
+<tr>
+<td>partitions</td>
+<td>匹配的分区</td>
+</tr>
+<tr>
+<td>type</td>
+<td>join 类型</td>
+</tr>
+<tr>
+<td>possible_keys</td>
+<td>此次查询中可能选用的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>此次查询中确切使用到的索引</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>哪个字段或常数与 key 一起被使用</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>显示此查询一共扫描了多少行. 这个是一个估计值</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>表示此查询条件所过滤的数据的百分比</td>
+</tr>
+<tr>
+<td>extra</td>
+<td>额外的信息</td>
+</tr>
+</tbody></table>
+<h3 id="select-type"><a href="#select-type" class="headerlink" title="select_type"></a>select_type</h3><ul>
+<li>SIMPLE 表示此查询不包含 UNION 查询或子查询</li>
+<li>PRIMARY 表示次查询是最外层的查询</li>
+<li>UNION 表示次查询时 UNION 的第二或随后的查询</li>
+<li>DEPENDENT UNION, UNION 中的第二个或后面的查询语句，取决于外面的查询</li>
+<li>UNION RESULT, UNION 的结果</li>
+<li>SUBQUERY 子查询中的第一个 SELECT</li>
+<li>DEPENDENT SUBQUERY 子查询中的第一个 SELECT，取决于外面的查询，即子查询依赖于外层查询的结果</li>
+</ul>
+<h3 id="id-值大的先执行。值一样从上往下执行。"><a href="#id-值大的先执行。值一样从上往下执行。" class="headerlink" title="id 值大的先执行。值一样从上往下执行。"></a>id 值大的先执行。值一样从上往下执行。</h3><h3 id="type-这列最重要"><a href="#type-这列最重要" class="headerlink" title="type 这列最重要"></a>type 这列最重要</h3><p>显示了连接使用了哪种类别，有无使用索引，使用 Explain 命令分析性能瓶颈的关键项之一</p>
+<p>结果值从好到坏：</p>
+<p><code>system &gt; const &gt; eq_ref &gt; ref &gt; fulltext &gt; ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt; index &gt; ALL</code></p>
+<p>一般来说，得保证查询至少达到 range 级别，最好能达到 ref，否则就可能会出现性能问题</p>
+<table>
+<thead>
+<tr>
+<th>type 值</th>
+<th>情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>const</td>
+<td>根据主键索引或者唯一索引查询到的结果，<code>select id,name from employee where id = 1</code></td>
+</tr>
+<tr>
+<td>ref</td>
+<td>使用非唯一性索引做查询，返回匹配的记录行，常见于多表查询中 <code>select * from department d join employee e on d.id = e.dept.id</code></td>
+</tr>
+<tr>
+<td>range</td>
+<td>索引做范围查询，常见于 <code>&lt;、&lt;=、&gt;、&gt;=、between</code> 等操作</td>
+</tr>
+<tr>
+<td>index</td>
+<td>索引全查询，MySQL 遍历整个索引来查找匹配的行，select age from employee where age &gt;= 20</td>
+</tr>
+</tbody></table>
+<p>注意：SQL 优化的目标之一是吧 type 优化在 ref 到 index 之间，该值没有优化的情况下一般都是 all</p>
+<h1 id="SQL-优化实现"><a href="#SQL-优化实现" class="headerlink" title="SQL 优化实现"></a>SQL 优化实现</h1><hr>
+<ol>
+<li>较为频繁的座位查询条件的字段，应该创建索引，如登录操作</li>
+<li>唯一性太差的字段不适合单独创建索引，即使频繁作为查询条件，作为索引的列，如果不能有效区分数据，这个列就不适合作为索引列。比如(性别、状态不多的状态列等)</li>
+<li>更新非常频繁的字段不适合，索引需要维护</li>
+<li>不会出现在 where 子句中的字段不应该创建索引</li>
+</ol>
+<h2 id="join原则"><a href="#join原则" class="headerlink" title="join原则"></a>join原则</h2><ol>
+<li>数据量小的表写在 join 左边，数据量大的表写在 join 的右边，MySQL 中的 join 都是通过 Nested Loop Join 实现，可以理解为嵌套循环，应该数据量少的表作为外层循环，数据量大的表作为内层循环，然后合并结果。</li>
+<li>优先优化 Nested Loop 的内层循环</li>
+<li>保证 join 语句中被作为连接条件的字段已经建立了 索引</li>
+<li>扩大缓冲区的大小，容纳更大的查询数据(在配置文件中进行配置)</li>
+</ol>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><ul>
+<li>优化根据姓名查询员工信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> <span class="keyword">id</span>,<span class="keyword">name</span>,email,age <span class="keyword">FROM</span> employee <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<p>type = all、Extra = where，<br>在name列上添加普通索引后，type = ref、Extra = Using index condition<br>使用条件列为索引列。</p>
+<ul>
+<li>优化根据姓名和年龄查询员工信息</li>
+</ul>
+<p>在 age 和 name 上建立复合索引 Extra = User index codition。如果只有一个用了索引， Extra 还会显示 where</p>
+<ul>
+<li>优化查询员工姓名、年龄以及所在部门名称的信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> e.id,e.name,e.email,d.name <span class="keyword">FROM</span> employee e <span class="keyword">JOIN</span> department d <span class="keyword">ON</span> e.dept_id = d.id</span><br></pre></td></tr></table></figure>
+
+<p>执行计划都是 all，先查员工表，再查部门表，<br>优化外键索引。添加 dept_id 单值索引，之后 type = ref。</p>
+<ul>
+<li>优化查询名叫 admin 员工姓名、年龄以及所在部门名称的信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> e.id,e.name,e.email,d.name <span class="keyword">FROM</span> employee e <span class="keyword">JOIN</span> department d <span class="keyword">ON</span> e.dept_id = d.id <span class="keyword">where</span> e.name = <span class="string">'admin'</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689836310689-mysql.jpg" alt=""></p>
+<p>没有先查询部门表，是因为有了过滤条件，拿到员工表的数据，对 name 过滤后，数据量就比 department 表中的数据少了，因此会先查员工表的数据。</p>
+<ul>
+<li>优化查询名叫 xx 的员工所拥有的的权限信息</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> p.id,p.name,p.expression <span class="keyword">FROM</span> permission p </span><br><span class="line"><span class="keyword">JOIN</span> role_permission rp <span class="keyword">ON</span> p.id = rp.permission_id </span><br><span class="line"><span class="keyword">JOIN</span> employee_role er <span class="keyword">ON</span> rp.role_id = er.role_id</span><br><span class="line"><span class="keyword">JOIN</span> employee e <span class="keyword">ON</span> e.id = er.employee_id</span><br><span class="line"><span class="keyword">WHERE</span> e.name = <span class="string">'xx'</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689839485687-mysql.jpg" alt=""></p>
+<p>出现了多表的问题。主键都有主键索引，所以我们需要对外键单独建立索引。优化后：在中间表的外键列分别建立单值索引。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15689841000171-mysql.jpg" alt=""></p>
+<h1 id="避免索引失效"><a href="#避免索引失效" class="headerlink" title="避免索引失效"></a>避免索引失效</h1><hr>
+<ol>
+<li>where 语句中 索引列参与算数计算，该索引失效</li>
+<li>where 语句中 索引列参与函数运算， 该索引失效</li>
+<li>where 语句中 使用 in 运算符有时会让索引失效(根据当前运算量评估)</li>
+<li>where 语句中 做不等于(!=, &lt;&gt;)运算， 该索引失效</li>
+<li>where 语句中 发生类型转换，该索引失效</li>
+<li>where 语句中 模糊查询时以 % 开头，该索引失效</li>
+<li>在符合索引的使用时跟声明时顺序不一致或者中间列有缺失，该索引失效<ul>
+<li>如声明了 (a, b, c) 的复合索引，但是在用的时候 中间有列缺失 where a = xx and c = xx 缺失了 b,所以无法使用该复合索引，只要不是缺失中间列，其他情况索引均有效</li>
+</ul>
+</li>
+</ol>
+<h1 id="不合理的需求"><a href="#不合理的需求" class="headerlink" title="不合理的需求"></a>不合理的需求</h1><hr>
+<ul>
+<li>(关系型数据库年代)实时更新，点赞数量、评论等都会挂，但是现在技术突破了，使用非关系型数据库可以实现</li>
+</ul>
+<h1 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h1><hr>
+<p>将服务器责任分离，一些服务器只做查询，一些服务器只做增删改，因为增删改对索引是有很大影响的。此时，使用某种机制将增删改服务器中的数据同步到查询服务器就会极大的优化性能。</p>
+<p>主从同步是只，数据可以从一个 MySQL 数据库服务器主节点复制到一个或多个从节点，MySQL 默认采用异步复制方式，这样从节点不用一直访问主服务器来更新自己的数据，数据的更新可以在远程连接上进行，从节点可以复制主数据库中的所有数据库或者特定的数据库，或者特定的表。</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>读写分离、架构扩展</p>
+<p>随着系统中业务访问量增大，如果是单机部署数据库，会导致 I/O 访问频率过高，有了主从复制，增加多个数据存储节点，将负载分布在多个从节点上，降低单机磁盘 I/O 访问的频率，提高单个机器的 I/O 性能。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>MySQL 主从赋值涉及到三个线程，一个运行在主节点(log dump thread)，其余两个(I/O thread，SQL thread) 运行在从节点。</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15690724906415-mysql.jpg" alt=""></p>
+<h3 id="log-dum-thread"><a href="#log-dum-thread" class="headerlink" title="log dum thread"></a>log dum thread</h3><p>当从节点连接主节点时，主节点会创建一个 log dump 线程，用于发送 bin-log 的内容，读取 bin-log 中的操作时，此线程会对主节点上的 bin-log 加锁，当读取完成，锁会被释放</p>
+<h3 id="I-O-thread"><a href="#I-O-thread" class="headerlink" title="I/O thread"></a>I/O thread</h3><p>当从节点上执行 <code>start slave</code> 命令，从节点会创建一个 I/O 线程用来连接主线程，请求主库中更新的 bin-log。I/O 线程接收到主节点 bin log dump 进程发来的更新后，保存在本地的 relay-log 中</p>
+<h3 id="SQL-thread"><a href="#SQL-thread" class="headerlink" title="SQL thread"></a>SQL thread</h3><p>SQL 线程负责读取 relay log 中的内容，解析成具体的操作并执行，最终保证主从数据的一致性。<br>对于每一个主从连接，都需要三个进程完成，当主节点有多个从节点时，主节点会为每一个当前连接的从节点建立一个 bin log dump 进程，每个从节点都有自己的 I/O 进程，SQL进程。从节点用两个线程将主库拉取更新和执行分成独立的任务。这样在执行同步数据任务的时候，不会降低读操作的性能。如果在 SQL 进程执行之前，从节点服务停止，I/O进程已经从主节点拉取到了最新的变更保存到本地的 relay 日志中，当服务器再次起来，就完成数据的同步。</p>
+<p>要实施复制，必须打开 Master 端的 binary log 功能，否则无法实现，因为整个复制过程实际上是 Slave 从 Master 端获取日志然后再在自己身上完全顺序的执行日志中所记录的各种操作</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15690731129972-mysql.jpg" alt=""></p>
+<p>复制过程如下：</p>
+<ol>
+<li>从节点的 I/O 进程连接主节点，请求从指定日志文件的指定位置之后的日志内容</li>
+<li>主节点通过 I/O 进程根据请求信息读取指定日志之后的信息，返回从节点。返回信息中除了日志包含的信息外，还包括本次返回的信息的 bin-log file 和 bin log position</li>
+<li>从节点 I/O 进程 接收到内容后，将接收到的日志内容更新到本机的 relay log 中，并将读取到的 bin log 文件名和位置保存到 master-info 文件中，以便下一次读取的时候能够清楚的告知 Master 具体的读取位置。</li>
+<li>Slave 的 SQL 线程检测到 relay-log 中新增加了内容后，会将 relay-log 的内容解析成在主节点上执行过的操作，并在本数据库中执行。</li>
+</ol>
+<h2 id="MySQL-主从复制模式"><a href="#MySQL-主从复制模式" class="headerlink" title="MySQL 主从复制模式"></a>MySQL 主从复制模式</h2><h3 id="异步模式"><a href="#异步模式" class="headerlink" title="异步模式"></a>异步模式</h3><p>MySQL async-mode，异步模式下，主节点不会主动 push bin log 到从节点，这样有可能导致 failover 的情况下，也许从节点没有即时地将最新的 bin log 同步到本地</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15690736966092-mysql.jpg" alt=""></p>
+<h3 id="半同步模式"><a href="#半同步模式" class="headerlink" title="半同步模式"></a>半同步模式</h3><p>MySQL semi-sync 这种模式下主节点只需要接受到其中一台从节点的返回信息，就会 commit，否则需要等待直到超过时间然后切换成异步模式再提交，这样做的目的可以使主从数据库的数据延迟缩小，提高数据安全性。事务提交后，bin log 至少传入到了一个从节点上，不能确保从节点将此事务更新到 db 中，性能上会有一定降低，响应时间会变长：</p>
+<p><img src="https://www.lizhaoloveit.cn/blogimages/java/database/mysql/15690740148798-mysql.jpg" alt=""></p>
+<p>从 MySQL 5.5 开始集成，需要 master 和 salve 安装插件开启半同步模式</p>
+<h3 id="全同步模式"><a href="#全同步模式" class="headerlink" title="全同步模式"></a>全同步模式</h3><p>全同步模式是指主节点和从节点全部执行了 commit 并确认才会向客户端返回成功</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>准备工作：先让 Master 和 Slave 都拥有相同的数据库，并且数据库中的表数据一致。</p>
+<ul>
+<li>在Mster 配置文件中 mysqlId 部分做以下配置，开启 binary-log</li>
+</ul>
+<h1 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h1><hr>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2019/09/18/SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">http://lizhaoloveit.cn/2019/09/18/SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2019/09/24/Redis/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>Redis</span></div></a></div><div class="next-post pull-right"><a href="/2019/09/16/Swagger2/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Swagger2</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2019/09/18/SQL%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/';
+  this.page.identifier = '2019/09/18/SQL性能优化/';
+  this.page.title = 'SQL性能优化';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>

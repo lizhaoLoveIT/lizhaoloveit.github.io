@@ -1,0 +1,393 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>Objective Runtime Reference | Ammar's Blog</title><meta name="description" content="Objective Runtime Reference"><meta name="keywords" content="iOS"><meta name="author" content="Ammar"><meta name="copyright" content="Ammar"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.1/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://lizhaoloveit.cn/2014/11/12/RuntimeReference/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Objective Runtime Reference"><meta name="twitter:description" content="Objective Runtime Reference"><meta name="twitter:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta property="og:type" content="article"><meta property="og:title" content="Objective Runtime Reference"><meta property="og:url" content="http://lizhaoloveit.cn/2014/11/12/RuntimeReference/"><meta property="og:site_name" content="Ammar's Blog"><meta property="og:description" content="Objective Runtime Reference"><meta property="og:image" content="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="prev" title="RunLoop运行循环机制" href="http://lizhaoloveit.cn/2015/03/02/RunLoop%E8%BF%90%E8%A1%8C%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/"><link rel="next" title="Runtime运行时机制" href="http://lizhaoloveit.cn/2014/11/10/Runtime%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9C%BA%E5%88%B6/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.css"><script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.1.1/dist/instantsearch.min.js" defer></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?162506e75ffd64287398566b2f5738c8";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"VRMKRAV9AT","apiKey":"bd7157400046d0f02396708a501a3480","indexName":"lizhaoloveit","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容:${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":1,"translateDelay":0,"cookieDomain":"https://lizhaoloveit.cn/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script><meta name="generator" content="Hexo 4.2.1"></head><body><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Working-with-Classes"><span class="toc-number">1.</span> <span class="toc-text">Working with Classes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getName"><span class="toc-number">1.1.</span> <span class="toc-text">class_getName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getSuperclass"><span class="toc-number">1.2.</span> <span class="toc-text">class_getSuperclass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-isMetaClass"><span class="toc-number">1.3.</span> <span class="toc-text">class_isMetaClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getInstanceSize"><span class="toc-number">1.4.</span> <span class="toc-text">class_getInstanceSize</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-addIvar"><span class="toc-number">1.5.</span> <span class="toc-text">class_addIvar</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyIvarList"><span class="toc-number">1.6.</span> <span class="toc-text">class_copyIvarList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getProperty"><span class="toc-number">1.7.</span> <span class="toc-text">class_getProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyPropertyList"><span class="toc-number">1.8.</span> <span class="toc-text">class_copyPropertyList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-addMethod"><span class="toc-number">1.9.</span> <span class="toc-text">class_addMethod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getInstanceMethod"><span class="toc-number">1.10.</span> <span class="toc-text">class_getInstanceMethod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getClassMethod"><span class="toc-number">1.11.</span> <span class="toc-text">class_getClassMethod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyMethodList"><span class="toc-number">1.12.</span> <span class="toc-text">class_copyMethodList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-replaceMethod"><span class="toc-number">1.13.</span> <span class="toc-text">class_replaceMethod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-getMethodImplementation"><span class="toc-number">1.14.</span> <span class="toc-text">class_getMethodImplementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-respondsToSelector"><span class="toc-number">1.15.</span> <span class="toc-text">class_respondsToSelector</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-addProtocol"><span class="toc-number">1.16.</span> <span class="toc-text">class_addProtocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-addProperty"><span class="toc-number">1.17.</span> <span class="toc-text">class_addProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-replaceProperty"><span class="toc-number">1.18.</span> <span class="toc-text">class_replaceProperty</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-conformsToProtocol"><span class="toc-number">1.19.</span> <span class="toc-text">class_conformsToProtocol</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyProtocolList"><span class="toc-number">1.20.</span> <span class="toc-text">class_copyProtocolList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyProtocolList-1"><span class="toc-number">1.21.</span> <span class="toc-text">class_copyProtocolList</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#class-copyProtocolList-2"><span class="toc-number">1.22.</span> <span class="toc-text">class_copyProtocolList</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Working-with-Instance-Variables"><span class="toc-number">2.</span> <span class="toc-text">Working with Instance Variables</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ivar-getName"><span class="toc-number">2.1.</span> <span class="toc-text">ivar_getName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ivar-getTypeEncoding"><span class="toc-number">2.2.</span> <span class="toc-text">ivar_getTypeEncoding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Working-with-Methods"><span class="toc-number">3.</span> <span class="toc-text">Working with Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#method-invoke-stret"><span class="toc-number">3.1.</span> <span class="toc-text">method_invoke_stret</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method-getName"><span class="toc-number">3.2.</span> <span class="toc-text">method_getName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method-getImplementation"><span class="toc-number">3.3.</span> <span class="toc-text">method_getImplementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method-getNumberOfArguments"><span class="toc-number">3.4.</span> <span class="toc-text">method_getNumberOfArguments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method-exchangeImplementations"><span class="toc-number">3.5.</span> <span class="toc-text">method_exchangeImplementations</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Working-with-Selectors"><span class="toc-number">4.</span> <span class="toc-text">Working with Selectors</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sel-getName"><span class="toc-number">4.1.</span> <span class="toc-text">sel_getName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sel-isEqual"><span class="toc-number">4.2.</span> <span class="toc-text">sel_isEqual</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#runtime-实际开发中用法列举"><span class="toc-number">5.</span> <span class="toc-text">runtime 实际开发中用法列举</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#runtime-基本用法"><span class="toc-number">5.1.</span> <span class="toc-text">runtime 基本用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MJExtension-实现字典转模型的原理"><span class="toc-number">5.2.</span> <span class="toc-text">MJExtension 实现字典转模型的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#runtime-在归档中的应用"><span class="toc-number">5.3.</span> <span class="toc-text">runtime 在归档中的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#黑魔法：Method-swizzle"><span class="toc-number">5.4.</span> <span class="toc-text">黑魔法：Method swizzle</span></a></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://lizhaoloveit.cn/blogimages/blog/top_img.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Ammar's Blog</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad" data-src="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="mobile_author-info__description">微信号：aicjaish</div></div><hr><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a><a class="site-page" href="/comment/"><i class="fa-fw fa fa-coffee"></i><span> 留言</span></a><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></span></div><div id="post-info"><div id="post-title"><div class="posttitle">Objective Runtime Reference</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2014-11-12<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-07-29</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/iOS/">iOS</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/iOS/%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">底层原理</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">3.1k</span><span class="post-meta__separator">|</span><span>阅读时长: 12 分钟</span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><p>本文将列举一些常用的 API</p>
+<h2 id="Working-with-Classes"><a href="#Working-with-Classes" class="headerlink" title="Working with Classes"></a>Working with Classes</h2><h3 id="class-getName"><a href="#class-getName" class="headerlink" title="class_getName"></a><font color = "#1E90FF" >class_getName</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * class_getName(Class cls)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取类名的字符串</li>
+<li>返回值：如果类是 <code>Nil</code> 返回空串</li>
+</ul>
+<br>
+
+<h3 id="class-getSuperclass"><a href="#class-getSuperclass" class="headerlink" title="class_getSuperclass"></a><font color = "#1E90FF" >class_getSuperclass</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class class_getSuperclass(Class cls)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取一个类的父类</li>
+<li>返回值：如果传入的是根类或者 <code>Nil</code> 返回 <code>Nil</code></li>
+<li>Discussion：你可以使用 <code>NSObject</code> 的 <code>superclass</code> 方法代替它</li>
+</ul>
+<br>
+
+<h3 id="class-isMetaClass"><a href="#class-isMetaClass" class="headerlink" title="class_isMetaClass"></a><font color = "#1E90FF" >class_isMetaClass</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_isMetaClass(Class cls)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：判断一个类是否是元类</li>
+</ul>
+<br>
+
+<h3 id="class-getInstanceSize"><a href="#class-getInstanceSize" class="headerlink" title="class_getInstanceSize"></a><font color = "#1E90FF" >class_getInstanceSize</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">size_t class_getInstanceSize(Class cls)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：返回一个类的大小(单位：字节)</li>
+<li>返回值：如果传入 <code>Nil</code> 返回 0</li>
+</ul>
+<br>
+
+<h3 id="class-addIvar"><a href="#class-addIvar" class="headerlink" title="class_addIvar"></a><font color = "#1E90FF" >class_addIvar</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_addIvar(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, size_t size, uint8_t alignment, <span class="keyword">const</span> <span class="keyword">char</span> *types)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：给一个类动态添加一个成员变量</li>
+<li>返回值：如果添加成功，返回 <code>YES</code>，否则返回 <code>NO</code></li>
+<li>Discussion：这个方法将会在 <code>objc_allocateClassPair</code> 之后 <code>objc_registerClassPair</code> 之前调用，给一个已经存在的类添加成员变量并不支持。而且我们不能给元类添加成员变量。</li>
+</ul>
+<br>
+
+<h3 id="class-copyIvarList"><a href="#class-copyIvarList" class="headerlink" title="class_copyIvarList"></a><font color = "#1E90FF" >class_copyIvarList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ivar * class_copyIvarList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：描述一个类的成员变量</li>
+<li>返回值：返回指向第一个成员变量的 Ivar 指针</li>
+<li>Discussion：传入的 <code>outCount</code> 将告诉我们这个类有多少个成员变量。</li>
+</ul>
+<br>
+### <font color = "#1E90FF" >class_getIvarLayout</font>
+### <font color = "#1E90FF" >class_getWeakIvarLayout</font>
+### <font color = "#1E90FF" >class_setIvarLayout</font>
+### <font color = "#1E90FF" >class_setWeakIvarLayout</font>
+
+
+<p><code>ivarLayout</code> 和 <code>weakIvarLayout</code> 分别记录了哪些 ivar 是 <code>strong</code> 或是 <code>weak</code>，都未记录的就是基本类型和 <code>__unsafe_unretained</code> 的对象类型。这两个值可以通过 runtime 提供的几个 API 来访问：  </p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> uint8_t *class_getIvarLayout(Class cls) </span><br><span class="line"><span class="keyword">const</span> uint8_t *class_getWeakIvarLayout(Class cls) </span><br><span class="line"><span class="keyword">void</span> class_setIvarLayout(Class cls, <span class="keyword">const</span> uint8_t *layout) </span><br><span class="line"><span class="keyword">void</span> class_setWeakIvarLayout(Class cls, <span class="keyword">const</span> uint8_t *layout)</span><br></pre></td></tr></table></figure>
+<p>但我们几乎没可能用到这几个 API，IvarLayout 的值由 runtime 确定，没必要关心它的存在，但为了解决上述问题，我们试着破解了 IvarLayout 的编码方式</p>
+<br>
+
+<h3 id="class-getProperty"><a href="#class-getProperty" class="headerlink" title="class_getProperty"></a><font color = "#1E90FF" >class_getProperty</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_property_t class_getProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：返回一个属性</li>
+<li>返回值：如果类没有声明或者属性不存在返回 <code>Nil</code></li>
+</ul>
+<h3 id="class-copyPropertyList"><a href="#class-copyPropertyList" class="headerlink" title="class_copyPropertyList"></a><font color = "#1E90FF" >class_copyPropertyList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_property_t * class_copyPropertyList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：描述一个类的属性列表</li>
+<li>返回值：返回一个 <code>objc_property_t</code> 类型的指针数组描述声明的类的属性。传入的 <code>outCount</code> 表示属性个数</li>
+</ul>
+<h3 id="class-addMethod"><a href="#class-addMethod" class="headerlink" title="class_addMethod"></a><font color = "#1E90FF" >class_addMethod</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_addMethod(Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：给一个类动态的添加方法</li>
+<li>返回值：添加成功返回 <code>YES</code> 否则 <code>NO</code></li>
+<li>注意：types 参数是方法的参数类型，详见：<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="noopener">Type Encoding</a> </li>
+<li>Discussion：该方法可以覆盖父类的实现，但是不能添加类中已有的实现如果要改变类中以后的实现请使用 <code>method_setImplementation</code></li>
+<li>示例：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> myMethodIMP(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// implementation ....</span></span><br><span class="line">&#125;</span><br><span class="line">you can dynamically add it to a <span class="keyword">class</span> as a method (called resolveThisMethodDynamically) like <span class="keyword">this</span>:</span><br><span class="line"></span><br><span class="line">class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], <span class="keyword">@selector</span>(resolveThisMethodDynamically), (IMP) myMethodIMP, <span class="string">"v@:"</span>);</span><br></pre></td></tr></table></figure>
+ <br>
+
+
+<h3 id="class-getInstanceMethod"><a href="#class-getInstanceMethod" class="headerlink" title="class_getInstanceMethod"></a><font color = "#1E90FF" >class_getInstanceMethod</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method class_getInstanceMethod(Class aClass, SEL aSelector)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：从一个类中获取一个实例方法</li>
+<li>返回值：当该类中或者父类中都没有该方法 返回 <code>NULL</code></li>
+<li>注意：注意该方法如果在父类中寻找实现，时因为自己调用了 <code>class_copyMethodList</code> 方法而没有寻找到实现。</li>
+</ul>
+<br>
+
+<h3 id="class-getClassMethod"><a href="#class-getClassMethod" class="headerlink" title="class_getClassMethod"></a><font color = "#1E90FF" >class_getClassMethod</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method class_getClassMethod(Class aClass, SEL aSelector)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：从一个类中获取一个类方法</li>
+</ul>
+<br>
+
+<h3 id="class-copyMethodList"><a href="#class-copyMethodList" class="headerlink" title="class_copyMethodList"></a><font color = "#1E90FF" >class_copyMethodList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method * class_copyMethodList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：描述一个类中的实例方法列表</li>
+<li>返回值：返回一个指向 <code>Method</code> 类型的指针数组。</li>
+<li>注意：父类的实例方法不会被列入其中</li>
+<li>举例：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Person</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** 姓名 */</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="comment">/** age */</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="keyword">int</span> age;</span><br><span class="line"><span class="comment">/** weight */</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="keyword">double</span> weight;</span><br><span class="line">- (<span class="keyword">void</span>)text;</span><br><span class="line">+ (<span class="keyword">void</span>)run;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Person</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)text</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"text ---- %@"</span>, <span class="keyword">self</span>-&gt;_name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    [[<span class="built_in">NSNotificationCenter</span> defaultCenter] removeObserver:<span class="keyword">self</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)run</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"run"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    Method *methodList = class_copyMethodList([Person <span class="keyword">class</span>], &amp;outCount);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">NSInteger</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *name = <span class="built_in">NSStringFromSelector</span>(method_getName(methodList[i]));</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, name);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2014-11-12 10:57:14.536 test[785:55071] age</span><br><span class="line">2014-11-12 10:57:14.536 test[785:55071] setAge:</span><br><span class="line">2014-11-12 10:57:14.536 test[785:55071] setWeight:</span><br><span class="line">2014-11-12 10:57:14.536 test[785:55071] .cxx_destruct</span><br><span class="line">2014-11-12 10:57:14.536 test[785:55071] dealloc</span><br><span class="line">2014-11-12 10:57:14.536 test[785:55071] name</span><br><span class="line">2014-11-12 10:57:14.537 test[785:55071] weight</span><br><span class="line">2014-11-12 10:57:14.537 test[785:55071] setName:</span><br><span class="line">2014-11-12 10:57:14.537 test[785:55071] text</span><br></pre></td></tr></table></figure>
+
+<p>类方法并没有被打印。</p>
+<br>
+
+<h3 id="class-replaceMethod"><a href="#class-replaceMethod" class="headerlink" title="class_replaceMethod"></a><font color = "#1E90FF" >class_replaceMethod</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMP class_replaceMethod(Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：替换方法实现</li>
+</ul>
+<br>
+
+<h3 id="class-getMethodImplementation"><a href="#class-getMethodImplementation" class="headerlink" title="class_getMethodImplementation"></a><font color = "#1E90FF" >class_getMethodImplementation</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMP class_getMethodImplementation(Class cls, SEL name)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取方法实现</li>
+<li>返回值：返回一个函数指针</li>
+</ul>
+<br>
+
+<h3 id="class-respondsToSelector"><a href="#class-respondsToSelector" class="headerlink" title="class_respondsToSelector"></a><font color = "#1E90FF" >class_respondsToSelector</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_respondsToSelector(Class cls, SEL sel)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：判断该类是否有该方法</li>
+</ul>
+<br>
+
+<h3 id="class-addProtocol"><a href="#class-addProtocol" class="headerlink" title="class_addProtocol"></a><font color = "#1E90FF" >class_addProtocol</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_addProtocol(Class cls, Protocol *protocol)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：动态添加一个协议</li>
+</ul>
+<br>
+
+<h3 id="class-addProperty"><a href="#class-addProperty" class="headerlink" title="class_addProperty"></a><font color = "#1E90FF" >class_addProperty</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_addProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：动态添加一个属性</li>
+</ul>
+<br>
+
+<h3 id="class-replaceProperty"><a href="#class-replaceProperty" class="headerlink" title="class_replaceProperty"></a><font color = "#1E90FF" >class_replaceProperty</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> class_replaceProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：替换属性</li>
+</ul>
+<br>
+
+<h3 id="class-conformsToProtocol"><a href="#class-conformsToProtocol" class="headerlink" title="class_conformsToProtocol"></a><font color = "#1E90FF" >class_conformsToProtocol</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> class_conformsToProtocol(Class cls, Protocol *protocol)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：判断一个类是否遵守某个协议</li>
+</ul>
+<br>
+
+<h3 id="class-copyProtocolList"><a href="#class-copyProtocolList" class="headerlink" title="class_copyProtocolList"></a><font color = "#1E90FF" >class_copyProtocolList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Protocol ** class_copyProtocolList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取一个类遵守的协议列表</li>
+</ul>
+<br>
+
+<h3 id="class-copyProtocolList-1"><a href="#class-copyProtocolList-1" class="headerlink" title="class_copyProtocolList"></a><font color = "#1E90FF" >class_copyProtocolList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Protocol ** class_copyProtocolList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取一个类遵守的协议列表</li>
+</ul>
+<hr>
+<br>
+
+<h3 id="class-copyProtocolList-2"><a href="#class-copyProtocolList-2" class="headerlink" title="class_copyProtocolList"></a><font color = "#1E90FF" >class_copyProtocolList</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Protocol ** class_copyProtocolList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取一个类遵守的协议列表</li>
+</ul>
+<hr>
+<br>
+
+<h2 id="Working-with-Instance-Variables"><a href="#Working-with-Instance-Variables" class="headerlink" title="Working with Instance Variables"></a>Working with Instance Variables</h2><h3 id="ivar-getName"><a href="#ivar-getName" class="headerlink" title="ivar_getName"></a><font color = "#1E90FF" >ivar_getName</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * ivar_getName( Ivar ivar)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取成员变量的名字</li>
+</ul>
+<br>
+
+<h3 id="ivar-getTypeEncoding"><a href="#ivar-getTypeEncoding" class="headerlink" title="ivar_getTypeEncoding"></a><font color = "#1E90FF" >ivar_getTypeEncoding</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * ivar_getTypeEncoding( Ivar ivar)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取成员变量的类型</li>
+</ul>
+<hr>
+<br>
+
+<h2 id="Working-with-Methods"><a href="#Working-with-Methods" class="headerlink" title="Working with Methods"></a>Working with Methods</h2><h3 id="method-invoke-stret"><a href="#method-invoke-stret" class="headerlink" title="method_invoke_stret"></a><font color = "#1E90FF" >method_invoke_stret</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> method_invoke_stret(<span class="keyword">id</span> receiver, Method m, ...)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：如果返回值时一个结构体，调用这个方法</li>
+<li>注意：调用这个方法来实现比 <code>method_getImplementation</code> 要快</li>
+</ul>
+<br>
+
+<h3 id="method-getName"><a href="#method-getName" class="headerlink" title="method_getName"></a><font color = "#1E90FF" >method_getName</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SEL method_getName( Method method)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取方法名</li>
+</ul>
+<br>
+
+<h3 id="method-getImplementation"><a href="#method-getImplementation" class="headerlink" title="method_getImplementation"></a><font color = "#1E90FF" >method_getImplementation</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMP method_getImplementation( Method method)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取方法实现</li>
+<li>返回值：是一个 <code>IMP</code> 类型的函数指针</li>
+</ul>
+<br>
+
+<h3 id="method-getNumberOfArguments"><a href="#method-getNumberOfArguments" class="headerlink" title="method_getNumberOfArguments"></a><font color = "#1E90FF" >method_getNumberOfArguments</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> method_getNumberOfArguments( Method method)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：获取方法的参数个数</li>
+</ul>
+<br>
+
+<h3 id="method-exchangeImplementations"><a href="#method-exchangeImplementations" class="headerlink" title="method_exchangeImplementations"></a><font color = "#1E90FF" >method_exchangeImplementations</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> method_exchangeImplementations( Method m1, Method m2)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：交换两个方法的方法实现</li>
+<li>注意：这时原子形式的，是线程安全的。</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IMP imp1 = method_getImplementation(m1);</span><br><span class="line">IMP imp2 = method_getImplementation(m2);</span><br><span class="line">method_setImplementation(m1, imp2);</span><br><span class="line">method_setImplementation(m2, imp1);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<br>
+
+<h2 id="Working-with-Selectors"><a href="#Working-with-Selectors" class="headerlink" title="Working with Selectors"></a>Working with Selectors</h2><h3 id="sel-getName"><a href="#sel-getName" class="headerlink" title="sel_getName"></a><font color = "#1E90FF" >sel_getName</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* sel_getName(SEL aSelector)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：返回方法名</li>
+</ul>
+<h3 id="sel-isEqual"><a href="#sel-isEqual" class="headerlink" title="sel_isEqual"></a><font color = "#1E90FF" >sel_isEqual</font></h3><ul>
+<li>声明：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> sel_isEqual(SEL lhs, SEL rhs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>作用：判断两个方法选择器是否一样</li>
+</ul>
+<hr>
+<br>
+
+<h2 id="runtime-实际开发中用法列举"><a href="#runtime-实际开发中用法列举" class="headerlink" title="runtime 实际开发中用法列举"></a>runtime 实际开发中用法列举</h2><p>关于 runtime 的知识写了这么多，具体在工作中应该怎样使用呢？</p>
+<p>由于苹果是不开源的，因此我们要使用一些系统的框架或者控件时，往往因为其给我们提供的接口太少而不能有效的实现我们的需求。因此，runtime 就派上用场了。</p>
+<p>虽然我们无法直接窥探苹果系统内部的结构，但通过 runtime 系统的运行和方法，我们是可以在运行时获取到系统内部类的成员变量、方法、属性以及所遵守的协议的。此时，我们大概就能清楚其内部时如何运作的，这也要归功于 iOS 开发比较讲究的命名规范，我们一看到成员变量的意思，大致就能猜到其作用了。</p>
+<h3 id="runtime-基本用法"><a href="#runtime-基本用法" class="headerlink" title="runtime 基本用法"></a>runtime 基本用法</h3><p>下面就演示一下如何获取系统内部类的成员变量：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 我们便拿 UIButton 开刀好了</span></span><br><span class="line"><span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:(<span class="built_in">UIButtonTypeSystem</span>)];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下面让我们看看系统的 button 都有些什么东西</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>; <span class="comment">// 用来记录成员变量的个数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 用于获取内部成员变量的列表，返回一个 Ivar 类型的指针数组</span></span><br><span class="line">Ivar *ivarList = class_copyIvarList([<span class="built_in">UIButton</span> <span class="keyword">class</span>], &amp;outCount);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSInteger</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *ivarName = @(ivar_getName(ivarList[i]));</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, ivarName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">2014-11-12 11:57:36.215 test[912:89888] _externalFlatEdge</span><br><span class="line">2014-11-12 11:57:36.215 test[912:89888] _contentLookup</span><br><span class="line">2014-11-12 11:57:36.215 test[912:89888] _contentEdgeInsets</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _titleEdgeInsets</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _imageEdgeInsets</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _backgroundView</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _floatingContentView</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _contentBackdropView</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _imageView</span><br><span class="line">2014-11-12 11:57:36.216 test[912:89888] _titleView</span><br><span class="line">2014-11-12 11:57:36.217 test[912:89888] _initialized</span><br><span class="line">2014-11-12 11:57:36.217 test[912:89888] _lastDrawingControlState</span><br><span class="line">2014-11-12 11:57:36.217 test[912:89888] _selectGestureRecognizer</span><br><span class="line">2014-11-12 11:57:36.217 test[912:89888] _buttonFlags</span><br><span class="line">2014-11-12 11:57:36.217 test[912:89888] _effectiveContentView</span><br><span class="line">2014-11-12 11:57:36.218 test[912:89888] _maskAnimationView</span><br><span class="line">2014-11-12 11:57:36.218 test[912:89888] _selectionView</span><br><span class="line">2014-11-12 11:57:36.218 test[912:89888] _lazyTitleViewFont</span><br><span class="line">2014-11-12 11:57:36.218 test[912:89888] _contentConstraints</span><br><span class="line">2014-11-12 11:57:36.218 test[912:89888] _internalTitlePaddingInsets</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，其内部是有很多成员变量的，而且通过他们的名字，不难猜到他们的作用。</p>
+<p>在工作中我们可以使用 KVC 修改其中某个成员变量的值以达到我们的需求。具体见 <a href="https://lizhaoloveit.com/2014/07/20/KVC/" target="_blank" rel="noopener">KVC</a>。</p>
+<h3 id="MJExtension-实现字典转模型的原理"><a href="#MJExtension-实现字典转模型的原理" class="headerlink" title="MJExtension 实现字典转模型的原理"></a>MJExtension 实现字典转模型的原理</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 假设 Person 是模型类</span></span><br><span class="line">Person *p = [[Person alloc] init];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 给定一个字典 dict</span></span><br><span class="line">    <span class="built_in">NSDictionary</span> *dict;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> count = <span class="number">0</span>; <span class="comment">// 记录Ivar成员变量的个数</span></span><br><span class="line">    Ivar *vars = class_copyIvarList([Person <span class="keyword">class</span>], &amp;count);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 遍历模型中的属性</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        Ivar var = vars[i];</span><br><span class="line">        <span class="comment">// 获取属性名</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span> *ivarName = ivar_getName(var);   </span><br><span class="line">        <span class="comment">// 获取属性类型</span></span><br><span class="line">        <span class="keyword">const</span> <span class="keyword">char</span> *ivarEncoding = ivar_getTypeEncoding(var);  </span><br><span class="line">      </span><br><span class="line">        <span class="comment">// 如果检测到属性类型不为基础值，也就是说模型中还嵌套模型，</span></span><br><span class="line">        <span class="comment">// 则继续遍历模型，通过递归一层一层，找出所有模型的所有属性并赋值。</span></span><br><span class="line">     </span><br><span class="line">       <span class="comment">// c--&gt;OC字符串</span></span><br><span class="line">        <span class="built_in">NSString</span> *ivarNameOC = [<span class="built_in">NSString</span> stringWithUTF8String:ivarName];</span><br><span class="line">        <span class="comment">// Json解析的字典中的值 与 模型一一对应赋值 运行时遍历Json字典</span></span><br><span class="line">        [p setValue:dict[ivarNameOC] forKey:ivarNameOC];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="runtime-在归档中的应用"><a href="#runtime-在归档中的应用" class="headerlink" title="runtime 在归档中的应用"></a>runtime 在归档中的应用</h3><p>在 iOS 开发中，归档是一件比较繁琐的事情，因为有可能你的成员变量有很多几十个甚至上百个。这时我们归档如果再一个一个 <code>encodeObject:</code> 是件很麻烦的事。这时我们通过运行时遍历所有类的成员变量，然后通过 <code>ivar_getName</code> 方法获取变量名，再转成 OC 字符串就可以带入到上述 <code>encodeObject:</code> 方法了。几行代码就可以完成。</p>
+<h3 id="黑魔法：Method-swizzle"><a href="#黑魔法：Method-swizzle" class="headerlink" title="黑魔法：Method swizzle"></a>黑魔法：Method swizzle</h3><p>在工作中就遇到过这样的需求。当时苹果刚发布 iOS7，iOS7改动是非常大的，它将立体化改为平面化。促使性能极大提高，但同时，为以前的项目所涉及的图片大多就不适合继续使用了。这时，我们就需要对用户的设备进行检测，如果是 iOS6 则使用旧图片，而 iOS7 则换成新图片。但是项目文件非常多，我们不可能将所有的的系统自带的 <code>-imageNamed:</code> 方法替换成自己的方法。其实我们可以这样去实现：</p>
+<p>假设项目中我们的代码时这样的：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIImageView</span> *faceImageView;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIImageView</span> *vipImageView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">self</span>.faceImageView.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"face"</span>];</span><br><span class="line">    <span class="keyword">self</span>.vipImageView.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"vip"</span>];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是项目正在使用的图片</p>
+<p>如果需求要在不改变源代码的情况下，将图片换成：</p>
+<p>目前项目运行效果是这样的：</p>
+<p>首先，我们需要给 UIImage 写一个分类，添加以下方法，以实现我们的需求</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIImage</span> (<span class="title">AMExtension</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 写一个 AM_imageNamed:方法</span></span><br><span class="line">+ (<span class="built_in">UIImage</span> *)AM_imageNamed:(<span class="built_in">NSString</span> *)name</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 判断设备是否是 iOS7 以上</span></span><br><span class="line">    <span class="built_in">BOOL</span> isIOS7 = [[<span class="built_in">UIDevice</span> currentDevice].systemVersion floatValue] &gt;= <span class="number">7.0</span>;</span><br><span class="line">    <span class="built_in">UIImage</span> *image = <span class="literal">nil</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果是，则换成支持 iOS7 的图片</span></span><br><span class="line">    <span class="keyword">if</span> (isIOS7) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *newName = [name stringByAppendingString:<span class="string">@"_os7"</span>];</span><br><span class="line">        image = [<span class="built_in">UIImage</span> imageNamed:newName];</span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        image = [<span class="built_in">UIImage</span> imageNamed:name];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> image;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，也是关键的一步，就是在分类一开始加载到内存中的时候，我们必须让 runtime 系统了解一件事，就是当程序运行时，系统的 <code>imageNamed:</code> 方法的实现被改成 <code>AM_imageNamed:</code> 方法。这样就大功告成，代码如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIImage</span> (<span class="title">AMExtension</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// method swizzle 只需要有一次，在分类载进内存时只需要调用一次</span></span><br><span class="line">+ (<span class="keyword">void</span>)load</span><br><span class="line">&#123;</span><br><span class="line">    Method originalMethod = class_getClassMethod(<span class="keyword">self</span>, <span class="keyword">@selector</span>(imageNamed:));</span><br><span class="line">    Method ourMethod = class_getClassMethod(<span class="keyword">self</span>, <span class="keyword">@selector</span>(AM_imageNamed:));</span><br><span class="line">    method_exchangeImplementations(originalMethod, ourMethod);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写一个 AM_imageNamed:方法</span></span><br><span class="line">+ (<span class="built_in">UIImage</span> *)AM_imageNamed:(<span class="built_in">NSString</span> *)name</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 判断设备是否是 iOS7 以上</span></span><br><span class="line">    <span class="built_in">BOOL</span> isIOS7 = [[<span class="built_in">UIDevice</span> currentDevice].systemVersion floatValue] &gt;= <span class="number">7.0</span>;</span><br><span class="line">    <span class="built_in">UIImage</span> *image = <span class="literal">nil</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果是，则换成支持 iOS7 的图片</span></span><br><span class="line">    <span class="keyword">if</span> (isIOS7) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *newName = [name stringByAppendingString:<span class="string">@"_os7"</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 此处需要注意，因为方法实现已经交换所以如果我们想调用系统的方法需要使用我们的方法名</span></span><br><span class="line">        image = [<span class="built_in">UIImage</span> AM_imageNamed:newName];</span><br><span class="line">        </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        image = [<span class="built_in">UIImage</span> AM_imageNamed:name];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> image;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们并没有改变原来的代码，但是运行效果如下：</p>
+<p>同理，你还可以使用 Method Swizzle 去替换系统其他的方法，一些你认为你能写的更好的，在项目中。</p>
+<p>Demo 见：<a href="https://github.com/lizhaoLoveIT/Swizzle" target="_blank" rel="noopener">Swizzle</a></p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Ammar</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lizhaoloveit.cn/2014/11/12/RuntimeReference/">http://lizhaoloveit.cn/2014/11/12/RuntimeReference/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lizhaoloveit.cn">Ammar's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/iOS/">iOS    </a></div><div class="post_share"><div class="social-share" data-image="https://lizhaoloveit.cn/blogimages/blog/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><div class="post-reward"><a class="reward-buttom"><i class="fa fa-qrcode"></i> 打赏<div class="reward-main"><ul class="reward-all"><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/wechat.jpg"><div class="post-qr-code__desc">微信</div></li><li class="reward-item"><img class="lozad post-qr-code__img" data-src="/img/alipay.jpg"><div class="post-qr-code__desc">支付宝</div></li></ul></div></a></div><nav class="pagination_post" id="pagination"><div class="prev-post pull-left"><a href="/2015/03/02/RunLoop%E8%BF%90%E8%A1%8C%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/"><img class="prev_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">上一篇</div><div class="prev_info"><span>RunLoop运行循环机制</span></div></a></div><div class="next-post pull-right"><a href="/2014/11/10/Runtime%E8%BF%90%E8%A1%8C%E6%97%B6%E6%9C%BA%E5%88%B6/"><img class="next_cover lozad" data-src="https://www.lizhaoloveit.cn/blogimages/blog/cover/1.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/2.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/3.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/4.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/5.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/6.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/7.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/8.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/9.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/10.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/11.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/12.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/13.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/14.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/15.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/16.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/17.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/18.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/19.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/20.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/21.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/22.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/23.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/24.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/25.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/26.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/27.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/28.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/29.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/31.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/32.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/33.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/34.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/35.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/36.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/37.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/38.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/39.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/40.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/41.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/42.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/43.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/44.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/45.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/46.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/47.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/48.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/49.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/50.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/51.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/52.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/53.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/54.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/55.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/56.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/57.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/58.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/59.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/60.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/62.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/63.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/64.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/65.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/66.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/67.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/68.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/69.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/70.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/71.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/72.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/73.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/74.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/75.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/76.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/77.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/78.jpg,https://www.lizhaoloveit.cn/blogimages/blog/cover/79.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>Runtime运行时机制</span></div></a></div></nav><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i> <span>评论</span></div><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://lizhaoloveit.cn/2014/11/12/RuntimeReference/';
+  this.page.identifier = '2014/11/12/RuntimeReference/';
+  this.page.title = 'Objective Runtime Reference';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'lizhao' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></div></div><footer><div class="layout" id="footer"><div class="copyright">&copy;2014 - 2022 By Ammar</div><div class="icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener"><span>浙ICP备19013619号-1</span></a></div><div class="bag"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502006128" target="_blank" rel="noopener"><img src="/img/beian.png"><span>浙公网安备 33010502006128号</span></a></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="far fa-moon nightshift" id="nightshift" title="夜间模式"></i></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script async src="/js/search/algolia.js"></script><script src="/js/nightshift.js"></script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><div class="search-dialog" id="algolia-search"><div class="search-dialog__title" id="algolia-search-title">Algolia</div><div id="algolia-input-panel"><div id="algolia-search-input"></div></div><hr><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-stats"></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
